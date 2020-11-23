@@ -4,7 +4,7 @@
   "description": "Algorithms and data-structures implemented on JavaScript",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ./src/*",
+    "lint": "eslint ./",
     "test": "jest",
     "watch": "jest --watch",
     "ci": "npm run lint && npm run test -- --coverage"
