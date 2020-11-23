@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./",
+    "lint-fix": "eslint ./ --fix",
     "test": "jest",
     "watch": "jest --watch",
     "ci": "npm run lint && npm run test -- --coverage"
