@@ -4,11 +4,11 @@ export default class DisjointSetItem {
    * @param {function(value: *)} [keyCallback]
    */
   constructor(value, keyCallback) {
-    this.value = value;
-    this.keyCallback = keyCallback;
+    this.value = value
+    this.keyCallback = keyCallback
     /** @var {DisjointSetItem} this.parent */
-    this.parent = null;
-    this.children = {};
+    this.parent = null
+    this.children = {}
   }
 
   /**
@@ -17,25 +17,25 @@ export default class DisjointSetItem {
   getKey() {
     // Allow user to define custom key generator.
     if (this.keyCallback) {
-      return this.keyCallback(this.value);
+      return this.keyCallback(this.value)
     }
 
     // Otherwise use value as a key by default.
-    return this.value;
+    return this.value
   }
 
   /**
    * @return {DisjointSetItem}
    */
   getRoot() {
-    return this.isRoot() ? this : this.parent.getRoot();
+    return this.isRoot() ? this : this.parent.getRoot()
   }
 
   /**
    * @return {boolean}
    */
   isRoot() {
-    return this.parent === null;
+    return this.parent === null
   }
 
   /**
@@ -45,28 +45,28 @@ export default class DisjointSetItem {
    */
   getRank() {
     if (this.getChildren().length === 0) {
-      return 0;
+      return 0
     }
 
-    let rank = 0;
+    let rank = 0
 
     /** @var {DisjointSetItem} child */
     this.getChildren().forEach((child) => {
       // Count child itself.
-      rank += 1;
+      rank += 1
 
       // Also add all children of current child.
-      rank += child.getRank();
-    });
+      rank += child.getRank()
+    })
 
-    return rank;
+    return rank
   }
 
   /**
    * @return {DisjointSetItem[]}
    */
   getChildren() {
-    return Object.values(this.children);
+    return Object.values(this.children)
   }
 
   /**
@@ -75,12 +75,12 @@ export default class DisjointSetItem {
    * @return {DisjointSetItem}
    */
   setParent(parentItem, forceSettingParentChild = true) {
-    this.parent = parentItem;
+    this.parent = parentItem
     if (forceSettingParentChild) {
-      parentItem.addChild(this);
+      parentItem.addChild(this)
     }
 
-    return this;
+    return this
   }
 
   /**
@@ -88,9 +88,9 @@ export default class DisjointSetItem {
    * @return {DisjointSetItem}
    */
   addChild(childItem) {
-    this.children[childItem.getKey()] = childItem;
-    childItem.setParent(this, false);
+    this.children[childItem.getKey()] = childItem
+    childItem.setParent(this, false)
 
-    return this;
+    return this
   }
 }

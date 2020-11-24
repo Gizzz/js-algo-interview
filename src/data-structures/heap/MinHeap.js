@@ -1,4 +1,4 @@
-import Heap from './Heap';
+import Heap from './Heap'
 
 export default class MinHeap extends Heap {
   /**
@@ -11,6 +11,6 @@ export default class MinHeap extends Heap {
    * @return {boolean}
    */
   pairIsInCorrectOrder(firstElement, secondElement) {
-    return this.compare.lessThanOrEqual(firstElement, secondElement);
+    return this.compare.lessThanOrEqual(firstElement, secondElement)
   }
 }

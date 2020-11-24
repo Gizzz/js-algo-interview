@@ -4,5 +4,5 @@
  * @return {number}
  */
 export default function getBit(number, bitPosition) {
-  return (number >> bitPosition) & 1;
+  return (number >> bitPosition) & 1
 }

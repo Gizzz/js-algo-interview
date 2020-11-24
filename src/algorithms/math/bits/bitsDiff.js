@@ -1,4 +1,4 @@
-import countSetBits from './countSetBits';
+import countSetBits from './countSetBits'
 
 /**
  * Counts the number of bits that need to be change in order
@@ -9,5 +9,5 @@ import countSetBits from './countSetBits';
  * @return {number}
  */
 export default function bitsDiff(numberA, numberB) {
-  return countSetBits(numberA ^ numberB);
+  return countSetBits(numberA ^ numberB)
 }

@@ -1,4 +1,4 @@
-import Queue from '../../../data-structures/queue/Queue';
+import Queue from '../../../data-structures/queue/Queue'
 
 /**
  * @typedef {Object} Callbacks
@@ -13,16 +13,16 @@ import Queue from '../../../data-structures/queue/Queue';
  * @returns {Callbacks}
  */
 function initCallbacks(callbacks = {}) {
-  const initiatedCallback = callbacks;
+  const initiatedCallback = callbacks
 
-  const stubCallback = () => {};
-  const defaultAllowTraversal = () => true;
+  const stubCallback = () => {}
+  const defaultAllowTraversal = () => true
 
-  initiatedCallback.allowTraversal = callbacks.allowTraversal || defaultAllowTraversal;
-  initiatedCallback.enterNode = callbacks.enterNode || stubCallback;
-  initiatedCallback.leaveNode = callbacks.leaveNode || stubCallback;
+  initiatedCallback.allowTraversal = callbacks.allowTraversal || defaultAllowTraversal
+  initiatedCallback.enterNode = callbacks.enterNode || stubCallback
+  initiatedCallback.leaveNode = callbacks.leaveNode || stubCallback
 
-  return initiatedCallback;
+  return initiatedCallback
 }
 
 /**
@@ -30,29 +30,29 @@ function initCallbacks(callbacks = {}) {
  * @param {Callbacks} [originalCallbacks]
  */
 export default function breadthFirstSearch(rootNode, originalCallbacks) {
-  const callbacks = initCallbacks(originalCallbacks);
-  const nodeQueue = new Queue();
+  const callbacks = initCallbacks(originalCallbacks)
+  const nodeQueue = new Queue()
 
   // Do initial queue setup.
-  nodeQueue.enqueue(rootNode);
+  nodeQueue.enqueue(rootNode)
 
   while (!nodeQueue.isEmpty()) {
-    const currentNode = nodeQueue.dequeue();
+    const currentNode = nodeQueue.dequeue()
 
-    callbacks.enterNode(currentNode);
+    callbacks.enterNode(currentNode)
 
     // Add all children to the queue for future traversals.
 
     // Traverse left branch.
     if (currentNode.left && callbacks.allowTraversal(currentNode, currentNode.left)) {
-      nodeQueue.enqueue(currentNode.left);
+      nodeQueue.enqueue(currentNode.left)
     }
 
     // Traverse right branch.
     if (currentNode.right && callbacks.allowTraversal(currentNode, currentNode.right)) {
-      nodeQueue.enqueue(currentNode.right);
+      nodeQueue.enqueue(currentNode.right)
     }
 
-    callbacks.leaveNode(currentNode);
+    callbacks.leaveNode(currentNode)
   }
 }

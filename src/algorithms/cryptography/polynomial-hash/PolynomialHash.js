@@ -1,5 +1,5 @@
-const DEFAULT_BASE = 37;
-const DEFAULT_MODULUS = 101;
+const DEFAULT_BASE = 37
+const DEFAULT_MODULUS = 101
 
 export default class PolynomialHash {
   /**
@@ -7,8 +7,8 @@ export default class PolynomialHash {
    * @param {number} [modulus] - Modulus number that keeps the hash from overflowing.
    */
   constructor({ base = DEFAULT_BASE, modulus = DEFAULT_MODULUS } = {}) {
-    this.base = base;
-    this.modulus = modulus;
+    this.base = base
+    this.modulus = modulus
   }
 
   /**
@@ -20,16 +20,16 @@ export default class PolynomialHash {
    * @return {number}
    */
   hash(word) {
-    const charCodes = Array.from(word).map((char) => this.charToNumber(char));
+    const charCodes = Array.from(word).map((char) => this.charToNumber(char))
 
-    let hash = 0;
+    let hash = 0
     for (let charIndex = 0; charIndex < charCodes.length; charIndex += 1) {
-      hash *= this.base;
-      hash += charCodes[charIndex];
-      hash %= this.modulus;
+      hash *= this.base
+      hash += charCodes[charIndex]
+      hash %= this.modulus
     }
 
-    return hash;
+    return hash
   }
 
   /**
@@ -47,25 +47,25 @@ export default class PolynomialHash {
    * @return {number}
    */
   roll(prevHash, prevWord, newWord) {
-    let hash = prevHash;
+    let hash = prevHash
 
-    const prevValue = this.charToNumber(prevWord[0]);
-    const newValue = this.charToNumber(newWord[newWord.length - 1]);
+    const prevValue = this.charToNumber(prevWord[0])
+    const newValue = this.charToNumber(newWord[newWord.length - 1])
 
-    let prevValueMultiplier = 1;
+    let prevValueMultiplier = 1
     for (let i = 1; i < prevWord.length; i += 1) {
-      prevValueMultiplier *= this.base;
-      prevValueMultiplier %= this.modulus;
+      prevValueMultiplier *= this.base
+      prevValueMultiplier %= this.modulus
     }
 
-    hash += this.modulus;
-    hash -= (prevValue * prevValueMultiplier) % this.modulus;
+    hash += this.modulus
+    hash -= (prevValue * prevValueMultiplier) % this.modulus
 
-    hash *= this.base;
-    hash += newValue;
-    hash %= this.modulus;
+    hash *= this.base
+    hash += newValue
+    hash %= this.modulus
 
-    return hash;
+    return hash
   }
 
   /**
@@ -75,15 +75,15 @@ export default class PolynomialHash {
    * @return {number}
    */
   charToNumber(char) {
-    let charCode = char.codePointAt(0);
+    let charCode = char.codePointAt(0)
 
     // Check if character has surrogate pair.
-    const surrogate = char.codePointAt(1);
+    const surrogate = char.codePointAt(1)
     if (surrogate !== undefined) {
-      const surrogateShift = 2 ** 16;
-      charCode += surrogate * surrogateShift;
+      const surrogateShift = 2 ** 16
+      charCode += surrogate * surrogateShift
     }
 
-    return charCode;
+    return charCode
   }
 }

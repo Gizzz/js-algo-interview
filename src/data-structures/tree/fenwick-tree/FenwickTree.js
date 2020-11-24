@@ -6,10 +6,10 @@ export default class FenwickTree {
    * @param  {number} arraySize
    */
   constructor(arraySize) {
-    this.arraySize = arraySize;
+    this.arraySize = arraySize
 
     // Fill tree array with zeros.
-    this.treeArray = Array(this.arraySize + 1).fill(0);
+    this.treeArray = Array(this.arraySize + 1).fill(0)
   }
 
   /**
@@ -21,14 +21,14 @@ export default class FenwickTree {
    */
   increase(position, value) {
     if (position < 1 || position > this.arraySize) {
-      throw new Error('Position is out of allowed range');
+      throw new Error('Position is out of allowed range')
     }
 
     for (let i = position; i <= this.arraySize; i += (i & -i)) {
-      this.treeArray[i] += value;
+      this.treeArray[i] += value
     }
 
-    return this;
+    return this
   }
 
   /**
@@ -39,16 +39,16 @@ export default class FenwickTree {
    */
   query(position) {
     if (position < 1 || position > this.arraySize) {
-      throw new Error('Position is out of allowed range');
+      throw new Error('Position is out of allowed range')
     }
 
-    let sum = 0;
+    let sum = 0
 
     for (let i = position; i > 0; i -= (i & -i)) {
-      sum += this.treeArray[i];
+      sum += this.treeArray[i]
     }
 
-    return sum;
+    return sum
   }
 
   /**
@@ -60,13 +60,13 @@ export default class FenwickTree {
    */
   queryRange(leftIndex, rightIndex) {
     if (leftIndex > rightIndex) {
-      throw new Error('Left index can not be greater than right one');
+      throw new Error('Left index can not be greater than right one')
     }
 
     if (leftIndex === 1) {
-      return this.query(rightIndex);
+      return this.query(rightIndex)
     }
 
-    return this.query(rightIndex) - this.query(leftIndex - 1);
+    return this.query(rightIndex) - this.query(leftIndex - 1)
   }
 }

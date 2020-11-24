@@ -2,7 +2,7 @@
  * Let circleRadius is the radius of circle.
  * circleRadius is also the side length of the inscribed hexagon
  */
-const circleRadius = 1;
+const circleRadius = 1
 
 /**
  * @param {number} sideLength
@@ -11,17 +11,17 @@ const circleRadius = 1;
  */
 function getNGonSideLength(sideLength, splitCounter) {
   if (splitCounter <= 0) {
-    return sideLength;
+    return sideLength
   }
 
-  const halfSide = sideLength / 2;
+  const halfSide = sideLength / 2
 
   // Liu Hui used the Gou Gu (Pythagorean theorem) theorem repetitively.
-  const perpendicular = Math.sqrt((circleRadius ** 2) - (halfSide ** 2));
-  const excessRadius = circleRadius - perpendicular;
-  const splitSideLength = Math.sqrt((excessRadius ** 2) + (halfSide ** 2));
+  const perpendicular = Math.sqrt((circleRadius ** 2) - (halfSide ** 2))
+  const excessRadius = circleRadius - perpendicular
+  const splitSideLength = Math.sqrt((excessRadius ** 2) + (halfSide ** 2))
 
-  return getNGonSideLength(splitSideLength, splitCounter - 1);
+  return getNGonSideLength(splitSideLength, splitCounter - 1)
 }
 
 /**
@@ -30,10 +30,10 @@ function getNGonSideLength(sideLength, splitCounter) {
  */
 function getNGonSideCount(splitCount) {
   // Liu Hui began with an inscribed hexagon (6-gon).
-  const hexagonSidesCount = 6;
+  const hexagonSidesCount = 6
 
   // On every split iteration we make N-gons: 6-gon, 12-gon, 24-gon, 48-gon and so on.
-  return hexagonSidesCount * (splitCount ? 2 ** splitCount : 1);
+  return hexagonSidesCount * (splitCount ? 2 ** splitCount : 1)
 }
 
 /**
@@ -44,11 +44,11 @@ function getNGonSideCount(splitCount) {
  * @return {number}
  */
 export default function liuHui(splitCount = 1) {
-  const nGonSideLength = getNGonSideLength(circleRadius, splitCount - 1);
-  const nGonSideCount = getNGonSideCount(splitCount - 1);
-  const nGonPerimeter = nGonSideLength * nGonSideCount;
-  const approximateCircleArea = (nGonPerimeter / 2) * circleRadius;
+  const nGonSideLength = getNGonSideLength(circleRadius, splitCount - 1)
+  const nGonSideCount = getNGonSideCount(splitCount - 1)
+  const nGonPerimeter = nGonSideLength * nGonSideCount
+  const approximateCircleArea = (nGonPerimeter / 2) * circleRadius
 
   // Return approximate value of pi.
-  return approximateCircleArea / (circleRadius ** 2);
+  return approximateCircleArea / (circleRadius ** 2)
 }

@@ -1,11 +1,11 @@
-const DEFAULT_BASE = 17;
+const DEFAULT_BASE = 17
 
 export default class SimplePolynomialHash {
   /**
    * @param {number} [base] - Base number that is used to create the polynomial.
    */
   constructor(base = DEFAULT_BASE) {
-    this.base = base;
+    this.base = base
   }
 
   /**
@@ -22,12 +22,12 @@ export default class SimplePolynomialHash {
    * @return {number}
    */
   hash(word) {
-    let hash = 0;
+    let hash = 0
     for (let charIndex = 0; charIndex < word.length; charIndex += 1) {
-      hash += word.charCodeAt(charIndex) * (this.base ** charIndex);
+      hash += word.charCodeAt(charIndex) * (this.base ** charIndex)
     }
 
-    return hash;
+    return hash
   }
 
   /**
@@ -49,15 +49,15 @@ export default class SimplePolynomialHash {
    * @return {number}
    */
   roll(prevHash, prevWord, newWord) {
-    let hash = prevHash;
+    let hash = prevHash
 
-    const prevValue = prevWord.charCodeAt(0);
-    const newValue = newWord.charCodeAt(newWord.length - 1);
+    const prevValue = prevWord.charCodeAt(0)
+    const newValue = newWord.charCodeAt(newWord.length - 1)
 
-    hash -= prevValue;
-    hash /= this.base;
-    hash += newValue * (this.base ** (newWord.length - 1));
+    hash -= prevValue
+    hash /= this.base
+    hash += newValue * (this.base ** (newWord.length - 1))
 
-    return hash;
+    return hash
   }
 }

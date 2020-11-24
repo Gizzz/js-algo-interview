@@ -1,4 +1,4 @@
-import Stack from '../../../data-structures/stack/Stack';
+import Stack from '../../../data-structures/stack/Stack'
 
 /**
  * @param {number} numberOfDiscs
@@ -16,9 +16,9 @@ function hanoiTowerRecursive({
 }) {
   if (numberOfDiscs === 1) {
     // Base case with just one disc.
-    moveCallback(fromPole.peek(), fromPole.toArray(), toPole.toArray());
-    const disc = fromPole.pop();
-    toPole.push(disc);
+    moveCallback(fromPole.peek(), fromPole.toArray(), toPole.toArray())
+    const disc = fromPole.pop()
+    toPole.push(disc)
   } else {
     // In case if there are more discs then move them recursively.
 
@@ -29,7 +29,7 @@ function hanoiTowerRecursive({
       withPole: toPole,
       toPole: withPole,
       moveCallback,
-    });
+    })
 
     // Move the disc that was exposed to its final destination.
     hanoiTowerRecursive({
@@ -38,7 +38,7 @@ function hanoiTowerRecursive({
       withPole,
       toPole,
       moveCallback,
-    });
+    })
 
     // Move temporary tower from auxiliary pole to its final destination.
     hanoiTowerRecursive({
@@ -47,7 +47,7 @@ function hanoiTowerRecursive({
       withPole: fromPole,
       toPole,
       moveCallback,
-    });
+    })
   }
 }
 
@@ -71,7 +71,7 @@ export default function hanoiTower({
 
   // Let's create the discs and put them to the fromPole.
   for (let discSize = numberOfDiscs; discSize > 0; discSize -= 1) {
-    fromPole.push(discSize);
+    fromPole.push(discSize)
   }
 
   hanoiTowerRecursive({
@@ -80,5 +80,5 @@ export default function hanoiTower({
     withPole,
     toPole,
     moveCallback,
-  });
+  })
 }

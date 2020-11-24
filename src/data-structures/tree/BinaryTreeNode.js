@@ -1,21 +1,21 @@
-import Comparator from '../../utils/comparator/Comparator';
-import HashTable from '../hash-table/HashTable';
+import Comparator from '../../utils/comparator/Comparator'
+import HashTable from '../hash-table/HashTable'
 
 export default class BinaryTreeNode {
   /**
    * @param {*} [value] - node value.
    */
   constructor(value = null) {
-    this.left = null;
-    this.right = null;
-    this.parent = null;
-    this.value = value;
+    this.left = null
+    this.right = null
+    this.parent = null
+    this.value = value
 
     // Any node related meta information may be stored here.
-    this.meta = new HashTable();
+    this.meta = new HashTable()
 
     // This comparator is used to compare binary tree nodes with each other.
-    this.nodeComparator = new Comparator();
+    this.nodeComparator = new Comparator()
   }
 
   /**
@@ -23,10 +23,10 @@ export default class BinaryTreeNode {
    */
   get leftHeight() {
     if (!this.left) {
-      return 0;
+      return 0
     }
 
-    return this.left.height + 1;
+    return this.left.height + 1
   }
 
   /**
@@ -34,24 +34,24 @@ export default class BinaryTreeNode {
    */
   get rightHeight() {
     if (!this.right) {
-      return 0;
+      return 0
     }
 
-    return this.right.height + 1;
+    return this.right.height + 1
   }
 
   /**
    * @return {number}
    */
   get height() {
-    return Math.max(this.leftHeight, this.rightHeight);
+    return Math.max(this.leftHeight, this.rightHeight)
   }
 
   /**
    * @return {number}
    */
   get balanceFactor() {
-    return this.leftHeight - this.rightHeight;
+    return this.leftHeight - this.rightHeight
   }
 
   /**
@@ -61,28 +61,28 @@ export default class BinaryTreeNode {
   get uncle() {
     // Check if current node has parent.
     if (!this.parent) {
-      return undefined;
+      return undefined
     }
 
     // Check if current node has grand-parent.
     if (!this.parent.parent) {
-      return undefined;
+      return undefined
     }
 
     // Check if grand-parent has two children.
     if (!this.parent.parent.left || !this.parent.parent.right) {
-      return undefined;
+      return undefined
     }
 
     // So for now we know that current node has grand-parent and this
     // grand-parent has two children. Let's find out who is the uncle.
     if (this.nodeComparator.equal(this.parent, this.parent.parent.left)) {
       // Right one is an uncle.
-      return this.parent.parent.right;
+      return this.parent.parent.right
     }
 
     // Left one is an uncle.
-    return this.parent.parent.left;
+    return this.parent.parent.left
   }
 
   /**
@@ -90,9 +90,9 @@ export default class BinaryTreeNode {
    * @return {BinaryTreeNode}
    */
   setValue(value) {
-    this.value = value;
+    this.value = value
 
-    return this;
+    return this
   }
 
   /**
@@ -102,18 +102,18 @@ export default class BinaryTreeNode {
   setLeft(node) {
     // Reset parent for left node since it is going to be detached.
     if (this.left) {
-      this.left.parent = null;
+      this.left.parent = null
     }
 
     // Attach new node to the left.
-    this.left = node;
+    this.left = node
 
     // Make current node to be a parent for new left one.
     if (this.left) {
-      this.left.parent = this;
+      this.left.parent = this
     }
 
-    return this;
+    return this
   }
 
   /**
@@ -123,18 +123,18 @@ export default class BinaryTreeNode {
   setRight(node) {
     // Reset parent for right node since it is going to be detached.
     if (this.right) {
-      this.right.parent = null;
+      this.right.parent = null
     }
 
     // Attach new node to the right.
-    this.right = node;
+    this.right = node
 
     // Make current node to be a parent for new right one.
     if (node) {
-      this.right.parent = this;
+      this.right.parent = this
     }
 
-    return this;
+    return this
   }
 
   /**
@@ -143,16 +143,16 @@ export default class BinaryTreeNode {
    */
   removeChild(nodeToRemove) {
     if (this.left && this.nodeComparator.equal(this.left, nodeToRemove)) {
-      this.left = null;
-      return true;
+      this.left = null
+      return true
     }
 
     if (this.right && this.nodeComparator.equal(this.right, nodeToRemove)) {
-      this.right = null;
-      return true;
+      this.right = null
+      return true
     }
 
-    return false;
+    return false
   }
 
   /**
@@ -162,20 +162,20 @@ export default class BinaryTreeNode {
    */
   replaceChild(nodeToReplace, replacementNode) {
     if (!nodeToReplace || !replacementNode) {
-      return false;
+      return false
     }
 
     if (this.left && this.nodeComparator.equal(this.left, nodeToReplace)) {
-      this.left = replacementNode;
-      return true;
+      this.left = replacementNode
+      return true
     }
 
     if (this.right && this.nodeComparator.equal(this.right, nodeToReplace)) {
-      this.right = replacementNode;
-      return true;
+      this.right = replacementNode
+      return true
     }
 
-    return false;
+    return false
   }
 
   /**
@@ -183,37 +183,37 @@ export default class BinaryTreeNode {
    * @param {BinaryTreeNode} targetNode
    */
   static copyNode(sourceNode, targetNode) {
-    targetNode.setValue(sourceNode.value);
-    targetNode.setLeft(sourceNode.left);
-    targetNode.setRight(sourceNode.right);
+    targetNode.setValue(sourceNode.value)
+    targetNode.setLeft(sourceNode.left)
+    targetNode.setRight(sourceNode.right)
   }
 
   /**
    * @return {*[]}
    */
   traverseInOrder() {
-    let traverse = [];
+    let traverse = []
 
     // Add left node.
     if (this.left) {
-      traverse = traverse.concat(this.left.traverseInOrder());
+      traverse = traverse.concat(this.left.traverseInOrder())
     }
 
     // Add root.
-    traverse.push(this.value);
+    traverse.push(this.value)
 
     // Add right node.
     if (this.right) {
-      traverse = traverse.concat(this.right.traverseInOrder());
+      traverse = traverse.concat(this.right.traverseInOrder())
     }
 
-    return traverse;
+    return traverse
   }
 
   /**
    * @return {string}
    */
   toString() {
-    return this.traverseInOrder().toString();
+    return this.traverseInOrder().toString()
   }
 }

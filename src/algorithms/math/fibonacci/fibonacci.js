@@ -5,25 +5,25 @@
  * @return {number[]}
  */
 export default function fibonacci(n) {
-  const fibSequence = [1];
+  const fibSequence = [1]
 
-  let currentValue = 1;
-  let previousValue = 0;
+  let currentValue = 1
+  let previousValue = 0
 
   if (n === 1) {
-    return fibSequence;
+    return fibSequence
   }
 
-  let iterationsCounter = n - 1;
+  let iterationsCounter = n - 1
 
   while (iterationsCounter) {
-    currentValue += previousValue;
-    previousValue = currentValue - previousValue;
+    currentValue += previousValue
+    previousValue = currentValue - previousValue
 
-    fibSequence.push(currentValue);
+    fibSequence.push(currentValue)
 
-    iterationsCounter -= 1;
+    iterationsCounter -= 1
   }
 
-  return fibSequence;
+  return fibSequence
 }

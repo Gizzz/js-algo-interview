@@ -3,5 +3,5 @@
  * @return {boolean}
  */
 export default function isEven(number) {
-  return (number & 1) === 0;
+  return (number & 1) === 0
 }

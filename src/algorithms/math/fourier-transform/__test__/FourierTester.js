@@ -1,4 +1,4 @@
-import ComplexNumber from '../../complex-number/ComplexNumber';
+import ComplexNumber from '../../complex-number/ComplexNumber'
 
 export const fourierTestCases = [
   {
@@ -233,7 +233,7 @@ export const fourierTestCases = [
       },
     ],
   },
-];
+]
 
 export default class FourierTester {
   /**
@@ -241,29 +241,29 @@ export default class FourierTester {
    */
   static testDirectFourierTransform(fourierTransform) {
     fourierTestCases.forEach((testCase) => {
-      const { input, output: expectedOutput } = testCase;
+      const { input, output: expectedOutput } = testCase
 
       // Try to split input signal into sequence of pure sinusoids.
-      const formattedInput = input.map((sample) => sample.amplitude);
-      const currentOutput = fourierTransform(formattedInput);
+      const formattedInput = input.map((sample) => sample.amplitude)
+      const currentOutput = fourierTransform(formattedInput)
 
       // Check the signal has been split into proper amount of sub-signals.
-      expect(currentOutput.length).toBeGreaterThanOrEqual(formattedInput.length);
+      expect(currentOutput.length).toBeGreaterThanOrEqual(formattedInput.length)
 
       // Now go through all the signals and check their frequency, amplitude and phase.
       expectedOutput.forEach((expectedSignal, frequency) => {
         // Get template data we want to test against.
-        const currentSignal = currentOutput[frequency];
-        const currentPolarSignal = currentSignal.getPolarForm(false);
+        const currentSignal = currentOutput[frequency]
+        const currentPolarSignal = currentSignal.getPolarForm(false)
 
         // Check all signal parameters.
-        expect(frequency).toBe(expectedSignal.frequency);
-        expect(currentSignal.re).toBeCloseTo(expectedSignal.re, 4);
-        expect(currentSignal.im).toBeCloseTo(expectedSignal.im, 4);
-        expect(currentPolarSignal.phase).toBeCloseTo(expectedSignal.phase, 4);
-        expect(currentPolarSignal.radius).toBeCloseTo(expectedSignal.amplitude, 4);
-      });
-    });
+        expect(frequency).toBe(expectedSignal.frequency)
+        expect(currentSignal.re).toBeCloseTo(expectedSignal.re, 4)
+        expect(currentSignal.im).toBeCloseTo(expectedSignal.im, 4)
+        expect(currentPolarSignal.phase).toBeCloseTo(expectedSignal.phase, 4)
+        expect(currentPolarSignal.radius).toBeCloseTo(expectedSignal.amplitude, 4)
+      })
+    })
   }
 
   /**
@@ -271,25 +271,25 @@ export default class FourierTester {
    */
   static testInverseFourierTransform(inverseFourierTransform) {
     fourierTestCases.forEach((testCase) => {
-      const { input: expectedOutput, output: inputFrequencies } = testCase;
+      const { input: expectedOutput, output: inputFrequencies } = testCase
 
       // Try to join frequencies into time signal.
       const formattedInput = inputFrequencies.map((frequency) => {
-        return new ComplexNumber({ re: frequency.re, im: frequency.im });
-      });
-      const currentOutput = inverseFourierTransform(formattedInput);
+        return new ComplexNumber({ re: frequency.re, im: frequency.im })
+      })
+      const currentOutput = inverseFourierTransform(formattedInput)
 
       // Check the signal has been combined of proper amount of time samples.
-      expect(currentOutput.length).toBeLessThanOrEqual(formattedInput.length);
+      expect(currentOutput.length).toBeLessThanOrEqual(formattedInput.length)
 
       // Now go through all the amplitudes and check their values.
       expectedOutput.forEach((expectedAmplitudes, timer) => {
         // Get template data we want to test against.
-        const currentAmplitude = currentOutput[timer];
+        const currentAmplitude = currentOutput[timer]
 
         // Check if current amplitude is close enough to the calculated one.
-        expect(currentAmplitude).toBeCloseTo(expectedAmplitudes.amplitude, 4);
-      });
-    });
+        expect(currentAmplitude).toBeCloseTo(expectedAmplitudes.amplitude, 4)
+      })
+    })
   }
 }

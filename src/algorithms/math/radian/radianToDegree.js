@@ -3,5 +3,5 @@
  * @return {number}
  */
 export default function radianToDegree(radian) {
-  return radian * (180 / Math.PI);
+  return radian * (180 / Math.PI)
 }

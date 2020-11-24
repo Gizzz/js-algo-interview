@@ -8,8 +8,8 @@
 export default function dpUniquePaths(width, height) {
   // Init board.
   const board = Array(height).fill(null).map(() => {
-    return Array(width).fill(0);
-  });
+    return Array(width).fill(0)
+  })
 
   // Base case.
   // There is only one way of getting to board[0][any] and
@@ -19,7 +19,7 @@ export default function dpUniquePaths(width, height) {
   for (let rowIndex = 0; rowIndex < height; rowIndex += 1) {
     for (let columnIndex = 0; columnIndex < width; columnIndex += 1) {
       if (rowIndex === 0 || columnIndex === 0) {
-        board[rowIndex][columnIndex] = 1;
+        board[rowIndex][columnIndex] = 1
       }
     }
   }
@@ -30,11 +30,11 @@ export default function dpUniquePaths(width, height) {
   // current one and to the cell to the left of current one.
   for (let rowIndex = 1; rowIndex < height; rowIndex += 1) {
     for (let columnIndex = 1; columnIndex < width; columnIndex += 1) {
-      const uniquesFromTop = board[rowIndex - 1][columnIndex];
-      const uniquesFromLeft = board[rowIndex][columnIndex - 1];
-      board[rowIndex][columnIndex] = uniquesFromTop + uniquesFromLeft;
+      const uniquesFromTop = board[rowIndex - 1][columnIndex]
+      const uniquesFromLeft = board[rowIndex][columnIndex - 1]
+      board[rowIndex][columnIndex] = uniquesFromTop + uniquesFromLeft
     }
   }
 
-  return board[height - 1][width - 1];
+  return board[height - 1][width - 1]
 }

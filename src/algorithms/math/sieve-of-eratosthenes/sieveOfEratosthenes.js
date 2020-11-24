@@ -3,15 +3,15 @@
  * @return {number[]}
  */
 export default function sieveOfEratosthenes(maxNumber) {
-  const isPrime = new Array(maxNumber + 1).fill(true);
-  isPrime[0] = false;
-  isPrime[1] = false;
+  const isPrime = new Array(maxNumber + 1).fill(true)
+  isPrime[0] = false
+  isPrime[1] = false
 
-  const primes = [];
+  const primes = []
 
   for (let number = 2; number <= maxNumber; number += 1) {
     if (isPrime[number] === true) {
-      primes.push(number);
+      primes.push(number)
 
       /*
        * Optimisation.
@@ -23,14 +23,14 @@ export default function sieveOfEratosthenes(maxNumber) {
        * In that case, it can be changed to:
        * let nextNumber = 2 * number;
        */
-      let nextNumber = number * number;
+      let nextNumber = number * number
 
       while (nextNumber <= maxNumber) {
-        isPrime[nextNumber] = false;
-        nextNumber += number;
+        isPrime[nextNumber] = false
+        nextNumber += number
       }
     }
   }
 
-  return primes;
+  return primes
 }
