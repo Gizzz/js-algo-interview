@@ -1,4 +1,4 @@
-import Queue from '../../../data-structures/queue/Queue';
+import Queue from '../../../data-structures/queue/Queue'
 
 /**
  * @typedef {Object} Callbacks
@@ -17,28 +17,28 @@ import Queue from '../../../data-structures/queue/Queue';
  * @returns {Callbacks}
  */
 function initCallbacks(callbacks = {}) {
-  const initiatedCallback = callbacks;
+  const initiatedCallback = callbacks
 
-  const stubCallback = () => {};
+  const stubCallback = () => {}
 
   const allowTraversalCallback = (
     () => {
-      const seen = {};
+      const seen = {}
       return ({ nextVertex }) => {
         if (!seen[nextVertex.getKey()]) {
-          seen[nextVertex.getKey()] = true;
-          return true;
+          seen[nextVertex.getKey()] = true
+          return true
         }
-        return false;
-      };
+        return false
+      }
     }
-  )();
+  )()
 
-  initiatedCallback.allowTraversal = callbacks.allowTraversal || allowTraversalCallback;
-  initiatedCallback.enterVertex = callbacks.enterVertex || stubCallback;
-  initiatedCallback.leaveVertex = callbacks.leaveVertex || stubCallback;
+  initiatedCallback.allowTraversal = callbacks.allowTraversal || allowTraversalCallback
+  initiatedCallback.enterVertex = callbacks.enterVertex || stubCallback
+  initiatedCallback.leaveVertex = callbacks.leaveVertex || stubCallback
 
-  return initiatedCallback;
+  return initiatedCallback
 }
 
 /**
@@ -47,29 +47,29 @@ function initCallbacks(callbacks = {}) {
  * @param {Callbacks} [originalCallbacks]
  */
 export default function breadthFirstSearch(graph, startVertex, originalCallbacks) {
-  const callbacks = initCallbacks(originalCallbacks);
-  const vertexQueue = new Queue();
+  const callbacks = initCallbacks(originalCallbacks)
+  const vertexQueue = new Queue()
 
   // Do initial queue setup.
-  vertexQueue.enqueue(startVertex);
+  vertexQueue.enqueue(startVertex)
 
-  let previousVertex = null;
+  let previousVertex = null
 
   // Traverse all vertices from the queue.
   while (!vertexQueue.isEmpty()) {
-    const currentVertex = vertexQueue.dequeue();
-    callbacks.enterVertex({ currentVertex, previousVertex });
+    const currentVertex = vertexQueue.dequeue()
+    callbacks.enterVertex({ currentVertex, previousVertex })
 
     // Add all neighbors to the queue for future traversals.
     graph.getNeighbors(currentVertex).forEach((nextVertex) => {
       if (callbacks.allowTraversal({ previousVertex, currentVertex, nextVertex })) {
-        vertexQueue.enqueue(nextVertex);
+        vertexQueue.enqueue(nextVertex)
       }
-    });
+    })
 
-    callbacks.leaveVertex({ currentVertex, previousVertex });
+    callbacks.leaveVertex({ currentVertex, previousVertex })
 
     // Memorize current vertex before next loop.
-    previousVertex = currentVertex;
+    previousVertex = currentVertex
   }
 }

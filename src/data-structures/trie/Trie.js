@@ -1,11 +1,11 @@
-import TrieNode from './TrieNode';
+import TrieNode from './TrieNode'
 
 // Character that we will use for trie tree root.
-const HEAD_CHARACTER = '*';
+const HEAD_CHARACTER = '*'
 
 export default class Trie {
   constructor() {
-    this.head = new TrieNode(HEAD_CHARACTER);
+    this.head = new TrieNode(HEAD_CHARACTER)
   }
 
   /**
@@ -13,15 +13,15 @@ export default class Trie {
    * @return {Trie}
    */
   addWord(word) {
-    const characters = Array.from(word);
-    let currentNode = this.head;
+    const characters = Array.from(word)
+    let currentNode = this.head
 
     for (let charIndex = 0; charIndex < characters.length; charIndex += 1) {
-      const isComplete = charIndex === characters.length - 1;
-      currentNode = currentNode.addChild(characters[charIndex], isComplete);
+      const isComplete = charIndex === characters.length - 1
+      currentNode = currentNode.addChild(characters[charIndex], isComplete)
     }
 
-    return this;
+    return this
   }
 
   /**
@@ -32,35 +32,35 @@ export default class Trie {
     const depthFirstDelete = (currentNode, charIndex = 0) => {
       if (charIndex >= word.length) {
         // Return if we're trying to delete the character that is out of word's scope.
-        return;
+        return
       }
 
-      const character = word[charIndex];
-      const nextNode = currentNode.getChild(character);
+      const character = word[charIndex]
+      const nextNode = currentNode.getChild(character)
 
       if (nextNode == null) {
         // Return if we're trying to delete a word that has not been added to the Trie.
-        return;
+        return
       }
 
       // Go deeper.
-      depthFirstDelete(nextNode, charIndex + 1);
+      depthFirstDelete(nextNode, charIndex + 1)
 
       // Since we're going to delete a word let's un-mark its last character isCompleteWord flag.
       if (charIndex === (word.length - 1)) {
-        nextNode.isCompleteWord = false;
+        nextNode.isCompleteWord = false
       }
 
       // childNode is deleted only if:
       // - childNode has NO children
       // - childNode.isCompleteWord === false
-      currentNode.removeChild(character);
-    };
+      currentNode.removeChild(character)
+    }
 
     // Start depth-first deletion from the head node.
-    depthFirstDelete(this.head);
+    depthFirstDelete(this.head)
 
-    return this;
+    return this
   }
 
   /**
@@ -68,13 +68,13 @@ export default class Trie {
    * @return {string[]}
    */
   suggestNextCharacters(word) {
-    const lastCharacter = this.getLastCharacterNode(word);
+    const lastCharacter = this.getLastCharacterNode(word)
 
     if (!lastCharacter) {
-      return null;
+      return null
     }
 
-    return lastCharacter.suggestChildren();
+    return lastCharacter.suggestChildren()
   }
 
   /**
@@ -84,9 +84,9 @@ export default class Trie {
    * @return {boolean}
    */
   doesWordExist(word) {
-    const lastCharacter = this.getLastCharacterNode(word);
+    const lastCharacter = this.getLastCharacterNode(word)
 
-    return !!lastCharacter && lastCharacter.isCompleteWord;
+    return !!lastCharacter && lastCharacter.isCompleteWord
   }
 
   /**
@@ -94,17 +94,17 @@ export default class Trie {
    * @return {TrieNode}
    */
   getLastCharacterNode(word) {
-    const characters = Array.from(word);
-    let currentNode = this.head;
+    const characters = Array.from(word)
+    let currentNode = this.head
 
     for (let charIndex = 0; charIndex < characters.length; charIndex += 1) {
       if (!currentNode.hasChild(characters[charIndex])) {
-        return null;
+        return null
       }
 
-      currentNode = currentNode.getChild(characters[charIndex]);
+      currentNode = currentNode.getChild(characters[charIndex])
     }
 
-    return currentNode;
+    return currentNode
   }
 }

@@ -3,7 +3,7 @@
  * @return {*[][]}
  */
 export default function squareMatrixRotation(originalMatrix) {
-  const matrix = originalMatrix.slice();
+  const matrix = originalMatrix.slice()
 
   // Do top-right/bottom-left diagonal reflection of the matrix.
   for (let rowIndex = 0; rowIndex < matrix.length; rowIndex += 1) {
@@ -15,7 +15,7 @@ export default function squareMatrixRotation(originalMatrix) {
       ] = [
         matrix[rowIndex][columnIndex],
         matrix[columnIndex][rowIndex],
-      ];
+      ]
     }
   }
 
@@ -29,9 +29,9 @@ export default function squareMatrixRotation(originalMatrix) {
       ] = [
         matrix[rowIndex][columnIndex],
         matrix[rowIndex][matrix.length - columnIndex - 1],
-      ];
+      ]
     }
   }
 
-  return matrix;
+  return matrix
 }

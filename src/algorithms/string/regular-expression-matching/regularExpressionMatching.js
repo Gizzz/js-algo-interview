@@ -1,5 +1,5 @@
-const ZERO_OR_MORE_CHARS = '*';
-const ANY_CHAR = '.';
+const ZERO_OR_MORE_CHARS = '*'
+const ANY_CHAR = '.'
 
 /**
  * Dynamic programming approach.
@@ -25,12 +25,12 @@ export default function regularExpressionMatching(string, pattern) {
     * b - - - - - -
    */
   const matchMatrix = Array(string.length + 1).fill(null).map(() => {
-    return Array(pattern.length + 1).fill(null);
-  });
+    return Array(pattern.length + 1).fill(null)
+  })
 
   // Let's fill the top-left cell with true. This would mean that empty
   // string '' matches to empty pattern ''.
-  matchMatrix[0][0] = true;
+  matchMatrix[0][0] = true
 
   // Let's fill the first row of the matrix with false. That would mean that
   // empty string can't match any non-empty pattern.
@@ -41,12 +41,12 @@ export default function regularExpressionMatching(string, pattern) {
   //
   // The one exception here is patterns like a*b* that matches the empty string.
   for (let columnIndex = 1; columnIndex <= pattern.length; columnIndex += 1) {
-    const patternIndex = columnIndex - 1;
+    const patternIndex = columnIndex - 1
 
     if (pattern[patternIndex] === ZERO_OR_MORE_CHARS) {
-      matchMatrix[0][columnIndex] = matchMatrix[0][columnIndex - 2];
+      matchMatrix[0][columnIndex] = matchMatrix[0][columnIndex - 2]
     } else {
-      matchMatrix[0][columnIndex] = false;
+      matchMatrix[0][columnIndex] = false
     }
   }
 
@@ -57,7 +57,7 @@ export default function regularExpressionMatching(string, pattern) {
   // string: 'ab'
   // pattern: ''
   for (let rowIndex = 1; rowIndex <= string.length; rowIndex += 1) {
-    matchMatrix[rowIndex][0] = false;
+    matchMatrix[rowIndex][0] = false
   }
 
   // Not let's go through every letter of the pattern and every letter of
@@ -65,8 +65,8 @@ export default function regularExpressionMatching(string, pattern) {
   for (let rowIndex = 1; rowIndex <= string.length; rowIndex += 1) {
     for (let columnIndex = 1; columnIndex <= pattern.length; columnIndex += 1) {
       // Take into account that fact that matrix contain one extra column and row.
-      const stringIndex = rowIndex - 1;
-      const patternIndex = columnIndex - 1;
+      const stringIndex = rowIndex - 1
+      const patternIndex = columnIndex - 1
 
       if (pattern[patternIndex] === ZERO_OR_MORE_CHARS) {
         /*
@@ -85,7 +85,7 @@ export default function regularExpressionMatching(string, pattern) {
          * one position up in the same row.
          */
         if (matchMatrix[rowIndex][columnIndex - 2] === true) {
-          matchMatrix[rowIndex][columnIndex] = true;
+          matchMatrix[rowIndex][columnIndex] = true
         } else if (
           (
             pattern[patternIndex - 1] === string[stringIndex]
@@ -93,9 +93,9 @@ export default function regularExpressionMatching(string, pattern) {
           )
           && matchMatrix[rowIndex - 1][columnIndex] === true
         ) {
-          matchMatrix[rowIndex][columnIndex] = true;
+          matchMatrix[rowIndex][columnIndex] = true
         } else {
-          matchMatrix[rowIndex][columnIndex] = false;
+          matchMatrix[rowIndex][columnIndex] = false
         }
       } else if (
         pattern[patternIndex] === string[stringIndex]
@@ -114,7 +114,7 @@ export default function regularExpressionMatching(string, pattern) {
          * a 1 -
          * b - 1
          */
-        matchMatrix[rowIndex][columnIndex] = matchMatrix[rowIndex - 1][columnIndex - 1];
+        matchMatrix[rowIndex][columnIndex] = matchMatrix[rowIndex - 1][columnIndex - 1]
       } else {
         /*
          * In case if pattern char and string char are different we may
@@ -126,10 +126,10 @@ export default function regularExpressionMatching(string, pattern) {
          * a - -
          * c - 0
          */
-        matchMatrix[rowIndex][columnIndex] = false;
+        matchMatrix[rowIndex][columnIndex] = false
       }
     }
   }
 
-  return matchMatrix[string.length][pattern.length];
+  return matchMatrix[string.length][pattern.length]
 }

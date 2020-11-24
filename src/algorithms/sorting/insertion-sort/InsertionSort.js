@@ -1,15 +1,15 @@
-import Sort from '../Sort';
+import Sort from '../Sort'
 
 export default class InsertionSort extends Sort {
   sort(originalArray) {
-    const array = [...originalArray];
+    const array = [...originalArray]
 
     // Go through all array elements...
     for (let i = 0; i < array.length; i += 1) {
-      let currentIndex = i;
+      let currentIndex = i
 
       // Call visiting callback.
-      this.callbacks.visitingCallback(array[i]);
+      this.callbacks.visitingCallback(array[i])
 
       // Go and check if previous elements and greater then current one.
       // If this is the case then swap that elements.
@@ -27,13 +27,13 @@ export default class InsertionSort extends Sort {
         ] = [
           array[currentIndex],
           array[currentIndex - 1],
-        ];
+        ]
 
         // Shift current index left.
-        currentIndex -= 1;
+        currentIndex -= 1
       }
     }
 
-    return array;
+    return array
   }
 }

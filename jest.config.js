@@ -25,4 +25,4 @@ module.exports = {
   // It is reflected in properties such as location.href.
   // @see: https://github.com/facebook/jest/issues/6769
   testURL: 'http://localhost/',
-};
+}

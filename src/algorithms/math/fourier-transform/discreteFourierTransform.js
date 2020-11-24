@@ -1,6 +1,6 @@
-import ComplexNumber from '../complex-number/ComplexNumber';
+import ComplexNumber from '../complex-number/ComplexNumber'
 
-const CLOSE_TO_ZERO_THRESHOLD = 1e-10;
+const CLOSE_TO_ZERO_THRESHOLD = 1e-10
 
 /**
  * Discrete Fourier Transform (DFT): time to frequencies.
@@ -20,50 +20,50 @@ const CLOSE_TO_ZERO_THRESHOLD = 1e-10;
  * @see https://betterexplained.com/articles/an-interactive-guide-to-the-fourier-transform/
  */
 export default function dft(inputAmplitudes, zeroThreshold = CLOSE_TO_ZERO_THRESHOLD) {
-  const N = inputAmplitudes.length;
-  const signals = [];
+  const N = inputAmplitudes.length
+  const signals = []
 
   // Go through every discrete frequency.
   for (let frequency = 0; frequency < N; frequency += 1) {
     // Compound signal at current frequency that will ultimately
     // take part in forming input amplitudes.
-    let frequencySignal = new ComplexNumber();
+    let frequencySignal = new ComplexNumber()
 
     // Go through every discrete point in time.
     for (let timer = 0; timer < N; timer += 1) {
-      const currentAmplitude = inputAmplitudes[timer];
+      const currentAmplitude = inputAmplitudes[timer]
 
       // Calculate rotation angle.
-      const rotationAngle = -1 * (2 * Math.PI) * frequency * (timer / N);
+      const rotationAngle = -1 * (2 * Math.PI) * frequency * (timer / N)
 
       // Remember that e^ix = cos(x) + i * sin(x);
       const dataPointContribution = new ComplexNumber({
         re: Math.cos(rotationAngle),
         im: Math.sin(rotationAngle),
-      }).multiply(currentAmplitude);
+      }).multiply(currentAmplitude)
 
       // Add this data point's contribution.
-      frequencySignal = frequencySignal.add(dataPointContribution);
+      frequencySignal = frequencySignal.add(dataPointContribution)
     }
 
     // Close to zero? You're zero.
     if (Math.abs(frequencySignal.re) < zeroThreshold) {
-      frequencySignal.re = 0;
+      frequencySignal.re = 0
     }
 
     if (Math.abs(frequencySignal.im) < zeroThreshold) {
-      frequencySignal.im = 0;
+      frequencySignal.im = 0
     }
 
     // Average contribution at this frequency.
     // The 1/N factor is usually moved to the reverse transform (going from frequencies
     // back to time). This is allowed, though it would be nice to have 1/N in the forward
     // transform since it gives the actual sizes for the time spikes.
-    frequencySignal = frequencySignal.divide(N);
+    frequencySignal = frequencySignal.divide(N)
 
     // Add current frequency signal to the list of compound signals.
-    signals[frequency] = frequencySignal;
+    signals[frequency] = frequencySignal
   }
 
-  return signals;
+  return signals
 }

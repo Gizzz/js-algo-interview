@@ -5,7 +5,7 @@
 export default function isPowerOfTwoBitwise(number) {
   // 1 (2^0) is the smallest power of two.
   if (number < 1) {
-    return false;
+    return false
   }
 
   /*
@@ -22,5 +22,5 @@ export default function isPowerOfTwoBitwise(number) {
    * So after checking that the number is greater than zero, we can use a clever little bit
    * hack to test that one and only one bit is set.
    */
-  return (number & (number - 1)) === 0;
+  return (number & (number - 1)) === 0
 }

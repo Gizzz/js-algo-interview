@@ -1,5 +1,5 @@
 // Create alphabet array: ['a', 'b', 'c', ..., 'z'].
-const englishAlphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const englishAlphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
 /**
  * Generates a cipher map out of the alphabet.
@@ -12,18 +12,18 @@ const englishAlphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const getCipherMap = (alphabet, shift) => {
   return alphabet
     .reduce((charsMap, currentChar, charIndex) => {
-      const charsMapClone = { ...charsMap };
+      const charsMapClone = { ...charsMap }
       // Making the shift to be cyclic (i.e. with a shift of 1 - 'z' would be mapped to 'a').
-      let encryptedCharIndex = (charIndex + shift) % alphabet.length;
+      let encryptedCharIndex = (charIndex + shift) % alphabet.length
       // Support negative shifts for creating a map for decryption
       // (i.e. with shift -1 - 'a' would be mapped to 'z').
       if (encryptedCharIndex < 0) {
-        encryptedCharIndex += alphabet.length;
+        encryptedCharIndex += alphabet.length
       }
-      charsMapClone[currentChar] = alphabet[encryptedCharIndex];
-      return charsMapClone;
-    }, {});
-};
+      charsMapClone[currentChar] = alphabet[encryptedCharIndex]
+      return charsMapClone
+    }, {})
+}
 
 /**
  * @param {string} str
@@ -33,13 +33,13 @@ const getCipherMap = (alphabet, shift) => {
  */
 export const caesarCipherEncrypt = (str, shift, alphabet = englishAlphabet) => {
   // Create a cipher map:
-  const cipherMap = getCipherMap(alphabet, shift);
+  const cipherMap = getCipherMap(alphabet, shift)
   return str
     .toLowerCase()
     .split('')
     .map((char) => cipherMap[char] || char)
-    .join('');
-};
+    .join('')
+}
 
 /**
  * @param {string} str
@@ -49,10 +49,10 @@ export const caesarCipherEncrypt = (str, shift, alphabet = englishAlphabet) => {
  */
 export const caesarCipherDecrypt = (str, shift, alphabet = englishAlphabet) => {
   // Create a cipher map:
-  const cipherMap = getCipherMap(alphabet, -shift);
+  const cipherMap = getCipherMap(alphabet, -shift)
   return str
     .toLowerCase()
     .split('')
     .map((char) => cipherMap[char] || char)
-    .join('');
-};
+    .join('')
+}

@@ -7,8 +7,8 @@ export default class QueenPosition {
    * @param {number} columnIndex
    */
   constructor(rowIndex, columnIndex) {
-    this.rowIndex = rowIndex;
-    this.columnIndex = columnIndex;
+    this.rowIndex = rowIndex
+    this.columnIndex = columnIndex
   }
 
   /**
@@ -19,7 +19,7 @@ export default class QueenPosition {
     // rowIndex and columnIndex. This fact may be used to quickly check if two
     // positions (queens) are on the same left diagonal.
     // @see https://youtu.be/xouin83ebxE?t=1m59s
-    return this.rowIndex - this.columnIndex;
+    return this.rowIndex - this.columnIndex
   }
 
   /**
@@ -30,10 +30,10 @@ export default class QueenPosition {
     // sum of rowIndex and columnIndex. This fact may be used to quickly
     // check if two positions (queens) are on the same right diagonal.
     // @see https://youtu.be/xouin83ebxE?t=1m59s
-    return this.rowIndex + this.columnIndex;
+    return this.rowIndex + this.columnIndex
   }
 
   toString() {
-    return `${this.rowIndex},${this.columnIndex}`;
+    return `${this.rowIndex},${this.columnIndex}`
   }
 }

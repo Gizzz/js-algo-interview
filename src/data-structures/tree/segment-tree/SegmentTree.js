@@ -1,4 +1,4 @@
-import isPowerOfTwo from '../../../algorithms/math/is-power-of-two/isPowerOfTwo';
+import isPowerOfTwo from '../../../algorithms/math/is-power-of-two/isPowerOfTwo'
 
 export default class SegmentTree {
   /**
@@ -7,14 +7,14 @@ export default class SegmentTree {
    * @param {number} operationFallback - operation fallback value (i.e. 0 for sum, Infinity for min)
    */
   constructor(inputArray, operation, operationFallback) {
-    this.inputArray = inputArray;
-    this.operation = operation;
-    this.operationFallback = operationFallback;
+    this.inputArray = inputArray
+    this.operation = operation
+    this.operationFallback = operationFallback
 
     // Init array representation of segment tree.
-    this.segmentTree = this.initSegmentTree(this.inputArray);
+    this.segmentTree = this.initSegmentTree(this.inputArray)
 
-    this.buildSegmentTree();
+    this.buildSegmentTree()
   }
 
   /**
@@ -22,34 +22,34 @@ export default class SegmentTree {
    * @return {number[]}
    */
   initSegmentTree(inputArray) {
-    let segmentTreeArrayLength;
-    const inputArrayLength = inputArray.length;
+    let segmentTreeArrayLength
+    const inputArrayLength = inputArray.length
 
     if (isPowerOfTwo(inputArrayLength)) {
       // If original array length is a power of two.
-      segmentTreeArrayLength = (2 * inputArrayLength) - 1;
+      segmentTreeArrayLength = (2 * inputArrayLength) - 1
     } else {
       // If original array length is not a power of two then we need to find
       // next number that is a power of two and use it to calculate
       // tree array size. This is happens because we need to fill empty children
       // in perfect binary tree with nulls.And those nulls need extra space.
-      const currentPower = Math.floor(Math.log2(inputArrayLength));
-      const nextPower = currentPower + 1;
-      const nextPowerOfTwoNumber = 2 ** nextPower;
-      segmentTreeArrayLength = (2 * nextPowerOfTwoNumber) - 1;
+      const currentPower = Math.floor(Math.log2(inputArrayLength))
+      const nextPower = currentPower + 1
+      const nextPowerOfTwoNumber = 2 ** nextPower
+      segmentTreeArrayLength = (2 * nextPowerOfTwoNumber) - 1
     }
 
-    return new Array(segmentTreeArrayLength).fill(null);
+    return new Array(segmentTreeArrayLength).fill(null)
   }
 
   /**
    * Build segment tree.
    */
   buildSegmentTree() {
-    const leftIndex = 0;
-    const rightIndex = this.inputArray.length - 1;
-    const position = 0;
-    this.buildTreeRecursively(leftIndex, rightIndex, position);
+    const leftIndex = 0
+    const rightIndex = this.inputArray.length - 1
+    const position = 0
+    this.buildTreeRecursively(leftIndex, rightIndex, position)
   }
 
   /**
@@ -65,23 +65,23 @@ export default class SegmentTree {
     // of the segment tree. We need to copy this leaf value from input
     // array to segment tree.
     if (leftInputIndex === rightInputIndex) {
-      this.segmentTree[position] = this.inputArray[leftInputIndex];
-      return;
+      this.segmentTree[position] = this.inputArray[leftInputIndex]
+      return
     }
 
     // Split input array on two halves and process them recursively.
-    const middleIndex = Math.floor((leftInputIndex + rightInputIndex) / 2);
+    const middleIndex = Math.floor((leftInputIndex + rightInputIndex) / 2)
     // Process left half of the input array.
-    this.buildTreeRecursively(leftInputIndex, middleIndex, this.getLeftChildIndex(position));
+    this.buildTreeRecursively(leftInputIndex, middleIndex, this.getLeftChildIndex(position))
     // Process right half of the input array.
-    this.buildTreeRecursively(middleIndex + 1, rightInputIndex, this.getRightChildIndex(position));
+    this.buildTreeRecursively(middleIndex + 1, rightInputIndex, this.getRightChildIndex(position))
 
     // Once every tree leaf is not empty we're able to build tree bottom up using
     // provided operation function.
     this.segmentTree[position] = this.operation(
       this.segmentTree[this.getLeftChildIndex(position)],
       this.segmentTree[this.getRightChildIndex(position)],
-    );
+    )
   }
 
   /**
@@ -92,9 +92,9 @@ export default class SegmentTree {
    * @return {number}
    */
   rangeQuery(queryLeftIndex, queryRightIndex) {
-    const leftIndex = 0;
-    const rightIndex = this.inputArray.length - 1;
-    const position = 0;
+    const leftIndex = 0
+    const rightIndex = this.inputArray.length - 1
+    const position = 0
 
     return this.rangeQueryRecursive(
       queryLeftIndex,
@@ -102,7 +102,7 @@ export default class SegmentTree {
       leftIndex,
       rightIndex,
       position,
-    );
+    )
   }
 
   /**
@@ -118,16 +118,16 @@ export default class SegmentTree {
   rangeQueryRecursive(queryLeftIndex, queryRightIndex, leftIndex, rightIndex, position) {
     if (queryLeftIndex <= leftIndex && queryRightIndex >= rightIndex) {
       // Total overlap.
-      return this.segmentTree[position];
+      return this.segmentTree[position]
     }
 
     if (queryLeftIndex > rightIndex || queryRightIndex < leftIndex) {
       // No overlap.
-      return this.operationFallback;
+      return this.operationFallback
     }
 
     // Partial overlap.
-    const middleIndex = Math.floor((leftIndex + rightIndex) / 2);
+    const middleIndex = Math.floor((leftIndex + rightIndex) / 2)
 
     const leftOperationResult = this.rangeQueryRecursive(
       queryLeftIndex,
@@ -135,7 +135,7 @@ export default class SegmentTree {
       leftIndex,
       middleIndex,
       this.getLeftChildIndex(position),
-    );
+    )
 
     const rightOperationResult = this.rangeQueryRecursive(
       queryLeftIndex,
@@ -143,9 +143,9 @@ export default class SegmentTree {
       middleIndex + 1,
       rightIndex,
       this.getRightChildIndex(position),
-    );
+    )
 
-    return this.operation(leftOperationResult, rightOperationResult);
+    return this.operation(leftOperationResult, rightOperationResult)
   }
 
   /**
@@ -154,7 +154,7 @@ export default class SegmentTree {
    * @return {number}
    */
   getLeftChildIndex(parentIndex) {
-    return (2 * parentIndex) + 1;
+    return (2 * parentIndex) + 1
   }
 
   /**
@@ -163,6 +163,6 @@ export default class SegmentTree {
    * @return {number}
    */
   getRightChildIndex(parentIndex) {
-    return (2 * parentIndex) + 2;
+    return (2 * parentIndex) + 2
   }
 }
