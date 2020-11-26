@@ -1,10 +1,8 @@
-// import DynamicArray from '../playground';
+// import DataStructure from '../DataStructure'
 
-describe('DynamicArray', () => {
-  it('should create empty array', () => {
-    // const dynArr = new DynamicArray();
-    // expect(dynArr).not.toBe(null);
-
+describe('LinkedList', () => {
+  it('should create empty DataStructure', () => {
+    // tests go here
     expect(true).toBe(true)
   })
 })
