@@ -1,11 +1,8 @@
 /**
- * Hashtable implementation via open adressing (linear probing)
- */
-
-/**
- * TODO:
- * + linear probing
- * - table resizing
+ * Hashtable implementation
+ *
+ * Collision resolution: open adressing (linear probing)
+ * Supports table resizing
  */
 
 export const initialTableSize = 8
@@ -30,34 +27,31 @@ export default class HashTable {
 
   // set(key, value) - if key already exists, update value
   set(key, value) {
-    const {
-      _table, _tableSize, _checkKeyForType, _countOfElements,
-    } = this
-
-    _checkKeyForType(key)
-    if (!this.isKeyExists(key) && _countOfElements === _tableSize) {
-      throw new Error('table is full')
-    }
+    this._checkKeyForType(key)
 
     let slotIdx = this._hash(key)
     let isFound = false
-    for (let i = 0; i < _tableSize; i++) {
-      const slotValue = _table[slotIdx]
+    for (let i = 0; i < this._tableSize; i++) {
+      const slotValue = this._table[slotIdx]
       if (slotValue === undefined || slotValue.isDeleted === true || slotValue.key === key) {
         isFound = true
         break
       }
-      slotIdx = (slotIdx + 1) % _tableSize
+      slotIdx = (slotIdx + 1) % this._tableSize
     }
 
     if (!isFound) {
-      throw new Error('empty slot is not found')
+      throw new Error('empty slot is not found and value by key do not exist')
     }
 
     if (!this.isKeyExists(key)) {
       this._countOfElements += 1
     }
-    _table[slotIdx] = { key, value }
+    this._table[slotIdx] = { key, value }
+
+    if (this._countOfElements >= this._tableSize / 2) {
+      this._resizeTable(this._tableSize * 2)
+    }
   }
 
   // remove(key)
@@ -70,6 +64,10 @@ export default class HashTable {
     }
     this._table[slotIdx] = { ...this._table[slotIdx], isDeleted: true }
     this._countOfElements -= 1
+
+    if (this._tableSize > initialTableSize && this._countOfElements <= this._tableSize / 8) {
+      this._resizeTable(this._tableSize / 2)
+    }
   }
 
   // exists(key)
@@ -94,6 +92,26 @@ export default class HashTable {
       h += char.charCodeAt(0)
     })
     return h % this._tableSize
+  }
+
+  _resizeTable(newSize) {
+    if (newSize < initialTableSize) {
+      throw new Error('newSize is too small')
+    }
+
+    const newTable = new Array(newSize)
+    this._table.forEach((entry) => {
+      if (entry === undefined) {
+        return
+      }
+
+      const { key, value } = entry
+      const newHash = this._hash(key)
+      newTable[newHash] = { key, value }
+    })
+
+    this._table = newTable
+    this._tableSize = newSize
   }
 
   _searchKeyIdx(key) {

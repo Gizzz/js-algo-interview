@@ -40,7 +40,6 @@ describe('LinkedList', () => {
     ht.set('g', 7)
     ht.set('h', 8)
     expect(ht._countOfElements).toBe(8)
-    expect(() => ht.set('i', 9)).toThrow('table is full')
 
     ht.set('a', 111)
     expect(ht._countOfElements).toBe(8)
@@ -128,5 +127,37 @@ describe('LinkedList', () => {
     const key4_1 = 'abc'
     const key4_2 = 'xyz'
     expect(ht._hash(key4_1)).not.toBe(ht._hash(key4_2))
+  })
+
+  it('should grow and shrink the table', () => {
+    const ht = new HashTable()
+    expect(ht._countOfElements).toBe(0)
+    expect(ht._tableSize).toBe(8)
+
+    ht.set('a', 1)
+    ht.set('b', 2)
+    ht.set('c', 3)
+    ht.set('d', 4)
+    expect(ht._countOfElements).toBe(4)
+    expect(ht._tableSize).toBe(16)
+    ht.set('e', 5)
+    ht.set('f', 6)
+    ht.set('g', 7)
+    ht.set('h', 8)
+    expect(ht._countOfElements).toBe(8)
+    expect(ht._tableSize).toBe(32)
+
+    ht.remove('h')
+    ht.remove('g')
+    ht.remove('f')
+    ht.remove('e')
+    expect(ht._countOfElements).toBe(4)
+    expect(ht._tableSize).toBe(16)
+    ht.remove('d')
+    ht.remove('c')
+    ht.remove('b')
+    ht.remove('a')
+    expect(ht._countOfElements).toBe(0)
+    expect(ht._tableSize).toBe(8)
   })
 })
