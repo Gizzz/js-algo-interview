@@ -79,6 +79,8 @@ export default class HashTable {
   }
 
   /**
+   * NOTE: this is simplified version of hash function, not for prod
+   *
    * Hashes the key (both prehash & hash)
    *
    * @param {string} key - key to hash
