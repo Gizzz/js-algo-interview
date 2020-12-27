@@ -1,238 +1,251 @@
-import LinkedListNode from './LinkedListNode'
-import Comparator from '../../utils/comparator/Comparator'
+/**
+ * Singly-linked list with no tail
+ */
+
+class ListNode {
+  constructor(value) {
+    this.data = value
+    this.next = null
+  }
+}
 
 export default class LinkedList {
-  /**
-   * @param {Function} [comparatorFunction]
-   */
-  constructor(comparatorFunction) {
-    /** @var LinkedListNode */
+  constructor() {
+    this._size = 0
     this.head = null
-
-    /** @var LinkedListNode */
-    this.tail = null
-
-    this.compare = new Comparator(comparatorFunction)
   }
 
-  /**
-   * @param {*} value
-   * @return {LinkedList}
-   */
-  prepend(value) {
-    // Make new node to be a head.
-    const newNode = new LinkedListNode(value, this.head)
-    this.head = newNode
-
-    // If there is no tail yet let's make new node a tail.
-    if (!this.tail) {
-      this.tail = newNode
-    }
-
-    return this
+  // size() - returns number of data elements in list
+  getSize() {
+    return this._size
   }
 
-  /**
-   * @param {*} value
-   * @return {LinkedList}
-   */
-  append(value) {
-    const newNode = new LinkedListNode(value)
-
-    // If there is no head yet let's make new node a head.
-    if (!this.head) {
-      this.head = newNode
-      this.tail = newNode
-
-      return this
-    }
-
-    // Attach new node to the end of linked list.
-    this.tail.next = newNode
-    this.tail = newNode
-
-    return this
+  // empty() - returns true if empty
+  isEmpty() {
+    return this._size === 0
   }
 
-  /**
-   * @param {*} value
-   * @return {LinkedListNode}
-   */
-  delete(value) {
-    if (!this.head) {
-      return null
+  // value_at(index) - returns the value of the nth item (starting at 0 for first)
+  valueAt(index) {
+    if (this.head === null) {
+      throw new Error('list is empty')
+    }
+    if (index < 0 || index > this._size - 1) {
+      throw new Error('index is out of bounds')
     }
 
-    let deletedNode = null
-
-    // If the head must be deleted then make next node that is differ
-    // from the head to be a new head.
-    while (this.head && this.compare.equal(this.head.value, value)) {
-      deletedNode = this.head
-      this.head = this.head.next
+    let curr = this.head
+    for (let i = 0; i < index; i++) {
+      curr = curr.next
     }
-
-    let currentNode = this.head
-
-    if (currentNode !== null) {
-      // If next node must be deleted then make next node to be a next next one.
-      while (currentNode.next) {
-        if (this.compare.equal(currentNode.next.value, value)) {
-          deletedNode = currentNode.next
-          currentNode.next = currentNode.next.next
-        } else {
-          currentNode = currentNode.next
-        }
-      }
-    }
-
-    // Check if tail must be deleted.
-    if (this.compare.equal(this.tail.value, value)) {
-      this.tail = currentNode
-    }
-
-    return deletedNode
+    return curr.data
   }
 
-  /**
-   * @param {Object} findParams
-   * @param {*} findParams.value
-   * @param {function} [findParams.callback]
-   * @return {LinkedListNode}
-   */
-  find({ value = undefined, callback = undefined }) {
-    if (!this.head) {
-      return null
-    }
-
-    let currentNode = this.head
-
-    while (currentNode) {
-      // If callback is specified then try to find node by callback.
-      if (callback && callback(currentNode.value)) {
-        return currentNode
-      }
-
-      // If value is specified then try to compare by value..
-      if (value !== undefined && this.compare.equal(currentNode.value, value)) {
-        return currentNode
-      }
-
-      currentNode = currentNode.next
-    }
-
-    return null
+  // push_front(value) - adds an item to the front of the list
+  pushFront(value) {
+    const node = new ListNode(value)
+    node.next = this.head
+    this.head = node
+    this._size += 1
   }
 
-  /**
-   * @return {LinkedListNode}
-   */
-  deleteTail() {
-    const deletedTail = this.tail
+  // pop_front() - remove front item and return its value
+  popFront() {
+    if (this.head === null) {
+      throw new Error('list is empty')
+    }
 
-    if (this.head === this.tail) {
-      // There is only one node in linked list.
+    const data = this.head.data
+    this.head = this.head.next
+    this._size -= 1
+    return data
+  }
+
+  // push_back(value) - adds an item at the end
+  pushBack(value) {
+    if (this.head === null) {
+      const node = new ListNode(value)
+      this.head = node
+      this._size += 1
+      return
+    }
+
+    let curr = this.head
+    while (curr.next !== null) {
+      curr = curr.next
+    }
+    const tail = curr
+
+    const node = new ListNode(value)
+    this._size += 1
+    tail.next = node
+  }
+
+  // pop_back() - removes end item and returns its value
+  popBack() {
+    if (this.head === null) {
+      throw new Error('list is empty')
+    }
+
+    let curr = this.head
+    let prev = null
+    while (curr.next !== null) {
+      prev = curr
+      curr = curr.next
+    }
+    const tail = curr
+
+    const data = tail.data
+    if (prev === null) {
       this.head = null
-      this.tail = null
-
-      return deletedTail
-    }
-
-    // If there are many nodes in linked list...
-
-    // Rewind to the last node and delete "next" link for the node before the last one.
-    let currentNode = this.head
-    while (currentNode.next) {
-      if (!currentNode.next.next) {
-        currentNode.next = null
-      } else {
-        currentNode = currentNode.next
-      }
-    }
-
-    this.tail = currentNode
-
-    return deletedTail
-  }
-
-  /**
-   * @return {LinkedListNode}
-   */
-  deleteHead() {
-    if (!this.head) {
-      return null
-    }
-
-    const deletedHead = this.head
-
-    if (this.head.next) {
-      this.head = this.head.next
     } else {
-      this.head = null
-      this.tail = null
+      prev.next = null
+    }
+    this._size -= 1
+    return data
+  }
+
+  // front() - get value of front item (peek)
+  peekFront() {
+    if (this.head === null) {
+      throw new Error('list is empty')
     }
 
-    return deletedHead
+    return this.head.data
   }
 
-  /**
-   * @param {*[]} values - Array of values that need to be converted to linked list.
-   * @return {LinkedList}
-   */
-  fromArray(values) {
-    values.forEach((value) => this.append(value))
-
-    return this
-  }
-
-  /**
-   * @return {LinkedListNode[]}
-   */
-  toArray() {
-    const nodes = []
-
-    let currentNode = this.head
-    while (currentNode) {
-      nodes.push(currentNode)
-      currentNode = currentNode.next
+  // back() - get value of end item (peek)
+  peekBack() {
+    if (this.head === null) {
+      throw new Error('list is empty')
     }
 
-    return nodes
+    let curr = this.head
+    while (curr.next !== null) {
+      curr = curr.next
+    }
+    const tail = curr
+    return tail.data
   }
 
-  /**
-   * @param {function} [callback]
-   * @return {string}
-   */
-  toString(callback) {
-    return this.toArray().map((node) => node.toString(callback)).toString()
+  // insert(index, value) - insert value at index,
+  //   so current item at that index is pointed to by new item at index
+  insert(index, value) {
+    if (index < 0 || index > this._size) {
+      throw new Error('index is out of bounds')
+    }
+
+    if (index === this._size) {
+      this.pushBack(value)
+      return
+    }
+
+    let curr = this.head
+    for (let i = 0; i < index; i++) {
+      curr = curr.next
+    }
+
+    const node = new ListNode(curr.data)
+    node.next = curr.next
+    curr.data = value
+    curr.next = node
+    this._size += 1
   }
 
-  /**
-   * Reverse a linked list.
-   * @returns {LinkedList}
-   */
+  // erase(index) - removes node at given index
+  erase(index) {
+    this._checkEmpty(this.head)
+    this._checkIndex(index, 0, this._size - 1)
+
+    let curr = this.head
+    let prev = null
+    for (let i = 0; i < index; i++) {
+      prev = curr
+      curr = curr.next
+    }
+
+    if (prev === null) {
+      this.head = curr.next
+    } else {
+      prev.next = curr.next
+    }
+    this._size -= 1
+  }
+
+  // value_n_from_end(n) - returns the value of the node at nth position from the end of the list
+  valueNFromEnd(n) {
+    this._checkEmpty(this.head)
+    this._checkIndex(n, 0, this._size - 1)
+
+    const index = this._size - 1 - n
+    return this.valueAt(index)
+  }
+
+  // reverse() - reverses the list
   reverse() {
-    let currNode = this.head
-    let prevNode = null
-    let nextNode = null
+    // if (this._size < 2) {
+    //   return
+    // }
 
-    while (currNode) {
-      // Store next node.
-      nextNode = currNode.next
+    let curr = this.head
+    let prev = null
+    while (curr !== null) {
+      const next = curr.next
+      curr.next = prev
+      prev = curr
+      curr = next
+    }
+    this.head = prev
+  }
 
-      // Change next node of the current node so it would link to previous node.
-      currNode.next = prevNode
-
-      // Move prevNode and currNode nodes one step forward.
-      prevNode = currNode
-      currNode = nextNode
+  // remove_value(value) - removes the first item in the list with this value
+  removeValue(value) {
+    const index = this.findIndex(value)
+    if (index === -1) {
+      return
     }
 
-    // Reset head and tail.
-    this.tail = this.head
-    this.head = prevNode
+    this.erase(index)
+  }
 
-    return this
+  // find(value) - find value in list
+  findIndex(value) {
+    let curr = this.head
+    let index = 0
+    while (curr !== null) {
+      if (curr.data === value) {
+        return index
+      }
+      curr = curr.next
+      index += 1
+    }
+    return -1
+  }
+
+  // --- optional methods ---
+  //
+  // ?addBefore(node, key) - add key before node
+  // ?addAfter(node, key) - add key after node
+
+  _checkEmpty(head) {
+    if (head === null) {
+      throw new Error('list is empty')
+    }
+  }
+
+  _checkIndex(index, start, end) {
+    if (index < start || index > end) {
+      throw new Error('index is out of bounds')
+    }
+  }
+
+  toArray() {
+    const values = []
+    let curr = this.head
+    while (curr !== null) {
+      values.push(curr.data)
+      curr = curr.next
+    }
+    return values
   }
 }
