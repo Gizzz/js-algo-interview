@@ -1,246 +1,310 @@
 import LinkedList from '../LinkedList'
 
 describe('LinkedList', () => {
-  it('should create empty linked list', () => {
-    const linkedList = new LinkedList()
-    expect(linkedList.toString()).toBe('')
+  it('should create empty LinkedList', () => {
+    const list = new LinkedList()
+    expect(list).not.toBe(null)
+    expect(list.getSize()).toBe(0)
+    expect(list.head).toBe(null)
   })
 
-  it('should append node to linked list', () => {
-    const linkedList = new LinkedList()
+  it('getSize', () => {
+    const list = new LinkedList()
+    expect(list.getSize()).toBe(0)
 
-    expect(linkedList.head).toBeNull()
-    expect(linkedList.tail).toBeNull()
+    list.pushFront(1)
+    expect(list.getSize()).toBe(1)
 
-    linkedList.append(1)
-    linkedList.append(2)
-
-    expect(linkedList.toString()).toBe('1,2')
-    expect(linkedList.tail.next).toBeNull()
+    list.pushFront(2)
+    list.pushFront(3)
+    expect(list.getSize()).toBe(3)
   })
 
-  it('should prepend node to linked list', () => {
-    const linkedList = new LinkedList()
+  it('isEmpty', () => {
+    const list = new LinkedList()
+    expect(list.isEmpty()).toBe(true)
 
-    linkedList.prepend(2)
-    expect(linkedList.head.toString()).toBe('2')
-    expect(linkedList.tail.toString()).toBe('2')
+    list.pushFront(1)
+    expect(list.isEmpty()).toBe(false)
 
-    linkedList.append(1)
-    linkedList.prepend(3)
-
-    expect(linkedList.toString()).toBe('3,2,1')
+    list.popFront()
+    expect(list.isEmpty()).toBe(true)
   })
 
-  it('should delete node by value from linked list', () => {
-    const linkedList = new LinkedList()
+  it('valueAt', () => {
+    const list = new LinkedList()
+    expect(() => list.valueAt(0)).toThrow('list is empty')
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(list.toArray()).toEqual([1, 2, 3])
 
-    expect(linkedList.delete(5)).toBeNull()
+    expect(() => list.valueAt(-1)).toThrow('index is out of bounds')
+    expect(() => list.valueAt(3)).toThrow('index is out of bounds')
 
-    linkedList.append(1)
-    linkedList.append(1)
-    linkedList.append(2)
-    linkedList.append(3)
-    linkedList.append(3)
-    linkedList.append(3)
-    linkedList.append(4)
-    linkedList.append(5)
-
-    expect(linkedList.head.toString()).toBe('1')
-    expect(linkedList.tail.toString()).toBe('5')
-
-    const deletedNode = linkedList.delete(3)
-    expect(deletedNode.value).toBe(3)
-    expect(linkedList.toString()).toBe('1,1,2,4,5')
-
-    linkedList.delete(3)
-    expect(linkedList.toString()).toBe('1,1,2,4,5')
-
-    linkedList.delete(1)
-    expect(linkedList.toString()).toBe('2,4,5')
-
-    expect(linkedList.head.toString()).toBe('2')
-    expect(linkedList.tail.toString()).toBe('5')
-
-    linkedList.delete(5)
-    expect(linkedList.toString()).toBe('2,4')
-
-    expect(linkedList.head.toString()).toBe('2')
-    expect(linkedList.tail.toString()).toBe('4')
-
-    linkedList.delete(4)
-    expect(linkedList.toString()).toBe('2')
-
-    expect(linkedList.head.toString()).toBe('2')
-    expect(linkedList.tail.toString()).toBe('2')
-
-    linkedList.delete(2)
-    expect(linkedList.toString()).toBe('')
+    expect(list.valueAt(0)).toBe(1)
+    expect(list.valueAt(1)).toBe(2)
+    expect(list.valueAt(2)).toBe(3)
   })
 
-  it('should delete linked list tail', () => {
-    const linkedList = new LinkedList()
+  it('pushFront', () => {
+    const list = new LinkedList()
+    expect(list.getSize()).toBe(0)
 
-    linkedList.append(1)
-    linkedList.append(2)
-    linkedList.append(3)
+    list.pushFront(1)
+    expect(list.getSize()).toBe(1)
+    expect(list.toArray()).toEqual([1])
 
-    expect(linkedList.head.toString()).toBe('1')
-    expect(linkedList.tail.toString()).toBe('3')
-
-    const deletedNode1 = linkedList.deleteTail()
-
-    expect(deletedNode1.value).toBe(3)
-    expect(linkedList.toString()).toBe('1,2')
-    expect(linkedList.head.toString()).toBe('1')
-    expect(linkedList.tail.toString()).toBe('2')
-
-    const deletedNode2 = linkedList.deleteTail()
-
-    expect(deletedNode2.value).toBe(2)
-    expect(linkedList.toString()).toBe('1')
-    expect(linkedList.head.toString()).toBe('1')
-    expect(linkedList.tail.toString()).toBe('1')
-
-    const deletedNode3 = linkedList.deleteTail()
-
-    expect(deletedNode3.value).toBe(1)
-    expect(linkedList.toString()).toBe('')
-    expect(linkedList.head).toBeNull()
-    expect(linkedList.tail).toBeNull()
+    list.pushFront(2)
+    list.pushFront(3)
+    expect(list.getSize()).toBe(3)
+    expect(list.toArray()).toEqual([3, 2, 1])
   })
 
-  it('should delete linked list head', () => {
-    const linkedList = new LinkedList()
+  it('popFront', () => {
+    const list = new LinkedList()
+    list.pushFront(1)
+    list.pushFront(2)
+    expect(list.getSize()).toBe(2)
+    expect(list.toArray()).toEqual([2, 1])
 
-    expect(linkedList.deleteHead()).toBeNull()
+    const res1 = list.popFront()
+    expect(res1).toBe(2)
+    expect(list.getSize()).toBe(1)
+    expect(list.toArray()).toEqual([1])
 
-    linkedList.append(1)
-    linkedList.append(2)
+    const res2 = list.popFront()
+    expect(res2).toBe(1)
+    expect(list.getSize()).toBe(0)
+    expect(list.toArray()).toEqual([])
 
-    expect(linkedList.head.toString()).toBe('1')
-    expect(linkedList.tail.toString()).toBe('2')
-
-    const deletedNode1 = linkedList.deleteHead()
-
-    expect(deletedNode1.value).toBe(1)
-    expect(linkedList.toString()).toBe('2')
-    expect(linkedList.head.toString()).toBe('2')
-    expect(linkedList.tail.toString()).toBe('2')
-
-    const deletedNode2 = linkedList.deleteHead()
-
-    expect(deletedNode2.value).toBe(2)
-    expect(linkedList.toString()).toBe('')
-    expect(linkedList.head).toBeNull()
-    expect(linkedList.tail).toBeNull()
+    expect(() => list.popFront()).toThrow('list is empty')
   })
 
-  it('should be possible to store objects in the list and to print them out', () => {
-    const linkedList = new LinkedList()
+  it('pushBack', () => {
+    const list = new LinkedList()
+    expect(list.getSize()).toBe(0)
+    expect(list.toArray()).toEqual([])
 
-    const nodeValue1 = { value: 1, key: 'key1' }
-    const nodeValue2 = { value: 2, key: 'key2' }
+    list.pushBack(1)
+    expect(list.getSize()).toBe(1)
+    expect(list.toArray()).toEqual([1])
 
-    linkedList
-      .append(nodeValue1)
-      .prepend(nodeValue2)
-
-    const nodeStringifier = (value) => `${value.key}:${value.value}`
-
-    expect(linkedList.toString(nodeStringifier)).toBe('key2:2,key1:1')
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(list.getSize()).toBe(3)
+    expect(list.toArray()).toEqual([1, 2, 3])
   })
 
-  it('should find node by value', () => {
-    const linkedList = new LinkedList()
+  it('popBack', () => {
+    const list = new LinkedList()
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(list.getSize()).toBe(3)
+    expect(list.toArray()).toEqual([1, 2, 3])
 
-    expect(linkedList.find({ value: 5 })).toBeNull()
+    const res1 = list.popBack()
+    expect(res1).toBe(3)
+    expect(list.getSize()).toBe(2)
+    expect(list.toArray()).toEqual([1, 2])
 
-    linkedList.append(1)
-    expect(linkedList.find({ value: 1 })).toBeDefined()
+    const res2 = list.popBack()
+    expect(res2).toBe(2)
+    expect(list.getSize()).toBe(1)
+    expect(list.toArray()).toEqual([1])
 
-    linkedList
-      .append(2)
-      .append(3)
+    const res3 = list.popBack()
+    expect(res3).toBe(1)
+    expect(list.getSize()).toBe(0)
+    expect(list.toArray()).toEqual([])
 
-    const node = linkedList.find({ value: 2 })
-
-    expect(node.value).toBe(2)
-    expect(linkedList.find({ value: 5 })).toBeNull()
+    expect(() => list.popBack()).toThrow('list is empty')
   })
 
-  it('should find node by callback', () => {
-    const linkedList = new LinkedList()
+  it('peekFront', () => {
+    const list = new LinkedList()
+    expect(() => list.peekFront()).toThrow('list is empty')
 
-    linkedList
-      .append({ value: 1, key: 'test1' })
-      .append({ value: 2, key: 'test2' })
-      .append({ value: 3, key: 'test3' })
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(list.toArray()).toEqual([1, 2, 3])
 
-    const node = linkedList.find({ callback: (value) => value.key === 'test2' })
-
-    expect(node).toBeDefined()
-    expect(node.value.value).toBe(2)
-    expect(node.value.key).toBe('test2')
-    expect(linkedList.find({ callback: (value) => value.key === 'test5' })).toBeNull()
+    const res = list.peekFront()
+    expect(res).toBe(1)
   })
 
-  it('should create linked list from array', () => {
-    const linkedList = new LinkedList()
-    linkedList.fromArray([1, 1, 2, 3, 3, 3, 4, 5])
+  it('peekBack', () => {
+    const list = new LinkedList()
+    expect(() => list.peekFront()).toThrow('list is empty')
 
-    expect(linkedList.toString()).toBe('1,1,2,3,3,3,4,5')
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(list.toArray()).toEqual([1, 2, 3])
+
+    const res = list.peekBack()
+    expect(res).toBe(3)
   })
 
-  it('should find node by means of custom compare function', () => {
-    const comparatorFunction = (a, b) => {
-      if (a.customValue === b.customValue) {
-        return 0
-      }
+  it('insert', () => {
+    const list = new LinkedList()
+    list.pushBack(1)
+    list.pushBack(2)
+    expect(list.toArray()).toEqual([1, 2])
+    expect(list.getSize()).toBe(2)
 
-      return a.customValue < b.customValue ? -1 : 1
-    }
+    expect(() => list.valueAt(-1)).toThrow('index is out of bounds')
+    expect(() => list.valueAt(2)).toThrow('index is out of bounds')
 
-    const linkedList = new LinkedList(comparatorFunction)
+    list.insert(0, 0.5)
+    expect(list.toArray()).toEqual([0.5, 1, 2])
+    expect(list.getSize()).toBe(3)
 
-    linkedList
-      .append({ value: 1, customValue: 'test1' })
-      .append({ value: 2, customValue: 'test2' })
-      .append({ value: 3, customValue: 'test3' })
+    list.insert(2, 1.5)
+    expect(list.toArray()).toEqual([0.5, 1, 1.5, 2])
+    expect(list.getSize()).toBe(4)
 
-    const node = linkedList.find({
-      value: { value: 2, customValue: 'test2' },
-    })
-
-    expect(node).toBeDefined()
-    expect(node.value.value).toBe(2)
-    expect(node.value.customValue).toBe('test2')
-    expect(linkedList.find({ value: 2, customValue: 'test5' })).toBeNull()
+    list.insert(4, 2.5)
+    expect(list.toArray()).toEqual([0.5, 1, 1.5, 2, 2.5])
+    expect(list.getSize()).toBe(5)
   })
 
-  it('should reverse linked list', () => {
-    const linkedList = new LinkedList()
+  it('erase', () => {
+    const list = new LinkedList()
+    expect(() => list.erase(0)).toThrow('list is empty')
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(() => list.erase(-1)).toThrow('index is out of bounds')
+    expect(() => list.erase(3)).toThrow('index is out of bounds')
 
-    // Add test values to linked list.
-    linkedList
-      .append(1)
-      .append(2)
-      .append(3)
+    // erase from middle
+    list.erase(1)
+    expect(list.getSize()).toBe(2)
+    expect(list.toArray()).toEqual([1, 3])
 
-    expect(linkedList.toString()).toBe('1,2,3')
-    expect(linkedList.head.value).toBe(1)
-    expect(linkedList.tail.value).toBe(3)
+    // erase from back
+    list.erase(1)
+    expect(list.getSize()).toBe(1)
+    expect(list.toArray()).toEqual([1])
 
-    // Reverse linked list.
-    linkedList.reverse()
-    expect(linkedList.toString()).toBe('3,2,1')
-    expect(linkedList.head.value).toBe(3)
-    expect(linkedList.tail.value).toBe(1)
+    // erase only element
+    list.erase(0)
+    expect(list.getSize()).toBe(0)
+    expect(list.toArray()).toEqual([])
+    expect(list.head).toBe(null)
 
-    // Reverse linked list back to initial state.
-    linkedList.reverse()
-    expect(linkedList.toString()).toBe('1,2,3')
-    expect(linkedList.head.value).toBe(1)
-    expect(linkedList.tail.value).toBe(3)
+    list.pushBack(1)
+    list.pushBack(2)
+    // erase from front
+    list.erase(0)
+    expect(list.getSize()).toBe(1)
+    expect(list.toArray()).toEqual([2])
+  })
+
+  it('valueNFromEnd', () => {
+    const list = new LinkedList()
+    expect(() => list.valueNFromEnd(0)).toThrow('list is empty')
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+    expect(() => list.valueNFromEnd(-1)).toThrow('index is out of bounds')
+    expect(() => list.valueNFromEnd(3)).toThrow('index is out of bounds')
+
+    const res1 = list.valueNFromEnd(0)
+    expect(res1).toBe(3)
+
+    const res2 = list.valueNFromEnd(1)
+    expect(res2).toBe(2)
+
+    const res3 = list.valueNFromEnd(2)
+    expect(res3).toBe(1)
+  })
+
+  it('reverse', () => {
+    const list = new LinkedList()
+
+    list.reverse()
+    expect(list.toArray()).toEqual([])
+    expect(list.getSize()).toBe(0)
+    expect(list.head).toBe(null)
+
+    list.pushBack(1)
+    list.reverse()
+    expect(list.toArray()).toEqual([1])
+    expect(list.getSize()).toBe(1)
+
+    list.pushBack(2)
+    list.reverse()
+    expect(list.toArray()).toEqual([2, 1])
+    expect(list.getSize()).toBe(2)
+
+    list.pushFront(3)
+    expect(list.toArray()).toEqual([3, 2, 1])
+    list.reverse()
+    expect(list.toArray()).toEqual([1, 2, 3])
+  })
+
+  it('removeValue', () => {
+    const list = new LinkedList()
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(3)
+
+    list.removeValue(4)
+    expect(list.toArray()).toEqual([1, 2, 3])
+    expect(list.getSize()).toBe(3)
+
+    list.removeValue(2)
+    expect(list.toArray()).toEqual([1, 3])
+    expect(list.getSize()).toBe(2)
+
+    list.removeValue(3)
+    expect(list.toArray()).toEqual([1])
+    expect(list.getSize()).toBe(1)
+
+    list.removeValue(1)
+    expect(list.toArray()).toEqual([])
+    expect(list.getSize()).toBe(0)
+
+    list.pushBack(1)
+    list.pushBack(2)
+    list.removeValue(1)
+    expect(list.toArray()).toEqual([2])
+    expect(list.getSize()).toBe(1)
+
+    list.popBack()
+    expect(list.toArray()).toEqual([])
+    expect(list.getSize()).toBe(0)
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(10)
+    list.pushBack(2)
+    list.pushBack(100)
+    list.pushBack(2)
+    list.removeValue(2)
+    expect(list.toArray()).toEqual([1, 10, 2, 100, 2])
+    expect(list.getSize()).toBe(5)
+  })
+
+  it('findIndex', () => {
+    const list = new LinkedList()
+    const idx1 = list.findIndex(5)
+    expect(idx1).toBe(-1)
+
+    list.pushBack(1)
+    list.pushBack(2)
+    list.pushBack(10)
+    list.pushBack(2)
+    list.pushBack(100)
+    list.pushBack(2)
+
+    const idx2 = list.findIndex(2)
+    expect(idx2).toBe(1)
+
+    const idx3 = list.findIndex(3)
+    expect(idx3).toBe(-1)
   })
 })
