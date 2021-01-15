@@ -96,7 +96,8 @@ describe('BinarySearchTree', () => {
     expect(bst1.getNodeCount()).toBe(7)
 
     // delete node with zero children
-    bst1.delete(7)
+    const deletedNode1 = bst1.delete(7)
+    expect(deletedNode1.key).toBe(7)
     let str2 = ''
     str2 += '4\n'
     str2 += '2 6\n'
@@ -105,7 +106,8 @@ describe('BinarySearchTree', () => {
     expect(bst1.getNodeCount()).toBe(6)
 
     // delete node with one child
-    bst1.delete(6)
+    const deletedNode2 = bst1.delete(6)
+    expect(deletedNode2.key).toBe(6)
     let str3 = ''
     str3 += '4\n'
     str3 += '2 5\n'
@@ -114,7 +116,8 @@ describe('BinarySearchTree', () => {
     expect(bst1.getNodeCount()).toBe(5)
 
     // delete node with two children
-    bst1.delete(2, true)
+    const deletedNode3 = bst1.delete(2)
+    expect(deletedNode3.key).toBe(2)
     let str4 = ''
     str4 += '4\n'
     str4 += '3 5\n'
@@ -135,7 +138,8 @@ describe('BinarySearchTree', () => {
     expect(bst2.root.key).toBe(2)
     expect(bst2.getNodeCount()).toBe(3)
     //
-    bst2.delete(2)
+    const deletedNode4 = bst2.delete(2)
+    expect(deletedNode4.key).toBe(2)
     let str6 = ''
     str6 += '3\n'
     str6 += '1 X'
@@ -143,14 +147,16 @@ describe('BinarySearchTree', () => {
     expect(bst2.root.key).toBe(3)
     expect(bst2.getNodeCount()).toBe(2)
     //
-    bst2.delete(3)
+    const deletedNode5 = bst2.delete(3)
+    expect(deletedNode5.key).toBe(3)
     let str7 = ''
     str7 += '1'
     expect(bst2.toString()).toBe(str7)
     expect(bst2.root.key).toBe(1)
     expect(bst2.getNodeCount()).toBe(1)
     //
-    bst2.delete(1)
+    const deletedNode6 = bst2.delete(1)
+    expect(deletedNode6.key).toBe(1)
     expect(bst2.toString()).toBe('tree is empty')
     expect(bst2.root).toBe(null)
     expect(bst2.getNodeCount()).toBe(0)

@@ -89,6 +89,25 @@ export default class BinarySearchTree {
       throw new Error('key do not exist')
     }
 
+    const deletedNode = this._deleteByRef(node, parent)
+    return deletedNode
+  }
+
+  /**
+   * helper for 'delete' function,
+   */
+  _deleteByRef(node, parent) {
+    // below is needed to update parent's left and right props:
+    /* eslint-disable no-param-reassign */
+
+    if (node === this.root && parent !== null) {
+      throw new Error('parent of root should be null')
+    }
+    if (node !== this.root && parent === null) {
+      throw new Error('parent of non-root node is null')
+    }
+
+    let deletedNode = node
     const hasZeroChildren = node.left === null && node.right === null
     const hasOneChild = !hasZeroChildren && (node.left === null || node.right === null)
     const hasTwoChildren = node.left !== null && node.right !== null
@@ -117,17 +136,22 @@ export default class BinarySearchTree {
         }
       }
     } else if (hasTwoChildren) {
-      const successor = this.nextLarger(key)
+      const keyToDelete = node.key
+      const successor = this.nextLarger(keyToDelete)
       const parentOfSuccessor = this._findParent(successor.key)
       node.key = successor.key
-      successor.key = key
-      this._deleteByRef(successor, parentOfSuccessor)
+      successor.key = keyToDelete
+      deletedNode = this._deleteByRef(successor, parentOfSuccessor)
     } else {
       throw new Error('unexpected count of children')
     }
 
-    this._nodeCount -= 1
-    return node
+    if (!hasTwoChildren) {
+      this._nodeCount -= 1
+    }
+    return deletedNode
+
+    /* eslint-enable no-param-reassign */
   }
 
   /**
@@ -148,55 +172,6 @@ export default class BinarySearchTree {
       }
     }
     return parent
-  }
-
-  /**
-   * helper for 'delete' function,
-   * handles case for deleting node with two children
-   */
-  _deleteByRef(node, parent) {
-    // below is needed to update parent's left and right props:
-    /* eslint-disable no-param-reassign */
-
-    if (node === this.root && parent !== null) {
-      throw new Error('parent of root should be null')
-    }
-    if (node !== this.root && parent === null) {
-      throw new Error('parent of non-root node is null')
-    }
-
-    const hasZeroChildren = node.left === null && node.right === null
-    const hasOneChild = !hasZeroChildren && (node.left === null || node.right === null)
-    if (hasZeroChildren) {
-      if (node === this.root) {
-        this.root = null
-      } else {
-        if (parent.left === node) {
-          parent.left = null
-        } else if (parent.right === node) {
-          parent.right = null
-        } else {
-          throw new Error('node should be left or right child')
-        }
-      }
-    } else if (hasOneChild) {
-      const child = node.left !== null ? node.left : node.right
-      if (node === this.root) {
-        this.root = child
-      } else {
-        const isLeftChild = parent.left === node
-        if (isLeftChild) {
-          parent.left = child
-        } else {
-          parent.right = child
-        }
-      }
-    } else {
-      throw new Error('node should have zero or one child')
-    }
-    // NOTE: this._nodesCount is updated in 'delete' function
-
-    /* eslint-enable no-param-reassign */
   }
 
   /**
