@@ -3,13 +3,19 @@
  * Iteration is preferred over recursion to prevent the stack growth.
  */
 
-import Queue from '../queue/link-list-based/QueueViaLinkedList'
+// TODO:
+// - try optimize delete() - successor and parent can be found in one pass
+//   create version of findMinNode(node.right)
+//   which also returns a parent of successor
 
-class BstNode {
-  constructor(key) {
+import Queue from '../queue/link-list-based/QueueViaLinkedList'
+import Stack from '../stack/Stack'
+
+export class BstNode {
+  constructor(key, left = null, right = null) {
     this.key = key
-    this.left = null
-    this.right = null
+    this.left = left
+    this.right = right
   }
 }
 
@@ -94,7 +100,7 @@ export default class BinarySearchTree {
   }
 
   /**
-   * helper for 'delete' function,
+   * helper for 'delete' method
    */
   _deleteByRef(node, parent) {
     // below is needed to update parent's left and right props:
@@ -128,8 +134,7 @@ export default class BinarySearchTree {
       if (node === this.root) {
         this.root = child
       } else {
-        const isLeftChild = parent.left === node
-        if (isLeftChild) {
+        if (parent.left === node) {
           parent.left = child
         } else {
           parent.right = child
@@ -175,16 +180,17 @@ export default class BinarySearchTree {
   }
 
   /**
-   * returns successor node or null
+   * returns successor node or null if key is the largest one
+   * throws if provided key do not exists in tree
    */
   nextLarger(key) {
     let node = this.root
-    let closestGreaterAncestor = null
+    let closestLargerAncestor = null
     while (node !== null) {
       if (key === node.key) {
         break
       } else if (key < node.key) {
-        closestGreaterAncestor = node
+        closestLargerAncestor = node
         node = node.left
       } else {
         node = node.right
@@ -192,14 +198,39 @@ export default class BinarySearchTree {
     }
 
     if (node === null) {
-      return null
+      throw new Error('key do not exist')
     }
 
     if (node.right !== null) {
       const minNode = this.findMinNode(node.right)
       return minNode
     }
-    return closestGreaterAncestor
+    return closestLargerAncestor
+  }
+
+  nextSmaller(key) {
+    let node = this.root
+    let closestSmallerAncestor = null
+    while (node !== null) {
+      if (key === node.key) {
+        break
+      } else if (key < node.key) {
+        node = node.left
+      } else {
+        closestSmallerAncestor = node
+        node = node.right
+      }
+    }
+
+    if (node === null) {
+      throw new Error('key do not exist')
+    }
+
+    if (node.left !== null) {
+      const maxNode = this.findMaxNode(node.left)
+      return maxNode
+    }
+    return closestSmallerAncestor
   }
 
   /**
@@ -232,15 +263,201 @@ export default class BinarySearchTree {
     return node
   }
 
-  // nextSmaller
-  // is_binary_search_tree
-  // BFS
-  // DFS (preorder, inorder, postorder)
-  //   print_values // prints the values in the tree, from min to max (inorder DFS with callback)
+  getNodesLevelOrder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const queue = new Queue()
+    queue.enqueue(this.root)
+    while (!queue.isEmpty()) {
+      const node = queue.dequeue()
+      nodes.push(node)
+      if (node.left) {
+        queue.enqueue(node.left)
+      }
+      if (node.right) {
+        queue.enqueue(node.right)
+      }
+    }
+    return nodes
+  }
+
+  traverseNodesLevelOrder(callback) {
+    if (this.root === null) {
+      return
+    }
+
+    const queue = new Queue()
+    queue.enqueue(this.root)
+    while (!queue.isEmpty()) {
+      const node = queue.dequeue()
+      callback(node)
+      if (node.left) {
+        queue.enqueue(node.left)
+      }
+      if (node.right) {
+        queue.enqueue(node.right)
+      }
+    }
+  }
+
+  getNodesPreorder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const stack = new Stack()
+    stack.push(this.root)
+    nodes.push(this.root)
+    let lastPoppedNode = null
+    while (!stack.isEmpty()) {
+      const node = stack.peek()
+      const shouldGoLeft = node.left !== null
+        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
+      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
+      if (shouldGoLeft) {
+        stack.push(node.left)
+        nodes.push(node.left)
+      } else if (shouldGoRight) {
+        stack.push(node.right)
+        nodes.push(node.right)
+      } else {
+        lastPoppedNode = stack.pop()
+      }
+    }
+    return nodes
+  }
+
+  getNodesPostorder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const stack = new Stack()
+    stack.push(this.root)
+    let lastPoppedNode = null
+    while (!stack.isEmpty()) {
+      const node = stack.peek()
+      const shouldGoLeft = node.left !== null
+        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
+      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
+      if (shouldGoLeft) {
+        stack.push(node.left)
+      } else if (shouldGoRight) {
+        stack.push(node.right)
+      } else {
+        lastPoppedNode = stack.pop()
+        nodes.push(lastPoppedNode)
+      }
+    }
+    return nodes
+  }
+
+  getNodesInorder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const stack = new Stack()
+    stack.push(this.root)
+    // symbol is used to prevent matching any existing node or NULL
+    let lastPoppedNode = Symbol('unique value')
+    while (!stack.isEmpty()) {
+      const node = stack.peek()
+      const shouldGoLeft = node.left !== null
+        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
+      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
+      if (shouldGoLeft) {
+        stack.push(node.left)
+      } else {
+        const isBetweenLeftAndRight = (node.left === null || lastPoppedNode === node.left)
+          && lastPoppedNode !== node.right
+        if (isBetweenLeftAndRight) {
+          nodes.push(node)
+        }
+        if (shouldGoRight) {
+          stack.push(node.right)
+        } else {
+          lastPoppedNode = stack.pop()
+        }
+      }
+    }
+    return nodes
+  }
+
+  traverseNodesInorder(callback) {
+    if (this.root === null) {
+      return
+    }
+
+    const stack = new Stack()
+    stack.push(this.root)
+    // symbol is used to prevent matching any existing node or NULL
+    let lastPoppedNode = Symbol('unique value')
+    while (!stack.isEmpty()) {
+      const node = stack.peek()
+      const shouldGoLeft = node.left !== null
+        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
+      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
+      if (shouldGoLeft) {
+        stack.push(node.left)
+      } else {
+        const isBetweenLeftAndRight = (node.left === null || lastPoppedNode === node.left)
+          && lastPoppedNode !== node.right
+        if (isBetweenLeftAndRight) {
+          callback(node)
+        }
+        if (shouldGoRight) {
+          stack.push(node.right)
+        } else {
+          lastPoppedNode = stack.pop()
+        }
+      }
+    }
+  }
+
+  isValidBst() {
+    const nodes = this.getNodesInorder()
+    let isValid = true
+    nodes.forEach((node, idx) => {
+      if (idx === 0) {
+        return
+      }
+      if (nodes[idx - 1].key >= node.key) {
+        isValid = false
+      }
+    })
+    return isValid
+  }
+
+  /**
+   * alternative approach to check BST validity
+   */
+  // isValidBst(node = this.root, lo = -Infinity, hi = Infinity) {
+  //   if (node === null) {
+  //     return true
+  //   }
+
+  //   const isNodeValid = node.key > lo && node.key < hi
+  //   const isLeftSubtreeValid = this.isValidBst(node.left, lo, node.key)
+  //   const isRightSubtreeValid = this.isValidBst(node.right, node.key, hi)
+  //   if (isNodeValid && isLeftSubtreeValid && isRightSubtreeValid) {
+  //     return true
+  //   }
+  //   return false
+  // }
+
   // height(node)
   // size(node)
-  // rank(x) - count of nodes with 'key <= x'
-  // range(x, y) - returns list of nodes with keys between x and y
+  // rank(x) - returns count of nodes with 'key <= x'
+  // range(x, y) - returns count of nodes with keys between x and y
+  // rankList(x) - returns list of nodes
+  // rangeList(x, y) - - returns list of nodes
 
   toString() {
     if (this.root === null) {
