@@ -136,8 +136,7 @@ export default class BinarySearchTree {
         }
       }
     } else if (hasTwoChildren) {
-      const successor = this.findMinNode(node.right)
-      const parentOfSuccessor = this._findParent(successor.key)
+      const [successor, parentOfSuccessor] = this._findMinNodeAndParent(node.right, node)
       const keyToDelete = node.key
       node.key = successor.key
       successor.key = keyToDelete
@@ -155,23 +154,21 @@ export default class BinarySearchTree {
   }
 
   /**
-   * returns parent node for node with specified key or NULL
+   * helper for '_deleteByRef' method
+   * returns node with smallest key and its parent for specified subtree
    */
-  _findParent(key) {
-    let curr = this.root
-    let parent = null
-    while (curr !== null) {
-      if (key === curr.key) {
-        break
-      } else if (key < curr.key) {
-        parent = curr
-        curr = curr.left
-      } else {
-        parent = curr
-        curr = curr.right
-      }
+  _findMinNodeAndParent(subtreeRoot, subtreeParent) {
+    if (subtreeRoot === null || subtreeParent === null) {
+      throw new Error('precondition: subtreeRoot and subtreeParent should not be NULL')
     }
-    return parent
+
+    let minNode = subtreeRoot
+    let parent = subtreeParent
+    while (minNode.left !== null) {
+      parent = minNode
+      minNode = minNode.left
+    }
+    return [minNode, parent]
   }
 
   /**
