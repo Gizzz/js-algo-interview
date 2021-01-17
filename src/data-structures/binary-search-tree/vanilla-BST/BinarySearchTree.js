@@ -462,11 +462,6 @@ export default class BinarySearchTree {
     return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
   }
 
-  // rank(x) - returns count of nodes with 'key <= x'
-  // range(x, y) - returns count of nodes with 'key >= x && key <= y'
-  // rankList(x) - returns list of nodes with 'key <= x'
-  // rangeList(x, y) - - returns list of nodes with 'key >= x && key <= y'
-
   toString() {
     if (this.root === null) {
       return 'tree is empty'
