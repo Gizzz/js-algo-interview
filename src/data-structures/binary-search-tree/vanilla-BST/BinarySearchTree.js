@@ -3,8 +3,8 @@
  * Iteration is preferred over recursion to prevent the stack growth.
  */
 
-import Queue from '../queue/link-list-based/QueueViaLinkedList'
-import Stack from '../stack/Stack'
+import Queue from '../../queue/link-list-based/QueueViaLinkedList'
+import Stack from '../../stack/Stack'
 
 export class BstNode {
   constructor(key, left = null, right = null) {
