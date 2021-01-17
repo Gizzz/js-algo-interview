@@ -3,11 +3,6 @@
  * Iteration is preferred over recursion to prevent the stack growth.
  */
 
-// TODO:
-// - try optimize delete() - successor and parent can be found in one pass
-//   create version of findMinNode(node.right)
-//   which also returns a parent of successor
-
 import Queue from '../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../stack/Stack'
 
@@ -141,9 +136,9 @@ export default class BinarySearchTree {
         }
       }
     } else if (hasTwoChildren) {
-      const keyToDelete = node.key
-      const successor = this.nextLarger(keyToDelete)
+      const successor = this.findMinNode(node.right)
       const parentOfSuccessor = this._findParent(successor.key)
+      const keyToDelete = node.key
       node.key = successor.key
       successor.key = keyToDelete
       deletedNode = this._deleteByRef(successor, parentOfSuccessor)
@@ -452,12 +447,28 @@ export default class BinarySearchTree {
   //   return false
   // }
 
-  // height(node)
-  // size(node)
+  calcSize(subtreeRoot = this.root) {
+    if (subtreeRoot === null) {
+      return 0
+    }
+    const leftSubtreeSize = this.calcSize(subtreeRoot.left)
+    const rightSubtreeSize = this.calcSize(subtreeRoot.right)
+    return leftSubtreeSize + rightSubtreeSize + 1
+  }
+
+  calcHeight(subtreeRoot = this.root) {
+    if (subtreeRoot === null) {
+      return -1
+    }
+    const leftSubtreeHeight = this.calcHeight(subtreeRoot.left)
+    const rightSubtreeHeight = this.calcHeight(subtreeRoot.right)
+    return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
+  }
+
   // rank(x) - returns count of nodes with 'key <= x'
-  // range(x, y) - returns count of nodes with keys between x and y
-  // rankList(x) - returns list of nodes
-  // rangeList(x, y) - - returns list of nodes
+  // range(x, y) - returns count of nodes with 'key >= x && key <= y'
+  // rankList(x) - returns list of nodes with 'key <= x'
+  // rangeList(x, y) - - returns list of nodes with 'key >= x && key <= y'
 
   toString() {
     if (this.root === null) {
