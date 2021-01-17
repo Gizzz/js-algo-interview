@@ -635,4 +635,72 @@ describe('BinarySearchTree', () => {
     expect(bst9.toString()).toBe(str9_1)
     expect(bst9.isValidBst()).toEqual(false)
   })
+
+  it('calcSize', () => {
+    const bst1 = new BinarySearchTree()
+    expect(bst1.calcSize()).toBe(0)
+
+    bst1.insert(4)
+    expect(bst1.calcSize()).toBe(1)
+    expect(bst1.calcSize(bst1.root.left)).toBe(0)
+    expect(bst1.calcSize(bst1.root.right)).toBe(0)
+
+    bst1.insert(2)
+    bst1.insert(6)
+    let str1_1 = ''
+    str1_1 += '4\n'
+    str1_1 += '2 6'
+    expect(bst1.toString()).toBe(str1_1)
+    expect(bst1.calcSize()).toBe(3)
+    expect(bst1.calcSize(bst1.root.left)).toBe(1)
+    expect(bst1.calcSize(bst1.root.right)).toBe(1)
+
+    bst1.insert(1)
+    bst1.insert(3)
+    bst1.insert(5)
+    let str1_2 = ''
+    str1_2 += '4\n'
+    str1_2 += '2 6\n'
+    str1_2 += '1 3 5 X'
+    expect(bst1.toString()).toBe(str1_2)
+    expect(bst1.calcSize()).toBe(6)
+    expect(bst1.calcSize(bst1.root.left)).toBe(3)
+    expect(bst1.calcSize(bst1.root.right)).toBe(2)
+    expect(bst1.calcSize(bst1.root.right.left)).toBe(1)
+    expect(bst1.calcSize(bst1.root.right.right)).toBe(0)
+  })
+
+  it('calcHeight', () => {
+    const bst1 = new BinarySearchTree()
+    expect(bst1.calcHeight()).toBe(-1)
+
+    bst1.insert(4)
+    expect(bst1.calcHeight()).toBe(0)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(-1)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(-1)
+
+    bst1.insert(2)
+    let str1_1 = ''
+    str1_1 += '4\n'
+    str1_1 += '2 X'
+    expect(bst1.toString()).toBe(str1_1)
+    expect(bst1.calcHeight()).toBe(1)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(0)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(-1)
+
+    bst1.insert(6)
+    bst1.insert(1)
+    let str1_2 = ''
+    str1_2 += '4\n'
+    str1_2 += '2 6\n'
+    str1_2 += '1 X X X'
+    expect(bst1.toString()).toBe(str1_2)
+    expect(bst1.calcHeight()).toBe(2)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(1)
+    expect(bst1.calcHeight(bst1.root.left.left)).toBe(0)
+    expect(bst1.calcHeight(bst1.root.left.right)).toBe(-1)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(0)
+    expect(bst1.calcHeight(bst1.root.right.left)).toBe(-1)
+    expect(bst1.calcHeight(bst1.root.right.right)).toBe(-1)
+  })
 })
