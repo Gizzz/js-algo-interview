@@ -102,25 +102,12 @@ export default class BinarySearchTree {
   }
 
   delete(key) {
-    let node = this.root
-    let parent = null
-    while (node !== null) {
-      if (key === node.key) {
-        break
-      } else if (key < node.key) {
-        parent = node
-        node = node.left
-      } else {
-        parent = node
-        node = node.right
-      }
-    }
-
+    const node = this.findNode(key)
     if (node === null) {
       throw new Error('key do not exist')
     }
 
-    const deletedNode = this._deleteByRef(node, parent)
+    const deletedNode = this._deleteByRef(node, node.parent)
     return deletedNode
   }
 
@@ -146,9 +133,9 @@ export default class BinarySearchTree {
       if (node === this.root) {
         this.root = null
       } else {
-        if (parent.left === node) {
+        if (node === parent.left) {
           parent.left = null
-        } else if (parent.right === node) {
+        } else if (node === parent.right) {
           parent.right = null
         } else {
           throw new Error('node should be left or right child')
@@ -158,47 +145,39 @@ export default class BinarySearchTree {
       const child = node.left !== null ? node.left : node.right
       if (node === this.root) {
         this.root = child
+        child.parent = null
       } else {
-        if (parent.left === node) {
+        if (node === parent.left) {
           parent.left = child
+          child.parent = parent
         } else {
           parent.right = child
+          child.parent = parent
         }
       }
     } else if (hasTwoChildren) {
-      const [successor, parentOfSuccessor] = this._findMinNodeAndParent(node.right, node)
+      const successor = this.findMinNode(node.right)
       const keyToDelete = node.key
       node.key = successor.key
       successor.key = keyToDelete
-      deletedNode = this._deleteByRef(successor, parentOfSuccessor)
+      deletedNode = this._deleteByRef(successor, successor.parent)
     } else {
       throw new Error('unexpected count of children')
     }
 
     if (!hasTwoChildren) {
       this._nodeCount -= 1
+
+      let curr = deletedNode
+      while (curr !== null) {
+        const minNode = curr.left !== null ? curr.left.meta.minNode : curr
+        curr.meta.minNode = minNode
+        curr = curr.parent
+      }
     }
     return deletedNode
 
     /* eslint-enable no-param-reassign */
-  }
-
-  /**
-   * helper for '_deleteByRef' method
-   * returns node with smallest key and its parent for specified subtree
-   */
-  _findMinNodeAndParent(subtreeRoot, subtreeParent) {
-    if (subtreeRoot === null || subtreeParent === null) {
-      throw new Error('precondition: subtreeRoot and subtreeParent should not be NULL')
-    }
-
-    let minNode = subtreeRoot
-    let parent = subtreeParent
-    while (minNode.left !== null) {
-      parent = minNode
-      minNode = minNode.left
-    }
-    return [minNode, parent]
   }
 
   /**
