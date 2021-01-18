@@ -37,7 +37,97 @@ describe('BinarySearchTree', () => {
   })
 
   it('should update meta.minNode at delete', () => {
-    // >>> TODO
+    const bst1 = new BinarySearchTree()
+    bst1.insert(4)
+    bst1.insert(2)
+    bst1.insert(6)
+    bst1.insert(1)
+    bst1.insert(3)
+    bst1.insert(5)
+    bst1.insert(7)
+    let str1 = ''
+    str1 += '4\n'
+    str1 += '2 6\n'
+    str1 += '1 3 5 7'
+    expect(bst1.toString()).toBe(str1)
+    expect(bst1.findMinNode(bst1.root).key).toBe(1)
+    expect(bst1.findMinNode(bst1.root.left).key).toBe(1)
+    expect(bst1.findMinNode(bst1.root.right).key).toBe(5)
+
+    // delete node with zero children
+    bst1.delete(1)
+    let str2 = ''
+    str2 += '4\n'
+    str2 += '2 6\n'
+    str2 += 'X 3 5 7'
+    expect(bst1.toString()).toBe(str2)
+    expect(bst1.findMinNode(bst1.root).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.left).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.right).key).toBe(5)
+
+    // delete node with zero children
+    bst1.delete(3)
+    let str3 = ''
+    str3 += '4\n'
+    str3 += '2 6\n'
+    str3 += 'X X 5 7'
+    expect(bst1.toString()).toBe(str3)
+    expect(bst1.findMinNode(bst1.root).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.left).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.right).key).toBe(5)
+
+    // delete node with two children
+    bst1.delete(6)
+    let str4 = ''
+    str4 += '4\n'
+    str4 += '2 7\n'
+    str4 += 'X X 5 X'
+    expect(bst1.toString()).toBe(str4)
+    expect(bst1.findMinNode(bst1.root).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.left).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.right).key).toBe(5)
+
+    // delete node with one child
+    bst1.delete(7)
+    let str5 = ''
+    str5 += '4\n'
+    str5 += '2 5'
+    expect(bst1.toString()).toBe(str5)
+    expect(bst1.findMinNode(bst1.root).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.left).key).toBe(2)
+    expect(bst1.findMinNode(bst1.root.right).key).toBe(5)
+
+    // root removal tests (two/one/zero children)
+
+    const bst2 = new BinarySearchTree()
+    bst2.insert(2)
+    bst2.insert(1)
+    bst2.insert(3)
+    let str6 = ''
+    str6 += '2\n'
+    str6 += '1 3'
+    expect(bst2.toString()).toBe(str6)
+    expect(bst2.findMinNode(bst2.root).key).toBe(1)
+    expect(bst2.findMinNode(bst2.root.left).key).toBe(1)
+    expect(bst2.findMinNode(bst2.root.right).key).toBe(3)
+
+    const bst3 = new BinarySearchTree()
+    bst3.insert(1)
+    bst3.insert(2)
+    let str7 = ''
+    str7 += '1\n'
+    str7 += 'X 2'
+    expect(bst3.toString()).toBe(str7)
+    expect(bst3.findMinNode(bst3.root).key).toBe(1)
+    bst3.delete(1)
+    expect(bst3.findMinNode(bst3.root).key).toBe(2)
+
+    const bst4 = new BinarySearchTree()
+    bst4.insert(1)
+    expect(bst4.toString()).toBe('1')
+    expect(bst4.findMinNode().key).toBe(1)
+    bst4.delete(1)
+    expect(bst4.findMinNode()).toBe(null)
   })
 
   // =========================================
