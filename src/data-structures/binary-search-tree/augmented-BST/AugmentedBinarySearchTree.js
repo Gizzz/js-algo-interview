@@ -9,17 +9,17 @@
 
 // TODO:
 //
-// 1. augment tree so 'min', 'max', 'size', 'height' can be done in O(1) time for any node
+// - augment tree so 'min', 'max', 'size', 'height' can be done in O(1) time for any node
 //
-// 1.5 add tests for parent update in 'insert', 'delete'
+// - add tests for parent update in 'insert', 'delete'
 //
-// 2. implement queries
-//   rank(x) - returns count of nodes with 'key <= x'
-//   range(x, y) - returns count of nodes with 'key >= x && key <= y'
-//   rankList(x) - returns list of nodes with 'key <= x'
-//   rangeList(x, y) - - returns list of nodes with 'key >= x && key <= y'
+// - implement queries
+//   - rank(x) - returns count of nodes with 'key <= x'
+//   - range(x, y) - returns count of nodes with 'key >= x && key <= y'
+//   - rankList(x) - returns list of nodes with 'key <= x'
+//   - rangeList(x, y) - - returns list of nodes with 'key >= x && key <= y'
 //
-// 3. (?) rename BstNode to AugBstNode, BinarySearchTree to AugmentedBinarySearchTree
+// ? rename BstNode to AugBstNode, BinarySearchTree to AugmentedBinarySearchTree
 
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../../stack/Stack'
@@ -107,21 +107,22 @@ export default class BinarySearchTree {
       throw new Error('key do not exist')
     }
 
-    const deletedNode = this._deleteByRef(node, node.parent)
+    const deletedNode = this._deleteByRef(node)
     return deletedNode
   }
 
   /**
    * helper for 'delete' method
    */
-  _deleteByRef(node, parent) {
-    // below is needed to update parent's left and right props:
+  _deleteByRef(node) {
+    // below is needed to update props of 'node' param:
     /* eslint-disable no-param-reassign */
 
-    if (node === this.root && parent !== null) {
+    const nodeParent = node.parent
+    if (node === this.root && nodeParent !== null) {
       throw new Error('parent of root should be null')
     }
-    if (node !== this.root && parent === null) {
+    if (node !== this.root && nodeParent === null) {
       throw new Error('parent of non-root node is null')
     }
 
@@ -133,10 +134,10 @@ export default class BinarySearchTree {
       if (node === this.root) {
         this.root = null
       } else {
-        if (node === parent.left) {
-          parent.left = null
-        } else if (node === parent.right) {
-          parent.right = null
+        if (node === nodeParent.left) {
+          nodeParent.left = null
+        } else if (node === nodeParent.right) {
+          nodeParent.right = null
         } else {
           throw new Error('node should be left or right child')
         }
@@ -147,12 +148,12 @@ export default class BinarySearchTree {
         this.root = child
         child.parent = null
       } else {
-        if (node === parent.left) {
-          parent.left = child
-          child.parent = parent
+        if (node === nodeParent.left) {
+          nodeParent.left = child
+          child.parent = nodeParent
         } else {
-          parent.right = child
-          child.parent = parent
+          nodeParent.right = child
+          child.parent = nodeParent
         }
       }
     } else if (hasTwoChildren) {
@@ -160,7 +161,7 @@ export default class BinarySearchTree {
       const keyToDelete = node.key
       node.key = successor.key
       successor.key = keyToDelete
-      deletedNode = this._deleteByRef(successor, successor.parent)
+      deletedNode = this._deleteByRef(successor)
     } else {
       throw new Error('unexpected count of children')
     }
