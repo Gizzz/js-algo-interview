@@ -5,9 +5,7 @@ describe('BinarySearchTree', () => {
   // Tests for Augmented BST
   // =========================================
 
-  it('should update min at insert', () => {
-    // >>> TODO: rework
-
+  it('should update meta.minNode at insert', () => {
     const bst = new BinarySearchTree()
     expect(bst.findMinNode()).toBe(null)
 
@@ -15,42 +13,31 @@ describe('BinarySearchTree', () => {
     expect(bst.findMinNode().key).toBe(4)
 
     bst.insert(2)
-    let str1 = ''
-    str1 += '4\n'
-    str1 += '2 X'
-    expect(bst.toString()).toBe(str1)
-    expect(bst.findMinNode().key).toBe(2)
-    // bst.delete(2)
-    // expect(bst.findMinNode().key).toBe(4)
+    bst.insert(6)
+    let str3 = ''
+    str3 += '4\n'
+    str3 += '2 6'
+    expect(bst.toString()).toBe(str3)
+    expect(bst.findMinNode(bst.root).key).toBe(2)
+    expect(bst.findMinNode(bst.root.left).key).toBe(2)
+    expect(bst.findMinNode(bst.root.right).key).toBe(6)
 
-    // // should insert larger key to right
-    // bst.insert(6)
-    // let str2 = ''
-    // str2 += '4\n'
-    // str2 += 'X 6'
-    // expect(bst.toString()).toBe(str2)
-    // expect(bst.findMinNode().key).toBe(4)
-    // bst.delete(6)
-    // expect(bst.findMinNode().key).toBe(4)
+    bst.insert(1)
+    bst.insert(3)
+    bst.insert(5)
+    bst.insert(7)
+    let str4 = ''
+    str4 += '4\n'
+    str4 += '2 6\n'
+    str4 += '1 3 5 7'
+    expect(bst.toString()).toBe(str4)
+    expect(bst.findMinNode(bst.root).key).toBe(1)
+    expect(bst.findMinNode(bst.root.left).key).toBe(1)
+    expect(bst.findMinNode(bst.root.right).key).toBe(5)
+  })
 
-    // bst.insert(2)
-    // bst.insert(6)
-    // expect(bst.getNodeCount()).toBe(3)
-    // let str3 = ''
-    // str3 += '4\n'
-    // str3 += '2 6'
-    // expect(bst.toString()).toBe(str3)
-
-    // bst.insert(1)
-    // bst.insert(3)
-    // bst.insert(5)
-    // bst.insert(7)
-    // expect(bst.getNodeCount()).toBe(7)
-    // let str4 = ''
-    // str4 += '4\n'
-    // str4 += '2 6\n'
-    // str4 += '1 3 5 7'
-    // expect(bst.toString()).toBe(str4)
+  it('should update meta.minNode at delete', () => {
+    // >>> TODO
   })
 
   // =========================================
