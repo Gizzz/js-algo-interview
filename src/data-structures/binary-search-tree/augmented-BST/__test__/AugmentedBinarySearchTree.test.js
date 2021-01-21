@@ -5,13 +5,18 @@ describe('BinarySearchTree', () => {
   // Tests for Augmented BST
   // =========================================
 
-  it('should update minNode and maxNode in metadata of node at insert', () => {
+  it('should update metadata of node at insert', () => {
     const bst = new BinarySearchTree()
     expect(bst.findMinNode()).toBe(null)
+    expect(bst.findMaxNode()).toBe(null)
+    expect(bst.calcSize()).toBe(0)
+    expect(bst.calcHeight()).toBe(-1)
 
     bst.insert(4)
     expect(bst.findMinNode().key).toBe(4)
     expect(bst.findMaxNode().key).toBe(4)
+    expect(bst.calcSize()).toBe(1)
+    expect(bst.calcHeight()).toBe(0)
 
     bst.insert(2)
     bst.insert(6)
@@ -26,6 +31,14 @@ describe('BinarySearchTree', () => {
     expect(bst.findMaxNode(bst.root).key).toBe(6)
     expect(bst.findMaxNode(bst.root.left).key).toBe(2)
     expect(bst.findMaxNode(bst.root.right).key).toBe(6)
+    //
+    expect(bst.calcSize(bst.root)).toBe(3)
+    expect(bst.calcSize(bst.root.left)).toBe(1)
+    expect(bst.calcSize(bst.root.right)).toBe(1)
+    //
+    expect(bst.calcHeight(bst.root)).toBe(1)
+    expect(bst.calcHeight(bst.root.left)).toBe(0)
+    expect(bst.calcHeight(bst.root.right)).toBe(0)
 
     bst.insert(1)
     bst.insert(3)
@@ -43,9 +56,17 @@ describe('BinarySearchTree', () => {
     expect(bst.findMaxNode(bst.root).key).toBe(7)
     expect(bst.findMaxNode(bst.root.left).key).toBe(3)
     expect(bst.findMaxNode(bst.root.right).key).toBe(7)
+    //
+    expect(bst.calcSize(bst.root)).toBe(7)
+    expect(bst.calcSize(bst.root.left)).toBe(3)
+    expect(bst.calcSize(bst.root.right)).toBe(3)
+    //
+    expect(bst.calcHeight(bst.root)).toBe(2)
+    expect(bst.calcHeight(bst.root.left)).toBe(1)
+    expect(bst.calcHeight(bst.root.right)).toBe(1)
   })
 
-  it('should update minNode and maxNode in metadata of node at delete', () => {
+  it('should update metadata of node at delete', () => {
     const bst1 = new BinarySearchTree()
     bst1.insert(4)
     bst1.insert(2)
@@ -66,6 +87,14 @@ describe('BinarySearchTree', () => {
     expect(bst1.findMaxNode(bst1.root).key).toBe(7)
     expect(bst1.findMaxNode(bst1.root.left).key).toBe(3)
     expect(bst1.findMaxNode(bst1.root.right).key).toBe(7)
+    //
+    expect(bst1.calcSize(bst1.root)).toBe(7)
+    expect(bst1.calcSize(bst1.root.left)).toBe(3)
+    expect(bst1.calcSize(bst1.root.right)).toBe(3)
+    //
+    expect(bst1.calcHeight(bst1.root)).toBe(2)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(1)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(1)
 
     // delete node with zero children
     bst1.delete(1)
@@ -81,6 +110,14 @@ describe('BinarySearchTree', () => {
     expect(bst1.findMaxNode(bst1.root).key).toBe(7)
     expect(bst1.findMaxNode(bst1.root.left).key).toBe(3)
     expect(bst1.findMaxNode(bst1.root.right).key).toBe(7)
+    //
+    expect(bst1.calcSize(bst1.root)).toBe(6)
+    expect(bst1.calcSize(bst1.root.left)).toBe(2)
+    expect(bst1.calcSize(bst1.root.right)).toBe(3)
+    //
+    expect(bst1.calcHeight(bst1.root)).toBe(2)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(1)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(1)
 
     // delete node with zero children
     bst1.delete(3)
@@ -96,6 +133,14 @@ describe('BinarySearchTree', () => {
     expect(bst1.findMaxNode(bst1.root).key).toBe(7)
     expect(bst1.findMaxNode(bst1.root.left).key).toBe(2)
     expect(bst1.findMaxNode(bst1.root.right).key).toBe(7)
+    //
+    expect(bst1.calcSize(bst1.root)).toBe(5)
+    expect(bst1.calcSize(bst1.root.left)).toBe(1)
+    expect(bst1.calcSize(bst1.root.right)).toBe(3)
+    //
+    expect(bst1.calcHeight(bst1.root)).toBe(2)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(0)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(1)
 
     // delete node with two children
     bst1.delete(6)
@@ -111,6 +156,14 @@ describe('BinarySearchTree', () => {
     expect(bst1.findMaxNode(bst1.root).key).toBe(7)
     expect(bst1.findMaxNode(bst1.root.left).key).toBe(2)
     expect(bst1.findMaxNode(bst1.root.right).key).toBe(7)
+    //
+    expect(bst1.calcSize(bst1.root)).toBe(4)
+    expect(bst1.calcSize(bst1.root.left)).toBe(1)
+    expect(bst1.calcSize(bst1.root.right)).toBe(2)
+    //
+    expect(bst1.calcHeight(bst1.root)).toBe(2)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(0)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(1)
 
     // delete node with one child
     bst1.delete(7)
@@ -125,6 +178,14 @@ describe('BinarySearchTree', () => {
     expect(bst1.findMaxNode(bst1.root).key).toBe(5)
     expect(bst1.findMaxNode(bst1.root.left).key).toBe(2)
     expect(bst1.findMaxNode(bst1.root.right).key).toBe(5)
+    //
+    expect(bst1.calcSize(bst1.root)).toBe(3)
+    expect(bst1.calcSize(bst1.root.left)).toBe(1)
+    expect(bst1.calcSize(bst1.root.right)).toBe(1)
+    //
+    expect(bst1.calcHeight(bst1.root)).toBe(1)
+    expect(bst1.calcHeight(bst1.root.left)).toBe(0)
+    expect(bst1.calcHeight(bst1.root.right)).toBe(0)
 
     // root removal tests (two/one/zero children)
 
@@ -136,13 +197,26 @@ describe('BinarySearchTree', () => {
     str6 += '2\n'
     str6 += '1 3'
     expect(bst2.toString()).toBe(str6)
+    bst2.delete(2)
+    let str6_1 = ''
+    str6_1 += '3\n'
+    str6_1 += '1 X'
+    expect(bst2.toString()).toBe(str6_1)
     expect(bst2.findMinNode(bst2.root).key).toBe(1)
     expect(bst2.findMinNode(bst2.root.left).key).toBe(1)
-    expect(bst2.findMinNode(bst2.root.right).key).toBe(3)
+    expect(bst2.findMinNode(bst2.root.right)).toBe(null)
     //
     expect(bst2.findMaxNode(bst2.root).key).toBe(3)
     expect(bst2.findMaxNode(bst2.root.left).key).toBe(1)
-    expect(bst2.findMaxNode(bst2.root.right).key).toBe(3)
+    expect(bst2.findMaxNode(bst2.root.right)).toBe(null)
+    //
+    expect(bst2.calcSize(bst2.root)).toBe(2)
+    expect(bst2.calcSize(bst2.root.left)).toBe(1)
+    expect(bst2.calcSize(bst2.root.right)).toBe(0)
+    //
+    expect(bst2.calcHeight(bst2.root)).toBe(1)
+    expect(bst2.calcHeight(bst2.root.left)).toBe(0)
+    expect(bst2.calcHeight(bst2.root.right)).toBe(-1)
 
     const bst3 = new BinarySearchTree()
     bst3.insert(1)
@@ -152,26 +226,42 @@ describe('BinarySearchTree', () => {
     str7 += 'X 2'
     expect(bst3.toString()).toBe(str7)
     expect(bst3.findMinNode(bst3.root).key).toBe(1)
+    expect(bst3.findMaxNode(bst3.root).key).toBe(2)
+    expect(bst3.calcSize(bst3.root)).toBe(2)
+    expect(bst3.calcHeight(bst3.root)).toBe(1)
     bst3.delete(1)
     expect(bst3.findMinNode(bst3.root).key).toBe(2)
+    expect(bst3.findMaxNode(bst3.root).key).toBe(2)
+    expect(bst3.calcSize(bst3.root)).toBe(1)
+    expect(bst3.calcHeight(bst3.root)).toBe(0)
     //
     bst3.insert(1)
     let str8 = ''
     str8 += '2\n'
     str8 += '1 X'
     expect(bst3.toString()).toBe(str8)
+    expect(bst3.findMinNode(bst3.root).key).toBe(1)
     expect(bst3.findMaxNode(bst3.root).key).toBe(2)
+    expect(bst3.calcSize(bst3.root)).toBe(2)
+    expect(bst3.calcHeight(bst3.root)).toBe(1)
     bst3.delete(2)
+    expect(bst3.findMinNode(bst3.root).key).toBe(1)
     expect(bst3.findMaxNode(bst3.root).key).toBe(1)
+    expect(bst3.calcSize(bst3.root)).toBe(1)
+    expect(bst3.calcHeight(bst3.root)).toBe(0)
 
     const bst4 = new BinarySearchTree()
     bst4.insert(1)
     expect(bst4.toString()).toBe('1')
     expect(bst4.findMinNode().key).toBe(1)
     expect(bst4.findMaxNode().key).toBe(1)
+    expect(bst4.calcSize()).toBe(1)
+    expect(bst4.calcHeight()).toBe(0)
     bst4.delete(1)
     expect(bst4.findMinNode()).toBe(null)
     expect(bst4.findMaxNode()).toBe(null)
+    expect(bst4.calcSize()).toBe(0)
+    expect(bst4.calcHeight()).toBe(-1)
   })
 
   // =========================================

@@ -17,7 +17,7 @@
 //   - rank(x) - returns count of nodes with 'key <= x'
 //   - range(x, y) - returns count of nodes with 'key >= x && key <= y'
 //   - rankList(x) - returns list of nodes with 'key <= x'
-//   - rangeList(x, y) - - returns list of nodes with 'key >= x && key <= y'
+//   - rangeList(x, y) - returns list of nodes with 'key >= x && key <= y'
 //
 // - inherit codebase from BST class and override when needed
 //
@@ -40,11 +40,10 @@ export class BstNode {
 export default class BinarySearchTree {
   constructor() {
     this.root = null
-    this._nodeCount = 0
   }
 
   getNodeCount() {
-    return this._nodeCount
+    return this.root === null ? 0 : this.root.meta.size
   }
 
   /**
@@ -93,7 +92,6 @@ export default class BinarySearchTree {
     }
 
     this._updateMetadataUpwards(node)
-    this._nodeCount += 1
     return node
   }
 
@@ -108,6 +106,14 @@ export default class BinarySearchTree {
 
       const maxNode = curr.right !== null ? curr.right.meta.maxNode : curr
       curr.meta.maxNode = maxNode
+
+      const leftSubtreeSize = curr.left !== null ? curr.left.meta.size : 0
+      const rightSubtreeSize = curr.right !== null ? curr.right.meta.size : 0
+      curr.meta.size = leftSubtreeSize + rightSubtreeSize + 1
+
+      const leftSubtreeHeight = curr.left !== null ? curr.left.meta.height : -1
+      const rightSubtreeHeight = curr.right !== null ? curr.right.meta.height : -1
+      curr.meta.height = Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
 
       curr = curr.parent
     }
@@ -177,8 +183,7 @@ export default class BinarySearchTree {
     }
 
     if (!hasTwoChildren) {
-      this._updateMetadataUpwards(deletedNode)
-      this._nodeCount -= 1
+      this._updateMetadataUpwards(deletedNode.parent)
     }
     return deletedNode
   }
@@ -252,21 +257,11 @@ export default class BinarySearchTree {
   }
 
   calcSize(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return 0
-    }
-    const leftSubtreeSize = this.calcSize(subtreeRoot.left)
-    const rightSubtreeSize = this.calcSize(subtreeRoot.right)
-    return leftSubtreeSize + rightSubtreeSize + 1
+    return subtreeRoot === null ? 0 : subtreeRoot.meta.size
   }
 
   calcHeight(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return -1
-    }
-    const leftSubtreeHeight = this.calcHeight(subtreeRoot.left)
-    const rightSubtreeHeight = this.calcHeight(subtreeRoot.right)
-    return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
+    return subtreeRoot === null ? -1 : subtreeRoot.meta.height
   }
 
   getNodesInorder() {
