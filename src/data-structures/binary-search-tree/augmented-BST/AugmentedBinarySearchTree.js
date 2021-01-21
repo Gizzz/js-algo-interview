@@ -19,6 +19,8 @@
 //   - rankList(x) - returns list of nodes with 'key <= x'
 //   - rangeList(x, y) - - returns list of nodes with 'key >= x && key <= y'
 //
+// - inherit codebase from BST class and override when needed
+//
 // ? rename BstNode to AugBstNode, BinarySearchTree to AugmentedBinarySearchTree
 
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
@@ -90,15 +92,25 @@ export default class BinarySearchTree {
       }
     }
 
+    this._updateMetadataUpwards(node)
+    this._nodeCount += 1
+    return node
+  }
+
+  /**
+   * traverses upwards from specified node to root and updates metadata for each node on path
+   */
+  _updateMetadataUpwards(node) {
     let curr = node
     while (curr !== null) {
       const minNode = curr.left !== null ? curr.left.meta.minNode : curr
       curr.meta.minNode = minNode
+
+      const maxNode = curr.right !== null ? curr.right.meta.maxNode : curr
+      curr.meta.maxNode = maxNode
+
       curr = curr.parent
     }
-
-    this._nodeCount += 1
-    return node
   }
 
   delete(key) {
@@ -115,9 +127,6 @@ export default class BinarySearchTree {
    * helper for 'delete' method
    */
   _deleteByRef(node) {
-    // below is needed to update props of 'node' param:
-    /* eslint-disable no-param-reassign */
-
     const nodeParent = node.parent
     if (node === this.root && nodeParent !== null) {
       throw new Error('parent of root should be null')
@@ -159,6 +168,7 @@ export default class BinarySearchTree {
     } else if (hasTwoChildren) {
       const successor = this.findMinNode(node.right)
       const keyToDelete = node.key
+      // eslint-disable-next-line no-param-reassign
       node.key = successor.key
       successor.key = keyToDelete
       deletedNode = this._deleteByRef(successor)
@@ -167,18 +177,10 @@ export default class BinarySearchTree {
     }
 
     if (!hasTwoChildren) {
+      this._updateMetadataUpwards(deletedNode)
       this._nodeCount -= 1
-
-      let curr = deletedNode
-      while (curr !== null) {
-        const minNode = curr.left !== null ? curr.left.meta.minNode : curr
-        curr.meta.minNode = minNode
-        curr = curr.parent
-      }
     }
     return deletedNode
-
-    /* eslint-enable no-param-reassign */
   }
 
   /**
@@ -236,25 +238,17 @@ export default class BinarySearchTree {
   }
 
   /**
-   * returns min node in subtree or null
+   * returns min node in subtree or null if subtree is empty
    */
   findMinNode(subtreeRoot = this.root) {
     return subtreeRoot === null ? null : subtreeRoot.meta.minNode
   }
 
   /**
-   * returns max node in subtree or null
+   * returns max node in subtree or null if subtree is empty
    */
   findMaxNode(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return null
-    }
-
-    let node = subtreeRoot
-    while (node.right !== null) {
-      node = node.right
-    }
-    return node
+    return subtreeRoot === null ? null : subtreeRoot.meta.maxNode
   }
 
   calcSize(subtreeRoot = this.root) {
