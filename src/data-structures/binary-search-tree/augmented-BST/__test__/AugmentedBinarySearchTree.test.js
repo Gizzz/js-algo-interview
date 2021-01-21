@@ -264,6 +264,44 @@ describe('BinarySearchTree', () => {
     expect(bst4.calcHeight()).toBe(-1)
   })
 
+  it('rank', () => {
+    const bst1 = new BinarySearchTree()
+    // for empty tree - rank on any key should be zero
+    expect(bst1.rank(Number.MAX_VALUE)).toBe(0)
+
+    bst1.insert(4)
+    bst1.insert(2)
+    bst1.insert(6)
+    bst1.insert(1)
+    bst1.insert(3)
+    bst1.insert(5)
+    bst1.insert(7)
+    let str1 = ''
+    str1 += '4\n'
+    str1 += '2 6\n'
+    str1 += '1 3 5 7'
+    expect(bst1.toString()).toBe(str1)
+
+    expect(bst1.rank(-1)).toBe(0)
+    expect(bst1.rank(0)).toBe(0)
+    expect(bst1.rank(0.5)).toBe(0)
+    expect(bst1.rank(1)).toBe(1)
+    expect(bst1.rank(1.5)).toBe(1)
+    expect(bst1.rank(2)).toBe(2)
+    expect(bst1.rank(2.5)).toBe(2)
+    expect(bst1.rank(3)).toBe(3)
+    expect(bst1.rank(3.5)).toBe(3)
+    expect(bst1.rank(4)).toBe(4)
+    expect(bst1.rank(4.5)).toBe(4)
+    expect(bst1.rank(5)).toBe(5)
+    expect(bst1.rank(5.5)).toBe(5)
+    expect(bst1.rank(6)).toBe(6)
+    expect(bst1.rank(6.5)).toBe(6)
+    expect(bst1.rank(7)).toBe(7)
+    expect(bst1.rank(7.5)).toBe(7)
+    expect(bst1.rank(8)).toBe(7)
+  })
+
   // =========================================
   // Tests for Vanilla BST
   // =========================================

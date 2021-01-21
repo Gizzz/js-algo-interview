@@ -9,12 +9,10 @@
 
 // TODO:
 //
-// - augment tree so 'min', 'max', 'size', 'height' can be done in O(1) time for any node
-//
 // - add tests for parent update in 'insert', 'delete'
 //
 // - implement queries
-//   - rank(x) - returns count of nodes with 'key <= x'
+//   + rank(x) - returns count of nodes with 'key <= x'
 //   - range(x, y) - returns count of nodes with 'key >= x && key <= y'
 //   - rankList(x) - returns list of nodes with 'key <= x'
 //   - rangeList(x, y) - returns list of nodes with 'key >= x && key <= y'
@@ -262,6 +260,43 @@ export default class BinarySearchTree {
 
   calcHeight(subtreeRoot = this.root) {
     return subtreeRoot === null ? -1 : subtreeRoot.meta.height
+  }
+
+  // returns count of nodes with key that is less or equal to specified
+  rank(key) {
+    if (this.root === null) {
+      return 0
+    }
+
+    let curr = this.findNode(key)
+    let isKeyExisted = true
+    if (curr === null) {
+      isKeyExisted = false
+      curr = this.insert(key)
+    }
+
+    let count = 0
+    while (curr !== null) {
+      if (curr.key === key) {
+        // count current node (+1) and its left subtree size
+        count += 1
+        count += this.calcSize(curr.left)
+      }
+
+      if (curr.parent !== null && curr === curr.parent.right) {
+        // count parent (+1) and its left subtree size
+        count += 1
+        count += this.calcSize(curr.parent.left)
+      }
+
+      curr = curr.parent
+    }
+
+    if (!isKeyExisted) {
+      count -= 1
+      this.delete(key)
+    }
+    return count
   }
 
   getNodesInorder() {
