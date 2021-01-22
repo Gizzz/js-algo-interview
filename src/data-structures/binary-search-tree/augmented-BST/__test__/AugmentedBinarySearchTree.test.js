@@ -302,6 +302,51 @@ describe('BinarySearchTree', () => {
     expect(bst1.rank(8)).toBe(7)
   })
 
+  it('range', () => {
+    const bst1 = new BinarySearchTree()
+    expect(() => bst1.range(2, 1)).toThrow('loKey should be less or equal to hiKey')
+    // for empty tree - any valid range should be zero
+    expect(bst1.range(Number.MIN_VALUE, Number.MAX_VALUE)).toBe(0)
+    expect(bst1.range(0, 10)).toBe(0)
+    expect(bst1.range(0, 0)).toBe(0)
+    expect(bst1.range(1, 1)).toBe(0)
+
+    bst1.insert(4)
+    bst1.insert(2)
+    bst1.insert(6)
+    bst1.insert(1)
+    bst1.insert(3)
+    bst1.insert(5)
+    bst1.insert(7)
+    let str1 = ''
+    str1 += '4\n'
+    str1 += '2 6\n'
+    str1 += '1 3 5 7'
+    expect(bst1.toString()).toBe(str1)
+
+    expect(bst1.range(0, 0)).toBe(0)
+    expect(bst1.range(0, 1)).toBe(1)
+    expect(bst1.range(1, 1)).toBe(1)
+    expect(bst1.range(1, 2)).toBe(2)
+    expect(bst1.range(1, 3)).toBe(3)
+    expect(bst1.range(1, 4)).toBe(4)
+    expect(bst1.range(1, 5)).toBe(5)
+    expect(bst1.range(1, 6)).toBe(6)
+    expect(bst1.range(1, 7)).toBe(7)
+    expect(bst1.range(1, 8)).toBe(7)
+    expect(bst1.range(2, 2)).toBe(1)
+    expect(bst1.range(2, 3)).toBe(2)
+    expect(bst1.range(2, 4)).toBe(3)
+    expect(bst1.range(2, 5)).toBe(4)
+    expect(bst1.range(2, 6)).toBe(5)
+    expect(bst1.range(2, 7)).toBe(6)
+    expect(bst1.range(2, 8)).toBe(6)
+
+    expect(bst1.range(0, 10)).toBe(7)
+    expect(bst1.range(3, 3)).toBe(1)
+    expect(bst1.range(3, 4)).toBe(2)
+  })
+
   // =========================================
   // Tests for Vanilla BST
   // =========================================
