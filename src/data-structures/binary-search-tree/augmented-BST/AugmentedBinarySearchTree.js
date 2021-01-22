@@ -7,10 +7,6 @@
  * It also allows rank/range queries in O(log n) time for balanced tree.
  */
 
-// TODO:
-//
-// - inherit codebase from BST class and override when needed
-
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../../stack/Stack'
 
@@ -177,60 +173,6 @@ export default class AugmentedBinarySearchTree {
   }
 
   /**
-   * returns successor node or null if key is the largest one
-   * throws if provided key do not exists in tree
-   */
-  nextLarger(key) {
-    let node = this.root
-    let closestLargerAncestor = null
-    while (node !== null) {
-      if (key === node.key) {
-        break
-      } else if (key < node.key) {
-        closestLargerAncestor = node
-        node = node.left
-      } else {
-        node = node.right
-      }
-    }
-
-    if (node === null) {
-      throw new Error('key do not exist')
-    }
-
-    if (node.right !== null) {
-      const minNode = this.findMinNode(node.right)
-      return minNode
-    }
-    return closestLargerAncestor
-  }
-
-  nextSmaller(key) {
-    let node = this.root
-    let closestSmallerAncestor = null
-    while (node !== null) {
-      if (key === node.key) {
-        break
-      } else if (key < node.key) {
-        node = node.left
-      } else {
-        closestSmallerAncestor = node
-        node = node.right
-      }
-    }
-
-    if (node === null) {
-      throw new Error('key do not exist')
-    }
-
-    if (node.left !== null) {
-      const maxNode = this.findMaxNode(node.left)
-      return maxNode
-    }
-    return closestSmallerAncestor
-  }
-
-  /**
    * returns min node in subtree or null if subtree is empty
    */
   findMinNode(subtreeRoot = this.root) {
@@ -305,6 +247,60 @@ export default class AugmentedBinarySearchTree {
     }
 
     return hiKeyRank - loKeyRank + 1
+  }
+
+  /**
+   * returns successor node or null if key is the largest one
+   * throws if provided key do not exists in tree
+   */
+  nextLarger(key) {
+    let node = this.root
+    let closestLargerAncestor = null
+    while (node !== null) {
+      if (key === node.key) {
+        break
+      } else if (key < node.key) {
+        closestLargerAncestor = node
+        node = node.left
+      } else {
+        node = node.right
+      }
+    }
+
+    if (node === null) {
+      throw new Error('key do not exist')
+    }
+
+    if (node.right !== null) {
+      const minNode = this.findMinNode(node.right)
+      return minNode
+    }
+    return closestLargerAncestor
+  }
+
+  nextSmaller(key) {
+    let node = this.root
+    let closestSmallerAncestor = null
+    while (node !== null) {
+      if (key === node.key) {
+        break
+      } else if (key < node.key) {
+        node = node.left
+      } else {
+        closestSmallerAncestor = node
+        node = node.right
+      }
+    }
+
+    if (node === null) {
+      throw new Error('key do not exist')
+    }
+
+    if (node.left !== null) {
+      const maxNode = this.findMaxNode(node.left)
+      return maxNode
+    }
+    return closestSmallerAncestor
   }
 
   getNodesInorder() {
