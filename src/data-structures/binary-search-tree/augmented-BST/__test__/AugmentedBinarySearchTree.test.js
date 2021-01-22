@@ -2,7 +2,7 @@ import BinarySearchTree, { BstNode } from '../AugmentedBinarySearchTree'
 
 describe('BinarySearchTree', () => {
   // =========================================
-  // Tests for Augmented BST
+  // Tests for Augmented BST features
   // =========================================
 
   it('should update metadata of node at insert', () => {
@@ -348,7 +348,7 @@ describe('BinarySearchTree', () => {
   })
 
   // =========================================
-  // Tests for Vanilla BST
+  // Tests for Vanilla BST features
   // =========================================
 
   it('should create empty BinarySearchTree', () => {

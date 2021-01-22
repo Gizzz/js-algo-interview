@@ -9,8 +9,6 @@
 
 // TODO:
 //
-// - add tests for parent update in 'insert', 'delete'
-//
 // - inherit codebase from BST class and override when needed
 //
 // ? rename BstNode to AugBstNode, BinarySearchTree to AugmentedBinarySearchTree
