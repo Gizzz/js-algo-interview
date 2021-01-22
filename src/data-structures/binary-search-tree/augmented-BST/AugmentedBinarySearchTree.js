@@ -10,13 +10,11 @@
 // TODO:
 //
 // - inherit codebase from BST class and override when needed
-//
-// ? rename BstNode to AugBstNode, BinarySearchTree to AugmentedBinarySearchTree
 
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../../stack/Stack'
 
-export class BstNode {
+export class AugmentedBstNode {
   constructor(key, left = null, right = null, parent = null) {
     this.key = key
     this.left = left
@@ -27,7 +25,7 @@ export class BstNode {
   }
 }
 
-export default class BinarySearchTree {
+export default class AugmentedBinarySearchTree {
   constructor() {
     this.root = null
   }
@@ -54,7 +52,7 @@ export default class BinarySearchTree {
   }
 
   insert(key) {
-    const node = new BstNode(key)
+    const node = new AugmentedBstNode(key)
     if (this.root === null) {
       this.root = node
     } else {
