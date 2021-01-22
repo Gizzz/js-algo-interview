@@ -1,4 +1,4 @@
-import BinarySearchTree, { BstNode } from '../AugmentedBinarySearchTree'
+import AugmentedBinarySearchTree, { AugmentedBstNode } from '../AugmentedBinarySearchTree'
 
 describe('BinarySearchTree', () => {
   // =========================================
@@ -6,7 +6,7 @@ describe('BinarySearchTree', () => {
   // =========================================
 
   it('should update metadata of node at insert', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(bst.findMinNode()).toBe(null)
     expect(bst.findMaxNode()).toBe(null)
     expect(bst.calcSize()).toBe(0)
@@ -67,7 +67,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('should update metadata of node at delete', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     bst1.insert(4)
     bst1.insert(2)
     bst1.insert(6)
@@ -189,7 +189,7 @@ describe('BinarySearchTree', () => {
 
     // root removal tests (two/one/zero children)
 
-    const bst2 = new BinarySearchTree()
+    const bst2 = new AugmentedBinarySearchTree()
     bst2.insert(2)
     bst2.insert(1)
     bst2.insert(3)
@@ -218,7 +218,7 @@ describe('BinarySearchTree', () => {
     expect(bst2.calcHeight(bst2.root.left)).toBe(0)
     expect(bst2.calcHeight(bst2.root.right)).toBe(-1)
 
-    const bst3 = new BinarySearchTree()
+    const bst3 = new AugmentedBinarySearchTree()
     bst3.insert(1)
     bst3.insert(2)
     let str7 = ''
@@ -250,7 +250,7 @@ describe('BinarySearchTree', () => {
     expect(bst3.calcSize(bst3.root)).toBe(1)
     expect(bst3.calcHeight(bst3.root)).toBe(0)
 
-    const bst4 = new BinarySearchTree()
+    const bst4 = new AugmentedBinarySearchTree()
     bst4.insert(1)
     expect(bst4.toString()).toBe('1')
     expect(bst4.findMinNode().key).toBe(1)
@@ -265,7 +265,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('rank', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     // for empty tree - rank on any key should be zero
     expect(bst1.rank(Number.MAX_VALUE)).toBe(0)
 
@@ -303,7 +303,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('range', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(() => bst1.range(2, 1)).toThrow('loKey should be less or equal to hiKey')
     // for empty tree - any valid range should be zero
     expect(bst1.range(Number.MIN_VALUE, Number.MAX_VALUE)).toBe(0)
@@ -352,13 +352,13 @@ describe('BinarySearchTree', () => {
   // =========================================
 
   it('should create empty BinarySearchTree', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(bst.root).toBe(null)
     expect(bst.getNodeCount()).toBe(0)
   })
 
   it('getNodeCount', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(bst.getNodeCount()).toBe(0)
 
     bst.insert(1)
@@ -369,7 +369,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('findNode', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(bst.findNode(1)).toBe(null)
 
     bst.insert(1)
@@ -380,7 +380,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('insert', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(bst.root).toBe(null)
     expect(bst.getNodeCount()).toBe(0)
 
@@ -435,7 +435,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('delete', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     bst1.insert(4)
     bst1.insert(2)
     bst1.insert(6)
@@ -484,7 +484,7 @@ describe('BinarySearchTree', () => {
 
     // test root removal with 2/1/0 children
     //
-    const bst2 = new BinarySearchTree()
+    const bst2 = new AugmentedBinarySearchTree()
     bst2.insert(2)
     bst2.insert(1)
     bst2.insert(3)
@@ -523,10 +523,10 @@ describe('BinarySearchTree', () => {
   })
 
   it('nextLarger', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(() => bst.nextLarger(1)).toThrow('key do not exist')
 
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     bst1.insert(4)
     bst1.insert(2)
     bst1.insert(6)
@@ -552,10 +552,10 @@ describe('BinarySearchTree', () => {
   })
 
   it('nextSmaller', () => {
-    const bst = new BinarySearchTree()
+    const bst = new AugmentedBinarySearchTree()
     expect(() => bst.nextSmaller(1)).toThrow('key do not exist')
 
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     bst1.insert(4)
     bst1.insert(2)
     bst1.insert(6)
@@ -581,7 +581,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('findMinNode', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.findMinNode(bst1.root)).toBe(null)
 
     bst1.insert(4)
@@ -612,7 +612,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('findMaxNode', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.findMaxNode(bst1.root)).toBe(null)
 
     bst1.insert(4)
@@ -643,7 +643,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('getNodesLevelOrder', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.getNodesLevelOrder()).toEqual([])
 
     bst1.insert(4)
@@ -673,7 +673,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('traverseNodesLevelOrder', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     const callback1 = jest.fn()
     bst1.traverseNodesLevelOrder(callback1)
     expect(callback1).not.toBeCalled()
@@ -726,7 +726,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('getNodesPreorder', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.getNodesPreorder()).toEqual([])
 
     bst1.insert(4)
@@ -756,7 +756,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('getNodesPostorder', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.getNodesPostorder()).toEqual([])
 
     bst1.insert(4)
@@ -786,7 +786,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('getNodesInorder', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.getNodesInorder()).toEqual([])
 
     bst1.insert(4)
@@ -816,7 +816,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('traverseNodesInorder', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     const callback1 = jest.fn()
     bst1.traverseNodesInorder(callback1)
     expect(callback1).not.toBeCalled()
@@ -871,7 +871,7 @@ describe('BinarySearchTree', () => {
   it('isValidBst', () => {
     // valid tree tests
 
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.isValidBst()).toEqual(true)
 
     bst1.insert(4)
@@ -896,7 +896,7 @@ describe('BinarySearchTree', () => {
     expect(bst1.toString()).toBe(str1_2)
     expect(bst1.isValidBst()).toEqual(true)
 
-    const bst2 = new BinarySearchTree()
+    const bst2 = new AugmentedBinarySearchTree()
     bst2.insert(1)
     bst2.insert(2)
     bst2.insert(3)
@@ -907,7 +907,7 @@ describe('BinarySearchTree', () => {
     expect(bst2.toString()).toBe(str2_1)
     expect(bst2.isValidBst()).toEqual(true)
 
-    const bst3 = new BinarySearchTree()
+    const bst3 = new AugmentedBinarySearchTree()
     bst3.insert(3)
     bst3.insert(2)
     bst3.insert(1)
@@ -920,37 +920,37 @@ describe('BinarySearchTree', () => {
 
     // invalid tree tests
 
-    const bst4 = new BinarySearchTree()
+    const bst4 = new AugmentedBinarySearchTree()
     bst4.insert(1)
-    bst4.root.left = new BstNode(2)
+    bst4.root.left = new AugmentedBstNode(2)
     let str4_1 = ''
     str4_1 += '1\n'
     str4_1 += '2 X'
     expect(bst4.toString()).toBe(str4_1)
     expect(bst4.isValidBst()).toEqual(false)
 
-    const bst5 = new BinarySearchTree()
+    const bst5 = new AugmentedBinarySearchTree()
     bst5.insert(2)
-    bst5.root.right = new BstNode(1)
+    bst5.root.right = new AugmentedBstNode(1)
     let str5_1 = ''
     str5_1 += '2\n'
     str5_1 += 'X 1'
     expect(bst5.toString()).toBe(str5_1)
     expect(bst5.isValidBst()).toEqual(false)
 
-    const bst6 = new BinarySearchTree()
+    const bst6 = new AugmentedBinarySearchTree()
     bst6.insert(2)
-    bst6.root.left = new BstNode(3)
-    bst6.root.right = new BstNode(1)
+    bst6.root.left = new AugmentedBstNode(3)
+    bst6.root.right = new AugmentedBstNode(1)
     let str6_1 = ''
     str6_1 += '2\n'
     str6_1 += '3 1'
     expect(bst6.toString()).toBe(str6_1)
     expect(bst6.isValidBst()).toEqual(false)
 
-    const bst7 = new BinarySearchTree()
+    const bst7 = new AugmentedBinarySearchTree()
     bst7.insert(1)
-    bst7.root.right = new BstNode(1)
+    bst7.root.right = new AugmentedBstNode(1)
     let str7_1 = ''
     str7_1 += '1\n'
     str7_1 += 'X 1'
@@ -961,12 +961,12 @@ describe('BinarySearchTree', () => {
     // node with key 55 is valid for its parent but invalid for grandparent
     // (it is greater then root, but everything on left side should be smaller)
     //
-    const bst8 = new BinarySearchTree()
+    const bst8 = new AugmentedBinarySearchTree()
     bst8.insert(50)
     bst8.insert(25)
     bst8.insert(75)
     bst8.insert(10)
-    bst8.root.left.right = new BstNode(55)
+    bst8.root.left.right = new AugmentedBstNode(55)
     bst8.insert(60)
     bst8.insert(80)
     let str8_1 = ''
@@ -980,13 +980,13 @@ describe('BinarySearchTree', () => {
     // node with key 40 is valid for its parent but invalid for grandparent
     // (it is smaller then root, but everything on right side should be greater)
     //
-    const bst9 = new BinarySearchTree()
+    const bst9 = new AugmentedBinarySearchTree()
     bst9.insert(50)
     bst9.insert(25)
     bst9.insert(75)
     bst9.insert(10)
     bst9.insert(30)
-    bst9.root.right.left = new BstNode(40)
+    bst9.root.right.left = new AugmentedBstNode(40)
     bst9.insert(80)
     let str9_1 = ''
     str9_1 += '50\n'
@@ -997,7 +997,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('calcSize', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.calcSize()).toBe(0)
 
     bst1.insert(4)
@@ -1031,7 +1031,7 @@ describe('BinarySearchTree', () => {
   })
 
   it('calcHeight', () => {
-    const bst1 = new BinarySearchTree()
+    const bst1 = new AugmentedBinarySearchTree()
     expect(bst1.calcHeight()).toBe(-1)
 
     bst1.insert(4)
