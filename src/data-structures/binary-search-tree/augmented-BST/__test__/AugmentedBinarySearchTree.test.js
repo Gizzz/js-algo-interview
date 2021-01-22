@@ -388,25 +388,30 @@ describe('BinarySearchTree', () => {
     bst.insert(4)
     expect(bst.root).not.toBe(null)
     expect(bst.root.key).toBe(4)
+    expect(bst.root.parent).toBe(null)
     expect(bst.getNodeCount()).toBe(1)
     expect(bst.toString()).toBe('4')
 
     expect(() => bst.insert(4)).toThrow('no duplicate keys allowed')
 
     // should insert smaller key to left
-    bst.insert(2)
+    const insertedNode1 = bst.insert(2)
     let str1 = ''
     str1 += '4\n'
     str1 += '2 X'
     expect(bst.toString()).toBe(str1)
+    expect(insertedNode1.key).toBe(2)
+    expect(insertedNode1.parent.key).toBe(4)
     bst.delete(2)
 
     // should insert larger key to right
-    bst.insert(6)
+    const insertedNode2 = bst.insert(6)
     let str2 = ''
     str2 += '4\n'
     str2 += 'X 6'
     expect(bst.toString()).toBe(str2)
+    expect(insertedNode2.key).toBe(6)
+    expect(insertedNode2.parent.key).toBe(4)
     bst.delete(6)
 
     bst.insert(2)
@@ -458,6 +463,8 @@ describe('BinarySearchTree', () => {
     // delete node with one child
     const deletedNode2 = bst1.delete(6)
     expect(deletedNode2.key).toBe(6)
+    const childOfdeletedNode2 = deletedNode2.left
+    expect(childOfdeletedNode2.parent).toBe(deletedNode2.parent)
     let str3 = ''
     str3 += '4\n'
     str3 += '2 5\n'
@@ -499,6 +506,9 @@ describe('BinarySearchTree', () => {
     //
     const deletedNode5 = bst2.delete(3)
     expect(deletedNode5.key).toBe(3)
+    const childOfdeletedNode5 = deletedNode5.left
+    expect(bst2.root).toBe(childOfdeletedNode5)
+    expect(childOfdeletedNode5.parent).toBe(null)
     let str7 = ''
     str7 += '1'
     expect(bst2.toString()).toBe(str7)
