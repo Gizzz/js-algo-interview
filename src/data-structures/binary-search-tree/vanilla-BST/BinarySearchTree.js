@@ -172,6 +172,54 @@ export default class BinarySearchTree {
   }
 
   /**
+   * returns min node in subtree or null
+   */
+  findMinNode(subtreeRoot) {
+    if (subtreeRoot === null) {
+      return null
+    }
+
+    let node = subtreeRoot
+    while (node.left !== null) {
+      node = node.left
+    }
+    return node
+  }
+
+  /**
+   * returns max node in subtree or null
+   */
+  findMaxNode(subtreeRoot) {
+    if (subtreeRoot === null) {
+      return null
+    }
+
+    let node = subtreeRoot
+    while (node.right !== null) {
+      node = node.right
+    }
+    return node
+  }
+
+  calcSize(subtreeRoot = this.root) {
+    if (subtreeRoot === null) {
+      return 0
+    }
+    const leftSubtreeSize = this.calcSize(subtreeRoot.left)
+    const rightSubtreeSize = this.calcSize(subtreeRoot.right)
+    return leftSubtreeSize + rightSubtreeSize + 1
+  }
+
+  calcHeight(subtreeRoot = this.root) {
+    if (subtreeRoot === null) {
+      return -1
+    }
+    const leftSubtreeHeight = this.calcHeight(subtreeRoot.left)
+    const rightSubtreeHeight = this.calcHeight(subtreeRoot.right)
+    return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
+  }
+
+  /**
    * returns successor node or null if key is the largest one
    * throws if provided key do not exists in tree
    */
@@ -223,54 +271,6 @@ export default class BinarySearchTree {
       return maxNode
     }
     return closestSmallerAncestor
-  }
-
-  /**
-   * returns min node in subtree or null
-   */
-  findMinNode(subtreeRoot) {
-    if (subtreeRoot === null) {
-      return null
-    }
-
-    let node = subtreeRoot
-    while (node.left !== null) {
-      node = node.left
-    }
-    return node
-  }
-
-  /**
-   * returns max node in subtree or null
-   */
-  findMaxNode(subtreeRoot) {
-    if (subtreeRoot === null) {
-      return null
-    }
-
-    let node = subtreeRoot
-    while (node.right !== null) {
-      node = node.right
-    }
-    return node
-  }
-
-  calcSize(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return 0
-    }
-    const leftSubtreeSize = this.calcSize(subtreeRoot.left)
-    const rightSubtreeSize = this.calcSize(subtreeRoot.right)
-    return leftSubtreeSize + rightSubtreeSize + 1
-  }
-
-  calcHeight(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return -1
-    }
-    const leftSubtreeHeight = this.calcHeight(subtreeRoot.left)
-    const rightSubtreeHeight = this.calcHeight(subtreeRoot.right)
-    return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
   }
 
   getNodesInorder() {
