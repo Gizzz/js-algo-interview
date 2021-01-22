@@ -11,12 +11,6 @@
 //
 // - add tests for parent update in 'insert', 'delete'
 //
-// - implement queries
-//   + rank(x) - returns count of nodes with 'key <= x'
-//   - range(x, y) - returns count of nodes with 'key >= x && key <= y'
-//   - rankList(x) - returns list of nodes with 'key <= x'
-//   - rangeList(x, y) - returns list of nodes with 'key >= x && key <= y'
-//
 // - inherit codebase from BST class and override when needed
 //
 // ? rename BstNode to AugBstNode, BinarySearchTree to AugmentedBinarySearchTree
@@ -297,6 +291,24 @@ export default class BinarySearchTree {
       this.delete(key)
     }
     return count
+  }
+
+  // returns count of nodes with key between 'loKey' and 'hiKey' inclusive
+  range(loKey, hiKey) {
+    if (loKey > hiKey) {
+      throw new Error('loKey should be less or equal to hiKey')
+    }
+
+    const hiKeyRank = this.rank(hiKey)
+    if (hiKeyRank === 0) {
+      return 0
+    }
+    const loKeyRank = this.rank(loKey)
+    if (loKeyRank === 0) {
+      return hiKeyRank
+    }
+
+    return hiKeyRank - loKeyRank + 1
   }
 
   getNodesInorder() {
