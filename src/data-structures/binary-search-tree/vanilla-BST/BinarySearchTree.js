@@ -255,98 +255,22 @@ export default class BinarySearchTree {
     return node
   }
 
-  getNodesLevelOrder() {
-    if (this.root === null) {
-      return []
+  calcSize(subtreeRoot = this.root) {
+    if (subtreeRoot === null) {
+      return 0
     }
-
-    const nodes = []
-    const queue = new Queue()
-    queue.enqueue(this.root)
-    while (!queue.isEmpty()) {
-      const node = queue.dequeue()
-      nodes.push(node)
-      if (node.left) {
-        queue.enqueue(node.left)
-      }
-      if (node.right) {
-        queue.enqueue(node.right)
-      }
-    }
-    return nodes
+    const leftSubtreeSize = this.calcSize(subtreeRoot.left)
+    const rightSubtreeSize = this.calcSize(subtreeRoot.right)
+    return leftSubtreeSize + rightSubtreeSize + 1
   }
 
-  traverseNodesLevelOrder(callback) {
-    if (this.root === null) {
-      return
+  calcHeight(subtreeRoot = this.root) {
+    if (subtreeRoot === null) {
+      return -1
     }
-
-    const queue = new Queue()
-    queue.enqueue(this.root)
-    while (!queue.isEmpty()) {
-      const node = queue.dequeue()
-      callback(node)
-      if (node.left) {
-        queue.enqueue(node.left)
-      }
-      if (node.right) {
-        queue.enqueue(node.right)
-      }
-    }
-  }
-
-  getNodesPreorder() {
-    if (this.root === null) {
-      return []
-    }
-
-    const nodes = []
-    const stack = new Stack()
-    stack.push(this.root)
-    nodes.push(this.root)
-    let lastPoppedNode = null
-    while (!stack.isEmpty()) {
-      const node = stack.peek()
-      const shouldGoLeft = node.left !== null
-        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
-      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
-      if (shouldGoLeft) {
-        stack.push(node.left)
-        nodes.push(node.left)
-      } else if (shouldGoRight) {
-        stack.push(node.right)
-        nodes.push(node.right)
-      } else {
-        lastPoppedNode = stack.pop()
-      }
-    }
-    return nodes
-  }
-
-  getNodesPostorder() {
-    if (this.root === null) {
-      return []
-    }
-
-    const nodes = []
-    const stack = new Stack()
-    stack.push(this.root)
-    let lastPoppedNode = null
-    while (!stack.isEmpty()) {
-      const node = stack.peek()
-      const shouldGoLeft = node.left !== null
-        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
-      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
-      if (shouldGoLeft) {
-        stack.push(node.left)
-      } else if (shouldGoRight) {
-        stack.push(node.right)
-      } else {
-        lastPoppedNode = stack.pop()
-        nodes.push(lastPoppedNode)
-      }
-    }
-    return nodes
+    const leftSubtreeHeight = this.calcHeight(subtreeRoot.left)
+    const rightSubtreeHeight = this.calcHeight(subtreeRoot.right)
+    return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
   }
 
   getNodesInorder() {
@@ -413,6 +337,100 @@ export default class BinarySearchTree {
     }
   }
 
+  getNodesPreorder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const stack = new Stack()
+    stack.push(this.root)
+    nodes.push(this.root)
+    let lastPoppedNode = null
+    while (!stack.isEmpty()) {
+      const node = stack.peek()
+      const shouldGoLeft = node.left !== null
+        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
+      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
+      if (shouldGoLeft) {
+        stack.push(node.left)
+        nodes.push(node.left)
+      } else if (shouldGoRight) {
+        stack.push(node.right)
+        nodes.push(node.right)
+      } else {
+        lastPoppedNode = stack.pop()
+      }
+    }
+    return nodes
+  }
+
+  getNodesPostorder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const stack = new Stack()
+    stack.push(this.root)
+    let lastPoppedNode = null
+    while (!stack.isEmpty()) {
+      const node = stack.peek()
+      const shouldGoLeft = node.left !== null
+        && lastPoppedNode !== node.left && lastPoppedNode !== node.right
+      const shouldGoRight = node.right !== null && lastPoppedNode !== node.right
+      if (shouldGoLeft) {
+        stack.push(node.left)
+      } else if (shouldGoRight) {
+        stack.push(node.right)
+      } else {
+        lastPoppedNode = stack.pop()
+        nodes.push(lastPoppedNode)
+      }
+    }
+    return nodes
+  }
+
+  getNodesLevelOrder() {
+    if (this.root === null) {
+      return []
+    }
+
+    const nodes = []
+    const queue = new Queue()
+    queue.enqueue(this.root)
+    while (!queue.isEmpty()) {
+      const node = queue.dequeue()
+      nodes.push(node)
+      if (node.left) {
+        queue.enqueue(node.left)
+      }
+      if (node.right) {
+        queue.enqueue(node.right)
+      }
+    }
+    return nodes
+  }
+
+  traverseNodesLevelOrder(callback) {
+    if (this.root === null) {
+      return
+    }
+
+    const queue = new Queue()
+    queue.enqueue(this.root)
+    while (!queue.isEmpty()) {
+      const node = queue.dequeue()
+      callback(node)
+      if (node.left) {
+        queue.enqueue(node.left)
+      }
+      if (node.right) {
+        queue.enqueue(node.right)
+      }
+    }
+  }
+
   isValidBst() {
     const nodes = this.getNodesInorder()
     let isValid = true
@@ -443,24 +461,6 @@ export default class BinarySearchTree {
   //   }
   //   return false
   // }
-
-  calcSize(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return 0
-    }
-    const leftSubtreeSize = this.calcSize(subtreeRoot.left)
-    const rightSubtreeSize = this.calcSize(subtreeRoot.right)
-    return leftSubtreeSize + rightSubtreeSize + 1
-  }
-
-  calcHeight(subtreeRoot = this.root) {
-    if (subtreeRoot === null) {
-      return -1
-    }
-    const leftSubtreeHeight = this.calcHeight(subtreeRoot.left)
-    const rightSubtreeHeight = this.calcHeight(subtreeRoot.right)
-    return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1
-  }
 
   toString() {
     if (this.root === null) {
