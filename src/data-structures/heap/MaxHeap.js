@@ -8,17 +8,17 @@
  *   parent:      Math.floor((i - 1) / 2)
  *
  * Interface:
- *   get_size() - return number of nodes stored in heap
+ *   get_size() - returns number of nodes stored in heap
  *   is_empty() - returns true if heap contains no nodes
  *   insert - puts node to heap
  *   peek_max - return node with max priority
  *   extract_max - pops max priority node from the heap
  *   change_priority(node_idx) - changes priority of node to given value and bubble_up or down
  *   remove(idx) - removes node by idx
- *   build_heap(array) - produce a max-heap from an unordered array
- *   heap_sort - returns sorted array (ASC order for max heap)
- *   _bubble_up - if node violates heap property -- swap it with parent
- *   _bubble_down - if node violates heap property -- swap it with child
+ *   build_heap(array) - produces a max-heap from an unsorted array
+ *   heap_sort(array) - sorts array in-place (ASC order for max heap)
+ *   _bubble_up - if node violates heap property -- swaps it with parent
+ *   _bubble_down - if node violates heap property -- swaps it with child
  */
 
 /**
@@ -32,7 +32,7 @@ export default class MaxHeap {
     this._array = []
   }
 
-  // get_size() - return number of nodes stored in heap
+  // get_size() - returns number of nodes stored in heap
   getSize() {
     return this._array.length
   }
@@ -116,7 +116,7 @@ export default class MaxHeap {
     }
   }
 
-  // _bubble_up(node_idx) - if node violates heap property -- swap it with parent,
+  // _bubble_up(node_idx) - if node violates heap property -- swaps it with parent,
   // returns index of node after bubbling
   _bubbleUp(nodeIdx) {
     if (this.isEmpty()) {
@@ -139,7 +139,7 @@ export default class MaxHeap {
     return currNodeIdx
   }
 
-  // _bubble_down(node_idx) - if node violates heap property -- swap it with child,
+  // _bubble_down(node_idx) - if node violates heap property -- swaps it with child,
   // returns index of node after bubbling
   _bubbleDown(nodeIdx) {
     if (this.isEmpty()) {
@@ -206,7 +206,7 @@ export default class MaxHeap {
   }
 }
 
-// build_heap(array) - produce a max-heap from an unordered array
+// build_heap(array) - produces a max-heap from an unsorted array
 MaxHeap.buildHeap = (srcArray) => {
   const maxHeap = new MaxHeap()
   maxHeap._array = srcArray
@@ -221,13 +221,14 @@ MaxHeap.buildHeap = (srcArray) => {
   return maxHeap
 }
 
-// heap_sort(array) - returns sorted array (ASC order for max heap)
+// heap_sort(array) - sorts array in-place (ASC order for max heap)
 MaxHeap.heapSort = (srcArray) => {
   const maxHeap = MaxHeap.buildHeap(srcArray)
   const reverseSortedArray = []
   while (!maxHeap.isEmpty()) {
-    const max = maxHeap.extractMax()
-    reverseSortedArray.push(max)
+    reverseSortedArray.push(maxHeap.extractMax())
   }
-  return reverseSortedArray.reverse()
+  while (reverseSortedArray.length > 0) {
+    srcArray.push(reverseSortedArray.pop())
+  }
 }

@@ -247,36 +247,36 @@ describe('MaxHeap', () => {
   })
 
   it('heapSort', () => {
-    let arr1 = []
-    arr1 = MaxHeap.heapSort(arr1)
+    const arr1 = []
+    MaxHeap.heapSort(arr1)
     expect(arr1).toEqual([])
 
-    let arr2 = [1]
-    arr2 = MaxHeap.heapSort(arr2)
+    const arr2 = [1]
+    MaxHeap.heapSort(arr2)
     expect(arr2).toEqual([1])
 
-    let arr3 = [2, 1]
-    arr3 = MaxHeap.heapSort(arr3)
+    const arr3 = [2, 1]
+    MaxHeap.heapSort(arr3)
     expect(arr3).toEqual([1, 2])
 
-    let arr4 = [3, 2, 1]
-    arr4 = MaxHeap.heapSort(arr4)
+    const arr4 = [3, 2, 1]
+    MaxHeap.heapSort(arr4)
     expect(arr4).toEqual([1, 2, 3])
 
-    let arr5 = [1, 3, 2]
-    arr5 = MaxHeap.heapSort(arr5)
+    const arr5 = [1, 3, 2]
+    MaxHeap.heapSort(arr5)
     expect(arr5).toEqual([1, 2, 3])
 
-    let arr6 = [3, 1, 2]
-    arr6 = MaxHeap.heapSort(arr6)
+    const arr6 = [3, 1, 2]
+    MaxHeap.heapSort(arr6)
     expect(arr6).toEqual([1, 2, 3])
 
-    let arr7 = [2, 2, 3, 1]
-    arr7 = MaxHeap.heapSort(arr7)
+    const arr7 = [2, 2, 3, 1]
+    MaxHeap.heapSort(arr7)
     expect(arr7).toEqual([1, 2, 2, 3])
 
-    let arr8 = [1, 4, 5, 2, 3, 7, 6]
-    arr8 = MaxHeap.heapSort(arr8)
+    const arr8 = [1, 4, 5, 2, 3, 7, 6]
+    MaxHeap.heapSort(arr8)
     expect(arr8).toEqual([1, 2, 3, 4, 5, 6, 7])
   })
 })
