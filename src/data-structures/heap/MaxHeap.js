@@ -6,25 +6,6 @@
  *   left child:  2i + 1
  *   right child: 2i + 2
  *   parent:      Math.floor((i - 1) / 2)
- *
- * Interface:
- *   get_size() - returns number of nodes stored in heap
- *   is_empty() - returns true if heap contains no nodes
- *   insert - puts node to heap
- *   peek_max - return node with max priority
- *   extract_max - pops max priority node from the heap
- *   change_priority(node_idx) - changes priority of node to given value and bubble_up or down
- *   remove(idx) - removes node by idx
- *   build_heap(array) - produces a max-heap from an unsorted array
- *   heap_sort(array) - sorts array in-place (ASC order for max heap)
- *   _bubble_up - if node violates heap property -- swaps it with parent
- *   _bubble_down - if node violates heap property -- swaps it with child
- */
-
-/**
- * TODO (bonus):
- * - use dynamic array for storage
- *   - heap_sort should be done in-place
  */
 
 export default class MaxHeap {
@@ -97,8 +78,7 @@ export default class MaxHeap {
     return oldValue
   }
 
-  // change_priority(node_idx, new_priority) - changes priority of node
-  // to given value and bubble_up or down
+  // change_priority(node_idx, new_priority) - changes priority of node to given value
   changePriority(nodeIdx, newPriorityValue) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
@@ -139,15 +119,16 @@ export default class MaxHeap {
     return currNodeIdx
   }
 
-  // _bubble_down(node_idx) - if node violates heap property -- swaps it with child,
+  // _bubble_down(node_idx, lastNodeIdx) - if node violates heap property -- swaps it with child;
+  // optional `heapSize` param is needed for heapsort;
   // returns index of node after bubbling
-  _bubbleDown(nodeIdx) {
+  _bubbleDown(nodeIdx, heapSize = null) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
     }
 
     let currNodeIdx = nodeIdx
-    const lastNodeIdx = this._array.length - 1
+    const lastNodeIdx = heapSize !== null ? heapSize - 1 : this._array.length - 1
     while (currNodeIdx < lastNodeIdx) {
       const currNodeValue = this._array[currNodeIdx]
       let leftChildIdx = currNodeIdx * 2 + 1
@@ -224,11 +205,10 @@ MaxHeap.buildHeap = (srcArray) => {
 // heap_sort(array) - sorts array in-place (ASC order for max heap)
 MaxHeap.heapSort = (srcArray) => {
   const maxHeap = MaxHeap.buildHeap(srcArray)
-  const reverseSortedArray = []
-  while (!maxHeap.isEmpty()) {
-    reverseSortedArray.push(maxHeap.extractMax())
-  }
-  while (reverseSortedArray.length > 0) {
-    srcArray.push(reverseSortedArray.pop())
+  for (let currHeapSize = srcArray.length; currHeapSize > 1; currHeapSize--) {
+    const lastNodeIdx = currHeapSize - 1
+    maxHeap._swapNodes(0, lastNodeIdx)
+    // ignore last element because it is sorted
+    maxHeap._bubbleDown(0, currHeapSize - 1)
   }
 }
