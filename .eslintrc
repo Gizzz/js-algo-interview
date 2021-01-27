@@ -6,19 +6,20 @@
     "jest/globals": true
   },
   "rules": {
+    "arrow-body-style": "off",
     "arrow-parens": "off",
+    "camelcase": "off",
+    "class-methods-use-this": "off",
+    "max-classes-per-file": "off",
     "no-bitwise": "off",
     "no-continue": "off",
     "no-lonely-if": "off",
+    "no-loop-func": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
-    "camelcase": "off",
-    "class-methods-use-this": "off",
-    "arrow-body-style": "off",
-    "no-loop-func": "off",
+    "operator-linebreak": "off",
+    "prefer-destructuring": "off",
     "prefer-template": "off",
-    "semi": ["error", "never"],
-    "max-classes-per-file": "off",
-    "prefer-destructuring": "off"
+    "semi": ["error", "never"]
   }
 }
