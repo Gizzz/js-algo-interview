@@ -10,6 +10,7 @@
  * change_priority(new_priority, item_id)
  */
 
+import { v4 as uuidv4 } from 'uuid'
 import MaxHeap from '../heap/MaxHeap'
 
 const customCompareFn = (a, b) => {
@@ -34,13 +35,16 @@ export default class MaxPriorityQueue {
     return this._maxHeap.isEmpty()
   }
 
-  // insert_with_priority(priority, data) - adds an item to queue with an associated priority
-  insertWithPriority(priority, data) {
+  // insert_with_priority(priority, data) - adds an item to queue with an associated priority,
+  // returns inserted item
+  insertWithPriority(data, priority) {
     const item = {
-      priority,
+      id: uuidv4(),
       data,
+      priority,
     }
     this._maxHeap.insert(item)
+    return item
   }
 
   // peek_highest_priority_item() - returns highest priority item without removing it
@@ -49,12 +53,31 @@ export default class MaxPriorityQueue {
     return item === null ? null : item.data
   }
 
-  // extract_highest_priority_item() - remove the item from the queue
+  // extract_highest_priority_item() - removes the item from the queue
   //   that has the highest priority and return it
   extractHighestPriorityItem() {
     const item = this._maxHeap.extractMax()
     return item === null ? null : item.data
   }
 
-  // change_priority(new_priority, item_id)
+  // change_priority(item_id, new_priority) - changes priority of specified item
+  changePriority(itemId, newPriority) {
+    let itemIdx = -1
+    const item = this._maxHeap._array.find((entry, idx) => {
+      if (entry.id === itemId) {
+        itemIdx = idx
+        return true
+      }
+      return false
+    })
+    if (item === undefined) {
+      return
+    }
+
+    const newItem = {
+      ...item,
+      priority: newPriority,
+    }
+    this._maxHeap.changeValueByIdx(itemIdx, newItem)
+  }
 }
