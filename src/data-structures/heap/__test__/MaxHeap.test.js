@@ -98,21 +98,21 @@ describe('MaxHeap', () => {
     expect(maxHeap.extractMax()).toBe(null)
   })
 
-  it('remove', () => {
+  it('removeByIdx', () => {
     const maxHeap = new MaxHeap()
-    expect(() => maxHeap.remove(0)).toThrow('heap is empty')
+    expect(() => maxHeap.removeByIdx(0)).toThrow('heap is empty')
 
     maxHeap.insert(10)
-    expect(() => maxHeap.remove(-1)).toThrow('nodeIdx is out of bounds')
-    expect(() => maxHeap.remove(1)).toThrow('nodeIdx is out of bounds')
+    expect(() => maxHeap.removeByIdx(-1)).toThrow('nodeIdx is out of bounds')
+    expect(() => maxHeap.removeByIdx(1)).toThrow('nodeIdx is out of bounds')
 
-    const removedValue1 = maxHeap.remove(0)
+    const removedValue1 = maxHeap.removeByIdx(0)
     expect(removedValue1).toBe(10)
     expect(maxHeap.getSize()).toBe(0)
 
     maxHeap.insert(10)
     maxHeap.insert(5)
-    const removedValue2 = maxHeap.remove(0)
+    const removedValue2 = maxHeap.removeByIdx(0)
     expect(removedValue2).toBe(10)
     const str1 = '5\n'
     expect(maxHeap.toString()).toBe(str1)
@@ -122,7 +122,7 @@ describe('MaxHeap', () => {
     //
     maxHeap.insert(10)
     maxHeap.insert(5)
-    const removedValue3 = maxHeap.remove(1)
+    const removedValue3 = maxHeap.removeByIdx(1)
     expect(removedValue3).toBe(5)
     const str2 = '10\n'
     expect(maxHeap.toString()).toBe(str2)
@@ -133,26 +133,67 @@ describe('MaxHeap', () => {
     maxHeap.insert(15)
     maxHeap.insert(10)
     maxHeap.insert(5)
-    const removedValue4 = maxHeap.remove(1)
+    const removedValue4 = maxHeap.removeByIdx(1)
     expect(removedValue4).toBe(10)
     let str3 = ''
     str3 += '15\n'
     str3 += '5 X\n'
     expect(maxHeap.toString()).toBe(str3)
+
+    const maxHeap2 = new MaxHeap()
+    maxHeap2.insert(1)
+    maxHeap2.insert(2)
+    maxHeap2.insert(3)
+    maxHeap2.insert(4)
+    maxHeap2.insert(5)
+    maxHeap2.insert(6)
+    maxHeap2.insert(7)
+    maxHeap2.insert(8)
+    maxHeap2.insert(9)
+    maxHeap2.insert(10)
+    maxHeap2.insert(11)
+    maxHeap2.insert(12)
+    maxHeap2.insert(13)
+    maxHeap2.insert(14)
+    maxHeap2.insert(15)
+    let str4 = ''
+    str4 += '15\n'
+    str4 += '10 14\n'
+    str4 += '7 9 11 13\n'
+    str4 += '1 4 3 8 2 6 5 12\n'
+    expect(maxHeap2.toString()).toBe(str4)
+
+    const removedValue5 = maxHeap2.removeByIdx(7)
+    expect(removedValue5).toBe(1)
+    let str5 = ''
+    str5 += '15\n'
+    str5 += '12 14\n'
+    str5 += '10 9 11 13\n'
+    str5 += '7 4 3 8 2 6 5 X\n'
+    expect(maxHeap2.toString()).toBe(str5)
+
+    const removedValue6 = maxHeap2.removeByIdx(1)
+    expect(removedValue6).toBe(12)
+    let str6 = ''
+    str6 += '15\n'
+    str6 += '10 14\n'
+    str6 += '7 9 11 13\n'
+    str6 += '5 4 3 8 2 6 X X\n'
+    expect(maxHeap2.toString()).toBe(str6)
   })
 
-  it('changePriority', () => {
+  it('changeValueByIdx', () => {
     const maxHeap = new MaxHeap()
-    expect(() => maxHeap.changePriority(0)).toThrow('heap is empty')
+    expect(() => maxHeap.changeValueByIdx(0)).toThrow('heap is empty')
 
     maxHeap.insert(10)
-    expect(() => maxHeap.changePriority(-1)).toThrow('nodeIdx is out of bounds')
-    expect(() => maxHeap.changePriority(1)).toThrow('nodeIdx is out of bounds')
+    expect(() => maxHeap.changeValueByIdx(-1)).toThrow('nodeIdx is out of bounds')
+    expect(() => maxHeap.changeValueByIdx(1)).toThrow('nodeIdx is out of bounds')
 
     expect(maxHeap.peekMax()).toBe(10)
-    maxHeap.changePriority(0, 10)
+    maxHeap.changeValueByIdx(0, 10)
     expect(maxHeap.peekMax()).toBe(10)
-    maxHeap.changePriority(0, 15)
+    maxHeap.changeValueByIdx(0, 15)
     expect(maxHeap.peekMax()).toBe(15)
 
     const maxHeap2 = new MaxHeap()
@@ -160,19 +201,19 @@ describe('MaxHeap', () => {
     maxHeap2.insert(10)
     maxHeap2.insert(5)
     //
-    maxHeap2.changePriority(0, 20)
+    maxHeap2.changeValueByIdx(0, 20)
     let str1 = ''
     str1 += '20\n'
     str1 += '10 5\n'
     expect(maxHeap2.toString()).toBe(str1)
     //
-    maxHeap2.changePriority(1, 25)
+    maxHeap2.changeValueByIdx(1, 25)
     let str2 = ''
     str2 += '25\n'
     str2 += '20 5\n'
     expect(maxHeap2.toString()).toBe(str2)
     //
-    maxHeap2.changePriority(2, 30)
+    maxHeap2.changeValueByIdx(2, 30)
     let str3 = ''
     str3 += '30\n'
     str3 += '20 25\n'
@@ -183,19 +224,19 @@ describe('MaxHeap', () => {
     maxHeap3.insert(10)
     maxHeap3.insert(5)
     //
-    maxHeap3.changePriority(0, 3)
+    maxHeap3.changeValueByIdx(0, 3)
     let str4 = ''
     str4 += '10\n'
     str4 += '3 5\n'
     expect(maxHeap3.toString()).toBe(str4)
     //
-    maxHeap3.changePriority(1, 2)
+    maxHeap3.changeValueByIdx(1, 2)
     let str5 = ''
     str5 += '10\n'
     str5 += '2 5\n'
     expect(maxHeap3.toString()).toBe(str5)
     //
-    maxHeap3.changePriority(2, 1)
+    maxHeap3.changeValueByIdx(2, 1)
     let str6 = ''
     str6 += '10\n'
     str6 += '2 1\n'
