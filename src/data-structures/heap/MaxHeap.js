@@ -8,9 +8,70 @@
  *   parent:      Math.floor((i - 1) / 2)
  */
 
+class Comparator {
+  constructor(compareFn = Comparator.defaultCompareFn) {
+    this._compareFn = compareFn
+  }
+
+  static defaultCompareFn(a, b) {
+    if (a === b) {
+      return 0
+    }
+
+    return a < b ? -1 : 1
+  }
+
+  eq(a, b) {
+    return this._compareFn(a, b) === 0
+  }
+
+  gt(a, b) {
+    return this._compareFn(a, b) === 1
+  }
+
+  lt(a, b) {
+    return this._compareFn(a, b) === -1
+  }
+
+  gte(a, b) {
+    return this.gt(a, b) || this.eq(a, b)
+  }
+
+  lte(a, b) {
+    return this.lt(a, b) || this.eq(a, b)
+  }
+}
+
 export default class MaxHeap {
-  constructor() {
+  constructor(compareFn) {
     this._array = []
+    this._comparator = new Comparator(compareFn)
+  }
+
+  // build_heap(array) - produces a max-heap from an unsorted array
+  static buildHeap(srcArray) {
+    const maxHeap = new MaxHeap()
+    maxHeap._array = srcArray
+    if (maxHeap.isEmpty()) {
+      return maxHeap
+    }
+
+    const lastParentNodeIdx = Math.floor(maxHeap.getSize() / 2) - 1
+    for (let i = lastParentNodeIdx; i >= 0; i--) {
+      maxHeap._bubbleDown(i)
+    }
+    return maxHeap
+  }
+
+  // heap_sort(array) - sorts array in-place (ASC order for max heap)
+  static heapSort(srcArray) {
+    const maxHeap = MaxHeap.buildHeap(srcArray)
+    for (let currHeapSize = srcArray.length; currHeapSize > 1; currHeapSize--) {
+      const lastNodeIdx = currHeapSize - 1
+      maxHeap._swapNodes(0, lastNodeIdx)
+      // ignore last element because it is sorted
+      maxHeap._bubbleDown(0, currHeapSize - 1)
+    }
   }
 
   // get_size() - returns number of nodes stored in heap
@@ -55,8 +116,8 @@ export default class MaxHeap {
     return maxNodeValue
   }
 
-  // remove(node_idx) - removes node by idx, returns removed value
-  remove(nodeIdx) {
+  // removeByIdx(node_idx) - removes node by index, returns removed value
+  removeByIdx(nodeIdx) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
     }
@@ -70,16 +131,16 @@ export default class MaxHeap {
       return oldValue
     }
     this._array[nodeIdx] = newValue
-    if (newValue > oldValue) {
+    if (this._comparator.gt(newValue, oldValue)) {
       this._bubbleUp(nodeIdx)
-    } else if (newValue < oldValue) {
+    } else if (this._comparator.lt(newValue, oldValue)) {
       this._bubbleDown(nodeIdx)
     }
     return oldValue
   }
 
-  // change_priority(node_idx, new_priority) - changes priority of node to given value
-  changePriority(nodeIdx, newPriorityValue) {
+  // changeValueByIdx(nodeIdx, newValue) - changes value of node by index
+  changeValueByIdx(nodeIdx, newValue) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
     }
@@ -88,10 +149,10 @@ export default class MaxHeap {
     }
 
     const oldValue = this._array[nodeIdx]
-    this._array[nodeIdx] = newPriorityValue
-    if (newPriorityValue > oldValue) {
+    this._array[nodeIdx] = newValue
+    if (this._comparator.gt(newValue, oldValue)) {
       this._bubbleUp(nodeIdx)
-    } else if (newPriorityValue < oldValue) {
+    } else if (this._comparator.lt(newValue, oldValue)) {
       this._bubbleDown(nodeIdx)
     }
   }
@@ -108,7 +169,7 @@ export default class MaxHeap {
       const currNodeValue = this._array[currNodeIdx]
       const parentNodeIdx = Math.floor((currNodeIdx - 1) / 2)
       const parentNodeValue = this._array[parentNodeIdx]
-      if (currNodeValue > parentNodeValue) {
+      if (this._comparator.gt(currNodeValue, parentNodeValue)) {
         this._swapNodes(currNodeIdx, parentNodeIdx)
         currNodeIdx = parentNodeIdx
         continue
@@ -138,10 +199,11 @@ export default class MaxHeap {
       const leftChildValue = leftChildIdx !== -1 ? this._array[leftChildIdx] : null
       const rightChildValue = rightChildIdx !== -1 ? this._array[rightChildIdx] : null
 
-      const shouldSwapWithLeftChild =
-        leftChildIdx !== -1 && currNodeValue < leftChildValue && leftChildValue >= rightChildValue
+      const shouldSwapWithLeftChild = leftChildIdx !== -1 &&
+        this._comparator.lt(currNodeValue, leftChildValue) &&
+        this._comparator.gte(leftChildValue, rightChildValue)
       const shouldSwapWithRightChild =
-        rightChildIdx !== -1 && currNodeValue < rightChildValue
+        rightChildIdx !== -1 && this._comparator.lt(currNodeValue, rightChildValue)
       if (shouldSwapWithLeftChild) {
         this._swapNodes(currNodeIdx, leftChildIdx)
         currNodeIdx = leftChildIdx
@@ -184,31 +246,5 @@ export default class MaxHeap {
       currLevel += 1
     }
     return resultStr
-  }
-}
-
-// build_heap(array) - produces a max-heap from an unsorted array
-MaxHeap.buildHeap = (srcArray) => {
-  const maxHeap = new MaxHeap()
-  maxHeap._array = srcArray
-  if (maxHeap.isEmpty()) {
-    return maxHeap
-  }
-
-  const lastParentNodeIdx = Math.floor(maxHeap.getSize() / 2) - 1
-  for (let i = lastParentNodeIdx; i >= 0; i--) {
-    maxHeap._bubbleDown(i)
-  }
-  return maxHeap
-}
-
-// heap_sort(array) - sorts array in-place (ASC order for max heap)
-MaxHeap.heapSort = (srcArray) => {
-  const maxHeap = MaxHeap.buildHeap(srcArray)
-  for (let currHeapSize = srcArray.length; currHeapSize > 1; currHeapSize--) {
-    const lastNodeIdx = currHeapSize - 1
-    maxHeap._swapNodes(0, lastNodeIdx)
-    // ignore last element because it is sorted
-    maxHeap._bubbleDown(0, currHeapSize - 1)
   }
 }
