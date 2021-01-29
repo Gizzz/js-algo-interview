@@ -320,4 +320,25 @@ describe('MaxHeap', () => {
     MaxHeap.heapSort(arr8)
     expect(arr8).toEqual([1, 2, 3, 4, 5, 6, 7])
   })
+
+  it('should work with custom `compareFn`', () => {
+    const customCompareFn = (a, b) => {
+      if (a.data === b.data) {
+        return 0
+      }
+      return a.data < b.data ? -1 : 1
+    }
+    const maxHeap = new MaxHeap(customCompareFn)
+    maxHeap.insert({ data: 1 })
+    maxHeap.insert({ data: 2 })
+    maxHeap.insert({ data: 3 })
+
+    expect(maxHeap.peekMax().data).toBe(3)
+    maxHeap.extractMax()
+    expect(maxHeap.peekMax().data).toBe(2)
+    maxHeap.extractMax()
+    expect(maxHeap.peekMax().data).toBe(1)
+    maxHeap.extractMax()
+    expect(maxHeap.peekMax()).toBe(null)
+  })
 })

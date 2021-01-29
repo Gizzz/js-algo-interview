@@ -17,7 +17,6 @@ class Comparator {
     if (a === b) {
       return 0
     }
-
     return a < b ? -1 : 1
   }
 
@@ -196,14 +195,14 @@ export default class MaxHeap {
       let rightChildIdx = currNodeIdx * 2 + 2
       leftChildIdx = leftChildIdx <= lastNodeIdx ? leftChildIdx : -1
       rightChildIdx = rightChildIdx <= lastNodeIdx ? rightChildIdx : -1
-      const leftChildValue = leftChildIdx !== -1 ? this._array[leftChildIdx] : null
-      const rightChildValue = rightChildIdx !== -1 ? this._array[rightChildIdx] : null
+      const leftChildValue = leftChildIdx === -1 ? null : this._array[leftChildIdx]
+      const rightChildValue = rightChildIdx === -1 ? null : this._array[rightChildIdx]
 
-      const shouldSwapWithLeftChild = leftChildIdx !== -1 &&
+      const shouldSwapWithLeftChild = leftChildValue !== null &&
         this._comparator.lt(currNodeValue, leftChildValue) &&
-        this._comparator.gte(leftChildValue, rightChildValue)
+        (rightChildValue === null || this._comparator.gte(leftChildValue, rightChildValue))
       const shouldSwapWithRightChild =
-        rightChildIdx !== -1 && this._comparator.lt(currNodeValue, rightChildValue)
+        rightChildValue !== null && this._comparator.lt(currNodeValue, rightChildValue)
       if (shouldSwapWithLeftChild) {
         this._swapNodes(currNodeIdx, leftChildIdx)
         currNodeIdx = leftChildIdx
