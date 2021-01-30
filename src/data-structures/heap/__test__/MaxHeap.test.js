@@ -15,7 +15,7 @@ describe('MaxHeap', () => {
     maxHeap.insert(1)
     expect(maxHeap.getSize()).toBe(1)
 
-    maxHeap.extractMax()
+    maxHeap.extractTop()
     expect(maxHeap.getSize()).toBe(0)
   })
 
@@ -26,7 +26,7 @@ describe('MaxHeap', () => {
     maxHeap.insert(1)
     expect(maxHeap.isEmpty()).toBe(false)
 
-    maxHeap.extractMax()
+    maxHeap.extractTop()
     expect(maxHeap.isEmpty()).toBe(true)
   })
 
@@ -60,42 +60,42 @@ describe('MaxHeap', () => {
     expect(maxHeap.toString()).toBe(str4)
   })
 
-  it('peekMax', () => {
+  it('peekTop', () => {
     const maxHeap = new MaxHeap()
-    expect(maxHeap.peekMax()).toBe(null)
+    expect(maxHeap.peekTop()).toBe(null)
 
     maxHeap.insert(5)
-    expect(maxHeap.peekMax()).toBe(5)
+    expect(maxHeap.peekTop()).toBe(5)
 
     maxHeap.insert(10)
-    expect(maxHeap.peekMax()).toBe(10)
+    expect(maxHeap.peekTop()).toBe(10)
 
     maxHeap.insert(3)
-    expect(maxHeap.peekMax()).toBe(10)
+    expect(maxHeap.peekTop()).toBe(10)
 
-    maxHeap.extractMax()
-    expect(maxHeap.peekMax()).toBe(5)
-    maxHeap.extractMax()
-    expect(maxHeap.peekMax()).toBe(3)
-    maxHeap.extractMax()
-    expect(maxHeap.peekMax()).toBe(null)
+    maxHeap.extractTop()
+    expect(maxHeap.peekTop()).toBe(5)
+    maxHeap.extractTop()
+    expect(maxHeap.peekTop()).toBe(3)
+    maxHeap.extractTop()
+    expect(maxHeap.peekTop()).toBe(null)
   })
 
-  it('extractMax', () => {
+  it('extractTop', () => {
     const maxHeap = new MaxHeap()
-    expect(maxHeap.extractMax()).toBe(null)
+    expect(maxHeap.extractTop()).toBe(null)
 
     maxHeap.insert(5)
-    expect(maxHeap.extractMax()).toBe(5)
-    expect(maxHeap.extractMax()).toBe(null)
+    expect(maxHeap.extractTop()).toBe(5)
+    expect(maxHeap.extractTop()).toBe(null)
 
     maxHeap.insert(10)
     maxHeap.insert(15)
     maxHeap.insert(5)
-    expect(maxHeap.extractMax()).toBe(15)
-    expect(maxHeap.extractMax()).toBe(10)
-    expect(maxHeap.extractMax()).toBe(5)
-    expect(maxHeap.extractMax()).toBe(null)
+    expect(maxHeap.extractTop()).toBe(15)
+    expect(maxHeap.extractTop()).toBe(10)
+    expect(maxHeap.extractTop()).toBe(5)
+    expect(maxHeap.extractTop()).toBe(null)
   })
 
   it('removeByIdx', () => {
@@ -117,7 +117,7 @@ describe('MaxHeap', () => {
     const str1 = '5\n'
     expect(maxHeap.toString()).toBe(str1)
 
-    maxHeap.extractMax()
+    maxHeap.extractTop()
     expect(maxHeap.getSize()).toBe(0)
     //
     maxHeap.insert(10)
@@ -127,7 +127,7 @@ describe('MaxHeap', () => {
     const str2 = '10\n'
     expect(maxHeap.toString()).toBe(str2)
 
-    maxHeap.extractMax()
+    maxHeap.extractTop()
     expect(maxHeap.getSize()).toBe(0)
     //
     maxHeap.insert(15)
@@ -190,11 +190,11 @@ describe('MaxHeap', () => {
     expect(() => maxHeap.changeValueByIdx(-1)).toThrow('nodeIdx is out of bounds')
     expect(() => maxHeap.changeValueByIdx(1)).toThrow('nodeIdx is out of bounds')
 
-    expect(maxHeap.peekMax()).toBe(10)
+    expect(maxHeap.peekTop()).toBe(10)
     maxHeap.changeValueByIdx(0, 10)
-    expect(maxHeap.peekMax()).toBe(10)
+    expect(maxHeap.peekTop()).toBe(10)
     maxHeap.changeValueByIdx(0, 15)
-    expect(maxHeap.peekMax()).toBe(15)
+    expect(maxHeap.peekTop()).toBe(15)
 
     const maxHeap2 = new MaxHeap()
     maxHeap2.insert(15)
@@ -333,12 +333,12 @@ describe('MaxHeap', () => {
     maxHeap.insert({ data: 2 })
     maxHeap.insert({ data: 3 })
 
-    expect(maxHeap.peekMax().data).toBe(3)
-    maxHeap.extractMax()
-    expect(maxHeap.peekMax().data).toBe(2)
-    maxHeap.extractMax()
-    expect(maxHeap.peekMax().data).toBe(1)
-    maxHeap.extractMax()
-    expect(maxHeap.peekMax()).toBe(null)
+    expect(maxHeap.peekTop().data).toBe(3)
+    maxHeap.extractTop()
+    expect(maxHeap.peekTop().data).toBe(2)
+    maxHeap.extractTop()
+    expect(maxHeap.peekTop().data).toBe(1)
+    maxHeap.extractTop()
+    expect(maxHeap.peekTop()).toBe(null)
   })
 })

@@ -49,7 +49,7 @@ export default class MaxPriorityQueue {
    * Returns highest priority item without removing it.
    */
   peekHighestPriorityItem() {
-    const item = this._maxHeap.peekMax()
+    const item = this._maxHeap.peekTop()
     return item === null ? null : item.data
   }
 
@@ -57,7 +57,7 @@ export default class MaxPriorityQueue {
    * Removes the item from the queue that has the highest priority and returns it.
    */
   extractHighestPriorityItem() {
-    const item = this._maxHeap.extractMax()
+    const item = this._maxHeap.extractTop()
     return item === null ? null : item.data
   }
 
