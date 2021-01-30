@@ -3,7 +3,6 @@ import MaxHeap from '../../heap/MaxHeap'
 
 describe('PriorityQueue', () => {
   it('constructor', () => {
-    expect(() => new PriorityQueue()).toThrow('`HeapSubclass` param should be provided')
     expect(() => new PriorityQueue(Object)).toThrow('`HeapSubclass` should be instance of `Heap`')
     expect(() => new PriorityQueue(MaxHeap)).toThrow('`compareFn` param should be provided')
     const compareFnMock = () => {}
