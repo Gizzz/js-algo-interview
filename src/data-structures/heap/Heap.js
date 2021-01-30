@@ -1,5 +1,5 @@
 /**
- * Base class for min/max heap.
+ * NOTE: Base class for min/max heap.
  * Instances should NOT be created directly.
  *
  * Heap implementation with zero-based indexing.
