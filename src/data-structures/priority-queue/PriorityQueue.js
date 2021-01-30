@@ -10,9 +10,6 @@ import Heap from '../heap/Heap'
 
 export default class PriorityQueue {
   constructor(HeapSubclass, compareFn) {
-    if (HeapSubclass === undefined) {
-      throw new Error('`HeapSubclass` param should be provided')
-    }
     if (HeapSubclass.prototype instanceof Heap === false) {
       throw new Error('`HeapSubclass` should be instance of `Heap`')
     }
