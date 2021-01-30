@@ -1,8 +1,8 @@
 /**
- * Heap implementation with zero-based indexing.
  * Base class for min/max heap.
- * This data structure can be used for implementing Priority Queue ADT.
+ * Instances should NOT be created directly.
  *
+ * Heap implementation with zero-based indexing.
  * Index math:
  *   left child:  2i + 1
  *   right child: 2i + 2
