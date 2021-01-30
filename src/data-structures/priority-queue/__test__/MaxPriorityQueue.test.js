@@ -4,7 +4,7 @@ describe('MaxPriorityQueue', () => {
   it('should create empty MaxPriorityQueue', () => {
     const maxPQ = new MaxPriorityQueue()
     expect(maxPQ).toBeDefined()
-    expect(maxPQ._maxHeap).toBeDefined()
+    expect(maxPQ._heap).toBeDefined()
   })
 
   it('getSize', () => {
