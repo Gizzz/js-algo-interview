@@ -1,19 +1,22 @@
-const swapItems = (arr, idxA, idxB) => {
-  /* eslint-disable no-param-reassign */
-  const temp = arr[idxA]
-  arr[idxA] = arr[idxB]
-  arr[idxB] = temp
-  /* eslint-enable no-param-reassign */
-}
+/**
+ * Implementation of insertion sort.
+ * It uses shifting instead of swapping to reduce time cost.
+ */
 
 export default function insertionSort(arr) {
   for (let i = 1; i < arr.length; i++) {
-    for (let j = i; j > 0; j--) {
-      if (arr[j - 1] > arr[j]) {
-        swapItems(arr, j - 1, j)
-      } else {
-        break
-      }
+    if (arr[i - 1] <= arr[i]) {
+      continue
     }
+
+    /* eslint-disable no-param-reassign */
+    let idxToInsert = i
+    const valueToInsert = arr[i]
+    while (idxToInsert > 0 && arr[idxToInsert - 1] > valueToInsert) {
+      arr[idxToInsert] = arr[idxToInsert - 1]
+      idxToInsert -= 1
+    }
+    arr[idxToInsert] = valueToInsert
+    /* eslint-enable no-param-reassign */
   }
 }
