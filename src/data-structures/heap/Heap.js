@@ -9,7 +9,7 @@
  *   parent:      Math.floor((i - 1) / 2)
  */
 
-import Comparator from './Comparator'
+import Comparator from '../../helpers/Comparator'
 
 export default class Heap {
   constructor(compareFn) {
