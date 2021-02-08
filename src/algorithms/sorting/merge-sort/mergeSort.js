@@ -1,11 +1,20 @@
-const merge = (left, right) => {
+const merge = (leftArr, rightArr) => {
   let result = []
-  while (left.length !== 0 && right.length !== 0) {
-    const nextItem = left[0] <= right[0] ? left.shift() : right.shift()
+  let leftIdx = 0
+  let rightIdx = 0
+  while (leftIdx < leftArr.length && rightIdx < rightArr.length) {
+    let nextItem
+    if (leftArr[leftIdx] <= rightArr[rightIdx]) {
+      nextItem = leftArr[leftIdx]
+      leftIdx += 1
+    } else {
+      nextItem = rightArr[rightIdx]
+      rightIdx += 1
+    }
     result.push(nextItem)
   }
-  result = result.concat(left)
-  result = result.concat(right)
+  result = result.concat(leftArr.slice(leftIdx))
+  result = result.concat(rightArr.slice(rightIdx))
   return result
 }
 
