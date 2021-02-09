@@ -1,15 +1,18 @@
+import Comparator from '../../../helpers/Comparator'
+
 /**
  * Merges `left` and `right` arrays, saves result in `dest` array.
  */
-const merge = (left, right, dest) => {
+const merge = (left, right, dest, compareFn) => {
   // disable eslint rule to save result in dest:
   /* eslint-disable no-param-reassign */
+  const comparator = new Comparator(compareFn)
   let destIdx = 0
   let leftIdx = 0
   let rightIdx = 0
   while (leftIdx < left.length && rightIdx < right.length) {
     let nextItem
-    if (left[leftIdx] <= right[rightIdx]) {
+    if (comparator.lte(left[leftIdx], right[rightIdx])) {
       nextItem = left[leftIdx]
       leftIdx += 1
     } else {
@@ -32,7 +35,7 @@ const merge = (left, right, dest) => {
   /* eslint-enable no-param-reassign */
 }
 
-export default function mergeSort(arr) {
+export default function mergeSort(arr, compareFn) {
   if (arr.length < 2) {
     return
   }
@@ -41,7 +44,7 @@ export default function mergeSort(arr) {
   const leftPart = arr.slice(0, midIdx)
   const rightPart = arr.slice(midIdx)
   //
-  mergeSort(leftPart)
-  mergeSort(rightPart)
-  merge(leftPart, rightPart, arr)
+  mergeSort(leftPart, compareFn)
+  mergeSort(rightPart, compareFn)
+  merge(leftPart, rightPart, arr, compareFn)
 }
