@@ -1,33 +1,47 @@
-const merge = (leftArr, rightArr) => {
-  let result = []
+/**
+ * Merges `left` and `right` arrays, saves result in `dest` array.
+ */
+const merge = (left, right, dest) => {
+  // disable eslint rule to save result in dest:
+  /* eslint-disable no-param-reassign */
+  let destIdx = 0
   let leftIdx = 0
   let rightIdx = 0
-  while (leftIdx < leftArr.length && rightIdx < rightArr.length) {
+  while (leftIdx < left.length && rightIdx < right.length) {
     let nextItem
-    if (leftArr[leftIdx] <= rightArr[rightIdx]) {
-      nextItem = leftArr[leftIdx]
+    if (left[leftIdx] <= right[rightIdx]) {
+      nextItem = left[leftIdx]
       leftIdx += 1
     } else {
-      nextItem = rightArr[rightIdx]
+      nextItem = right[rightIdx]
       rightIdx += 1
     }
-    result.push(nextItem)
+    dest[destIdx] = nextItem
+    destIdx += 1
   }
-  result = result.concat(leftArr.slice(leftIdx))
-  result = result.concat(rightArr.slice(rightIdx))
-  return result
+  while (leftIdx < left.length) {
+    dest[destIdx] = left[leftIdx]
+    leftIdx += 1
+    destIdx += 1
+  }
+  while (rightIdx < right.length) {
+    dest[destIdx] = right[rightIdx]
+    rightIdx += 1
+    destIdx += 1
+  }
+  /* eslint-enable no-param-reassign */
 }
 
 export default function mergeSort(arr) {
   if (arr.length < 2) {
-    return arr
+    return
   }
 
   const midIdx = Math.floor(arr.length / 2)
-  let leftPart = arr.slice(0, midIdx)
-  let rightPart = arr.slice(midIdx)
+  const leftPart = arr.slice(0, midIdx)
+  const rightPart = arr.slice(midIdx)
   //
-  leftPart = mergeSort(leftPart)
-  rightPart = mergeSort(rightPart)
-  return merge(leftPart, rightPart)
+  mergeSort(leftPart)
+  mergeSort(rightPart)
+  merge(leftPart, rightPart, arr)
 }
