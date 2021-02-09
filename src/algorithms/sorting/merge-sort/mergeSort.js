@@ -24,10 +24,10 @@ export default function mergeSort(arr) {
   }
 
   const midIdx = Math.floor(arr.length / 2)
-  const leftPart = arr.filter((_, idx) => idx < midIdx)
-  const rightPart = arr.filter((_, idx) => idx >= midIdx)
+  let leftPart = arr.slice(0, midIdx)
+  let rightPart = arr.slice(midIdx)
   //
-  const leftPartSorted = mergeSort(leftPart)
-  const rightPartSorted = mergeSort(rightPart)
-  return merge(leftPartSorted, rightPartSorted)
+  leftPart = mergeSort(leftPart)
+  rightPart = mergeSort(rightPart)
+  return merge(leftPart, rightPart)
 }
