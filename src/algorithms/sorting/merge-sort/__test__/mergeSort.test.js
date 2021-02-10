@@ -1,13 +1,4 @@
-import mergeSort from '../mergeSort'
-
-const createSortAdapter = (sortFn, compareFn) => {
-  return {
-    sort: (inputArr) => {
-      sortFn(inputArr, compareFn)
-      return inputArr
-    },
-  }
-}
+import MergesortConfig from '../mergeSort'
 
 describe('mergeSort', () => {
   it('basic sort', () => {
@@ -18,7 +9,7 @@ describe('mergeSort', () => {
     const negativeArr = [-1, 0, 5, -10, 20, 13, -7, 3, 2, -3]
     const negativeArrSorted = [-10, -7, -3, -1, 0, 2, 3, 5, 13, 20]
 
-    const sorter = createSortAdapter(mergeSort)
+    const sorter = new MergesortConfig()
     expect(sorter.sort([])).toEqual([])
     expect(sorter.sort([1])).toEqual([1])
     expect(sorter.sort([1, 2])).toEqual([1, 2])
@@ -38,8 +29,8 @@ describe('mergeSort', () => {
       }
       return a.length < b.length ? -1 : 1
     }
-    const sorter = createSortAdapter(mergeSort, compareFn)
 
+    const sorter = new MergesortConfig(compareFn)
     expect(sorter.sort([''])).toEqual([''])
     expect(sorter.sort(['a'])).toEqual(['a'])
     expect(sorter.sort(['aa', 'a'])).toEqual(['a', 'aa'])
@@ -48,33 +39,6 @@ describe('mergeSort', () => {
   })
 
   it('stability', () => {
-    const sortedArr = [
-      {
-        prop_1: 1,
-        prop_2: 1,
-      },
-      {
-        prop_1: 2,
-        prop_2: 1,
-      },
-      {
-        prop_1: 2,
-        prop_2: 2,
-      },
-      {
-        prop_1: 2,
-        prop_2: 3,
-      },
-      {
-        prop_1: 3,
-        prop_2: 1,
-      },
-      {
-        prop_1: 4,
-        prop_2: 1,
-      },
-    ]
-
     const unsortedArr = [
       {
         prop_1: 3,
@@ -102,13 +66,40 @@ describe('mergeSort', () => {
       },
     ]
 
+    const sortedArr = [
+      {
+        prop_1: 1,
+        prop_2: 1,
+      },
+      {
+        prop_1: 2,
+        prop_2: 1,
+      },
+      {
+        prop_1: 2,
+        prop_2: 2,
+      },
+      {
+        prop_1: 2,
+        prop_2: 3,
+      },
+      {
+        prop_1: 3,
+        prop_2: 1,
+      },
+      {
+        prop_1: 4,
+        prop_2: 1,
+      },
+    ]
+
     const compareFn = (a, b) => {
       if (a.prop_1 === b.prop_1) {
         return 0
       }
       return a.prop_1 < b.prop_1 ? -1 : 1
     }
-    const sorter = createSortAdapter(mergeSort, compareFn)
+    const sorter = new MergesortConfig(compareFn)
     expect(sorter.sort(unsortedArr)).toEqual(sortedArr)
   })
 })
