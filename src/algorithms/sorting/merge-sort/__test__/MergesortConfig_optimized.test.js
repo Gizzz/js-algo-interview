@@ -1,4 +1,4 @@
-import MergesortConfig from '../mergeSort'
+import MergesortConfig from '../MergesortConfig_optimized'
 
 describe('mergeSort', () => {
   it('basic sort', () => {
