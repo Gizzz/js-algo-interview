@@ -1,3 +1,9 @@
+// Implementation of quicksort.
+// Features:
+// - randomized partitioning (pivot element choosed randomly)
+// to handle 'already sorted' case
+// - 3-way partitioning to handle duplicates efficiently
+
 const swap = (arr, itemIdxA, itemIdxB) => {
   /* eslint-disable no-param-reassign */
   const temp = arr[itemIdxA]
@@ -6,10 +12,16 @@ const swap = (arr, itemIdxA, itemIdxB) => {
   /* eslint-enable no-param-reassign */
 }
 
+const getRandomIdx = (minIdx, maxIdx) => {
+  const range = maxIdx - minIdx + 1
+  return Math.floor(Math.random() * range) + minIdx
+}
+
 const partition = (arr, loIdx, hiIdx) => {
   // array is sorted in-place, so disable eslint rule:
   /* eslint-disable no-param-reassign */
-  const pivot = arr[hiIdx]
+  const randomIdx = getRandomIdx(loIdx, hiIdx)
+  const pivot = arr[randomIdx]
   let pivotLoIdx = loIdx
   let pivotHiIdx = hiIdx
   let currIdx = loIdx
