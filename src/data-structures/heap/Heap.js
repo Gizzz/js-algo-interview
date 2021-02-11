@@ -25,13 +25,13 @@ export default class Heap {
   }
 
   // build_heap(array) - produces a heap from an unsorted array
-  static buildHeap(srcArray) {
+  static buildHeap(srcArray, compareFn) {
     if (this === Heap) {
       throw new Error('static methods of `Heap` class should not be used directly, use subclass')
     }
 
     const HeapSubclass = this
-    const heap = new HeapSubclass()
+    const heap = new HeapSubclass(compareFn)
     heap._array = srcArray
     if (heap.isEmpty()) {
       return heap
@@ -45,13 +45,13 @@ export default class Heap {
   }
 
   // heap_sort(array) - sorts array in-place (ASC order for max heap, DESC for min heap)
-  static heapSort(srcArray) {
+  static heapSort(srcArray, compareFn) {
     if (this === Heap) {
       throw new Error('static methods of `Heap` class should not be used directly, use subclass')
     }
 
     const HeapSubclass = this
-    const heap = HeapSubclass.buildHeap(srcArray)
+    const heap = HeapSubclass.buildHeap(srcArray, compareFn)
     for (let currHeapSize = srcArray.length; currHeapSize > 1; currHeapSize--) {
       const lastNodeIdx = currHeapSize - 1
       heap._swapNodes(0, lastNodeIdx)
