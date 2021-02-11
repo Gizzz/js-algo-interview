@@ -1,7 +1,6 @@
 // Implementation of quicksort.
 // Features:
-// - randomized partitioning (pivot element choosed randomly)
-// to handle 'already sorted' case
+// - randomized partitioning (pivot element choosed randomly) to handle 'already sorted' case
 // - 3-way partitioning to handle duplicates efficiently
 
 const swap = (arr, itemIdxA, itemIdxB) => {
