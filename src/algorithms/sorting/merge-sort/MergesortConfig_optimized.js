@@ -1,6 +1,6 @@
 /**
  * Optimized version of mergesort.
- * Has better constants for memory usage and running time.
+ * Has better constants for memory usage(1x extra memory needed) and running time.
  */
 
 import Comparator from '../../../helpers/Comparator'
@@ -11,33 +11,34 @@ export default class MergesortConfig {
   }
 
   sort(arr) {
-    this._mergesort(arr)
+    const loIdx = 0
+    const hiIdx = arr.length - 1
+    this._mergesort(arr, loIdx, hiIdx)
     return arr
   }
 
-  _mergesort(arr) {
-    if (arr.length < 2) {
+  _mergesort(arr, loIdx, hiIdx) {
+    if (loIdx >= hiIdx) {
       return
     }
 
-    const midIdx = Math.floor(arr.length / 2)
-    const leftPart = arr.slice(0, midIdx)
-    const rightPart = arr.slice(midIdx)
-    //
-    this._mergesort(leftPart)
-    this._mergesort(rightPart)
-    this._merge(leftPart, rightPart, arr)
+    const midIdx = Math.floor((hiIdx - loIdx) / 2) + loIdx
+    this._mergesort(arr, loIdx, midIdx)
+    this._mergesort(arr, midIdx + 1, hiIdx)
+    this._merge(arr, loIdx, midIdx, hiIdx)
   }
 
   /**
-   * Merges `left` and `right` arrays, saves result in `dest` array.
+   * Creates `left` and `right` subarrays, saves merged result in original array.
    */
-  _merge(left, right, dest) {
-    // disable eslint rule to save result in dest:
+  _merge(arr, loIdx, midIdx, hiIdx) {
+    // disable eslint rule since sorting is in-place:
     /* eslint-disable no-param-reassign */
-    let destIdx = 0
+    const left = arr.slice(loIdx, midIdx + 1)
+    const right = arr.slice(midIdx + 1, hiIdx + 1)
     let leftIdx = 0
     let rightIdx = 0
+    let arrIdx = loIdx
     while (leftIdx < left.length && rightIdx < right.length) {
       let nextItem
       if (this._comparator.lte(left[leftIdx], right[rightIdx])) {
@@ -47,18 +48,18 @@ export default class MergesortConfig {
         nextItem = right[rightIdx]
         rightIdx += 1
       }
-      dest[destIdx] = nextItem
-      destIdx += 1
+      arr[arrIdx] = nextItem
+      arrIdx += 1
     }
     while (leftIdx < left.length) {
-      dest[destIdx] = left[leftIdx]
+      arr[arrIdx] = left[leftIdx]
       leftIdx += 1
-      destIdx += 1
+      arrIdx += 1
     }
     while (rightIdx < right.length) {
-      dest[destIdx] = right[rightIdx]
+      arr[arrIdx] = right[rightIdx]
       rightIdx += 1
-      destIdx += 1
+      arrIdx += 1
     }
     /* eslint-enable no-param-reassign */
   }
