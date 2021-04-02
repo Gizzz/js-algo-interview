@@ -35,7 +35,6 @@ describe('GraphViaAdjList', () => {
 
   it('traverseInBfsOrder', () => {
     const graph_1 = new GraphViaAdjList()
-    expect(() => graph_1.traverseInBfsOrder()).toThrow('`sourceVtx` param is not provided.')
     expect(() => graph_1.traverseInBfsOrder('A')).toThrow('Source vertex is not in graph.')
 
     graph_1.addVertex('A')
@@ -53,6 +52,11 @@ describe('GraphViaAdjList', () => {
     graph_1.addEdge('A', 'D')
     const result_1_3 = graph_1.traverseInBfsOrder('A')
     expect(result_1_3).toEqual(['A', 'B', 'C', 'D'])
+
+    const result_1_4 = graph_1.traverseInBfsOrder('B')
+    expect(result_1_4).toEqual(['B'])
+    const result_1_5 = graph_1.traverseInBfsOrder('C')
+    expect(result_1_5).toEqual(['C'])
 
     // picture of this graph is in '../../images/bfs.png'
     const graph_2 = new GraphViaAdjList()
@@ -165,5 +169,48 @@ describe('GraphViaAdjList', () => {
     expect(prev_2['v']).toEqual('c')
     expect(dist_2['v']).toEqual(3)
     /* eslint-enable dot-notation */
+  })
+
+  it('traverseInDfsOrder', () => {
+    const graph_1 = new GraphViaAdjList()
+    const result_1_1 = graph_1.traverseInDfsOrder()
+    expect(result_1_1).toEqual([])
+
+    graph_1.addVertex('A')
+    const result_1_2 = graph_1.traverseInDfsOrder()
+    expect(result_1_2).toEqual(['A'])
+
+    graph_1.addVertex('B')
+    graph_1.addVertex('C')
+    graph_1.addVertex('D')
+    const result_1_3 = graph_1.traverseInDfsOrder()
+    expect(result_1_3).toEqual(['A', 'B', 'C', 'D'])
+
+    graph_1.addEdge('A', 'B')
+    graph_1.addEdge('B', 'D')
+    graph_1.addEdge('A', 'C')
+    const result_1_4 = graph_1.traverseInDfsOrder()
+    expect(result_1_4).toEqual(['A', 'B', 'D', 'C'])
+
+    // picture of this graph is in '../../images/dfs.png'
+    const graph_2 = new GraphViaAdjList()
+    graph_2.addVertex('a')
+    graph_2.addVertex('b')
+    graph_2.addVertex('c')
+    graph_2.addVertex('d')
+    graph_2.addVertex('e')
+    graph_2.addVertex('f')
+    //
+    graph_2.addEdge('a', 'b')
+    graph_2.addEdge('a', 'd')
+    graph_2.addEdge('b', 'e')
+    graph_2.addEdge('c', 'f')
+    graph_2.addEdge('c', 'e')
+    graph_2.addEdge('d', 'b')
+    graph_2.addEdge('e', 'd')
+    graph_2.addEdge('f', 'f')
+
+    const result_2_1 = graph_2.traverseInDfsOrder()
+    expect(result_2_1).toEqual(['a', 'b', 'e', 'd', 'c', 'f'])
   })
 })

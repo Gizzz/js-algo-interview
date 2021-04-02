@@ -26,9 +26,6 @@ export default class GraphViaAdjList {
   }
 
   traverseInBfsOrder(sourceVtx) {
-    if (sourceVtx === undefined) {
-      throw new Error('`sourceVtx` param is not provided.')
-    }
     if (this._adjList[sourceVtx] === undefined) {
       throw new Error('Source vertex is not in graph.')
     }
@@ -87,5 +84,40 @@ export default class GraphViaAdjList {
     }
 
     return [prev, dist]
+  }
+
+  traverseInDfsOrder() {
+    const visited = new Map()
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      if (!visited.has(vertex)) {
+        this._dfsVisit(vertex, visited)
+      }
+    })
+
+    const result = []
+    // eslint-disable-next-line no-restricted-syntax
+    for (const vtx of visited.keys()) {
+      result.push(vtx)
+    }
+    return result
+  }
+
+  _dfsVisit(vertex, visited) {
+    visited.set(vertex, true)
+    const neighbors = this._adjList[vertex]
+    neighbors.forEach(neighbor => {
+      if (!visited.has(neighbor)) {
+        this._dfsVisit(neighbor, visited)
+      }
+    })
+  }
+
+  _getVertices() {
+    const result = []
+    Object
+      .keys(this._adjList)
+      .forEach(key => result.push(key))
+    return result
   }
 }
