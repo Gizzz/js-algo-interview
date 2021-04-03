@@ -1,4 +1,5 @@
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
+import Stack from '../../stack/Stack'
 
 export default class GraphViaAdjList {
   constructor() {
@@ -86,12 +87,12 @@ export default class GraphViaAdjList {
     return [prev, dist]
   }
 
-  traverseInDfsOrder() {
+  traverseInDfsOrderRecursively() {
     const visited = new Map()
     const vertices = this._getVertices()
     vertices.forEach(vertex => {
       if (!visited.has(vertex)) {
-        this._dfsVisit(vertex, visited)
+        this._dfsVisitRecursively(vertex, visited)
       }
     })
 
@@ -103,16 +104,54 @@ export default class GraphViaAdjList {
     return result
   }
 
-  _dfsVisit(vertex, visited) {
+  _dfsVisitRecursively(vertex, visited) {
     visited.set(vertex, true)
     const neighbors = this._adjList[vertex]
     neighbors.forEach(neighbor => {
       if (!visited.has(neighbor)) {
-        this._dfsVisit(neighbor, visited)
+        this._dfsVisitRecursively(neighbor, visited)
       }
     })
   }
 
+  traverseInDfsOrderIteratively() {
+    const visited = new Map()
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      if (!visited.has(vertex)) {
+        this._dfsVisitIteratively(vertex, visited)
+      }
+    })
+
+    const result = []
+    // eslint-disable-next-line no-restricted-syntax
+    for (const vtx of visited.keys()) {
+      result.push(vtx)
+    }
+    return result
+  }
+
+  _dfsVisitIteratively(vertex, visited) {
+    const stack = new Stack()
+    stack.push(vertex)
+    while (!stack.isEmpty()) {
+      const currVtx = stack.pop()
+      if (visited.has(currVtx)) {
+        continue
+      }
+      visited.set(currVtx, true)
+      const neighbors = this._adjList[currVtx]
+      neighbors.forEach(neighbor => {
+        if (!visited.has(neighbor)) {
+          stack.push(neighbor)
+        }
+      })
+    }
+  }
+
+  /**
+   * @returns all vertices in graph
+   */
   _getVertices() {
     const result = []
     Object

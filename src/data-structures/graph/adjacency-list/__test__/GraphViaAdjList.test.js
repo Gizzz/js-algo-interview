@@ -171,25 +171,25 @@ describe('GraphViaAdjList', () => {
     /* eslint-enable dot-notation */
   })
 
-  it('traverseInDfsOrder', () => {
+  it('traverseInDfsOrderRecursively', () => {
     const graph_1 = new GraphViaAdjList()
-    const result_1_1 = graph_1.traverseInDfsOrder()
+    const result_1_1 = graph_1.traverseInDfsOrderRecursively()
     expect(result_1_1).toEqual([])
 
     graph_1.addVertex('A')
-    const result_1_2 = graph_1.traverseInDfsOrder()
+    const result_1_2 = graph_1.traverseInDfsOrderRecursively()
     expect(result_1_2).toEqual(['A'])
 
     graph_1.addVertex('B')
     graph_1.addVertex('C')
     graph_1.addVertex('D')
-    const result_1_3 = graph_1.traverseInDfsOrder()
+    const result_1_3 = graph_1.traverseInDfsOrderRecursively()
     expect(result_1_3).toEqual(['A', 'B', 'C', 'D'])
 
     graph_1.addEdge('A', 'B')
     graph_1.addEdge('B', 'D')
     graph_1.addEdge('A', 'C')
-    const result_1_4 = graph_1.traverseInDfsOrder()
+    const result_1_4 = graph_1.traverseInDfsOrderRecursively()
     expect(result_1_4).toEqual(['A', 'B', 'D', 'C'])
 
     // picture of this graph is in '../../images/dfs.png'
@@ -210,7 +210,50 @@ describe('GraphViaAdjList', () => {
     graph_2.addEdge('e', 'd')
     graph_2.addEdge('f', 'f')
 
-    const result_2_1 = graph_2.traverseInDfsOrder()
+    const result_2_1 = graph_2.traverseInDfsOrderRecursively()
     expect(result_2_1).toEqual(['a', 'b', 'e', 'd', 'c', 'f'])
+  })
+
+  it('traverseInDfsOrderIteratively', () => {
+    const graph_1 = new GraphViaAdjList()
+    const result_1_1 = graph_1.traverseInDfsOrderIteratively()
+    expect(result_1_1).toEqual([])
+
+    graph_1.addVertex('A')
+    const result_1_2 = graph_1.traverseInDfsOrderIteratively()
+    expect(result_1_2).toEqual(['A'])
+
+    graph_1.addVertex('B')
+    graph_1.addVertex('C')
+    graph_1.addVertex('D')
+    const result_1_3 = graph_1.traverseInDfsOrderIteratively()
+    expect(result_1_3).toEqual(['A', 'B', 'C', 'D'])
+
+    graph_1.addEdge('A', 'B')
+    graph_1.addEdge('B', 'D')
+    graph_1.addEdge('A', 'C')
+    const result_1_4 = graph_1.traverseInDfsOrderIteratively()
+    expect(result_1_4).toEqual(['A', 'C', 'B', 'D'])
+
+    // picture of this graph is in '../../images/dfs.png'
+    const graph_2 = new GraphViaAdjList()
+    graph_2.addVertex('a')
+    graph_2.addVertex('b')
+    graph_2.addVertex('c')
+    graph_2.addVertex('d')
+    graph_2.addVertex('e')
+    graph_2.addVertex('f')
+    //
+    graph_2.addEdge('a', 'b')
+    graph_2.addEdge('a', 'd')
+    graph_2.addEdge('b', 'e')
+    graph_2.addEdge('c', 'f')
+    graph_2.addEdge('c', 'e')
+    graph_2.addEdge('d', 'b')
+    graph_2.addEdge('e', 'd')
+    graph_2.addEdge('f', 'f')
+
+    const result_2_1 = graph_2.traverseInDfsOrderIteratively()
+    expect(result_2_1).toEqual(['a', 'd', 'b', 'e', 'c', 'f'])
   })
 })
