@@ -191,6 +191,52 @@ export default class GraphViaAdjList {
     /* eslint-enable no-param-reassign */
   }
 
+  classifyEdges() {
+    const result = {
+      edges: {},
+      startTimes: {},
+      finishTimes: {},
+      ticks: 0,
+    }
+
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      const isVertexVisited = result.startTimes[vertex] !== undefined
+      if (!isVertexVisited) {
+        this._dfsVisitForClassifyEdges(vertex, result)
+      }
+    })
+    return result.edges
+  }
+
+  _dfsVisitForClassifyEdges(vertex, result) {
+    // needed to mutate `result` param:
+    /* eslint-disable no-param-reassign */
+    result.ticks += 1
+    result.startTimes[vertex] = result.ticks
+
+    const neighbors = this._adjList[vertex]
+    neighbors.forEach(neighbor => {
+      const isNeighborVisited = result.startTimes[neighbor] !== undefined
+      const isNeighborFinished = result.finishTimes[neighbor] !== undefined
+      const isNeighborStartedAfterVertex = result.startTimes[neighbor] > result.startTimes[vertex]
+      if (!isNeighborVisited) {
+        result.edges[`${vertex}->${neighbor}`] = 'tree'
+        this._dfsVisitForClassifyEdges(neighbor, result)
+      } else if (!isNeighborFinished) {
+        result.edges[`${vertex}->${neighbor}`] = 'back'
+      } else if (isNeighborStartedAfterVertex) {
+        result.edges[`${vertex}->${neighbor}`] = 'forward'
+      } else {
+        result.edges[`${vertex}->${neighbor}`] = 'cross'
+      }
+    })
+
+    result.ticks += 1
+    result.finishTimes[vertex] = result.ticks
+    /* eslint-enable no-param-reassign */
+  }
+
   /**
    * @returns all vertices in graph
    */
