@@ -149,6 +149,48 @@ export default class GraphViaAdjList {
     }
   }
 
+  traverseInTopologicallySortedOrder() {
+    const result = {
+      startTimes: {},
+      finishTimes: {},
+      order: [],
+      ticks: 0,
+    }
+
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      const isVertexVisited = result.startTimes[vertex] !== undefined
+      if (!isVertexVisited) {
+        this._dfsVisitForTopologicalSort(vertex, result)
+      }
+    })
+
+    return result.order.reverse()
+  }
+
+  _dfsVisitForTopologicalSort(vertex, result) {
+    // needed to mutate `result` param:
+    /* eslint-disable no-param-reassign */
+    result.ticks += 1
+    result.startTimes[vertex] = result.ticks
+
+    const neighbors = this._adjList[vertex]
+    neighbors.forEach(neighbor => {
+      const isNeighborVisited = result.startTimes[neighbor] !== undefined
+      const isNeighborFinished = result.finishTimes[neighbor] !== undefined
+      if (!isNeighborVisited) {
+        this._dfsVisitForTopologicalSort(neighbor, result)
+      } else if (!isNeighborFinished) {
+        throw new Error('Back edge detected.')
+      }
+    })
+
+    result.ticks += 1
+    result.finishTimes[vertex] = result.ticks
+    result.order.push(vertex)
+    /* eslint-enable no-param-reassign */
+  }
+
   /**
    * @returns all vertices in graph
    */

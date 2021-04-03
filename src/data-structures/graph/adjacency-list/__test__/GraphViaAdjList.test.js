@@ -256,4 +256,63 @@ describe('GraphViaAdjList', () => {
     const result_2_1 = graph_2.traverseInDfsOrderIteratively()
     expect(result_2_1).toEqual(['a', 'd', 'b', 'e', 'c', 'f'])
   })
+
+  it('traverseInTopologicallySortedOrder', () => {
+    const graph_1 = new GraphViaAdjList()
+    const result_1_1 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_1).toEqual([])
+
+    graph_1.addVertex('A')
+    const result_1_2 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_2).toEqual(['A'])
+
+    graph_1.addVertex('B')
+    const result_1_3 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_3).toEqual(['B', 'A'])
+
+    graph_1.addEdge('A', 'B')
+    const result_1_4 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_4).toEqual(['A', 'B'])
+
+    graph_1.addVertex('C')
+    graph_1.addEdge('A', 'C')
+    const result_1_5 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_5).toEqual(['A', 'C', 'B'])
+
+    graph_1.addVertex('D')
+    graph_1.addEdge('B', 'D')
+    const result_1_6 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_6).toEqual(['A', 'C', 'B', 'D'])
+
+    graph_1.addEdge('B', 'C')
+    const result_1_7 = graph_1.traverseInTopologicallySortedOrder()
+    expect(result_1_7).toEqual(['A', 'B', 'C', 'D'])
+
+    graph_1.addEdge('D', 'A')
+    expect(() => graph_1.traverseInTopologicallySortedOrder()).toThrow('Back edge detected.')
+
+    // picture of this graph is in '../../images/topological-sort.png'
+    const graph_2 = new GraphViaAdjList()
+    graph_2.addVertex('A')
+    graph_2.addVertex('B')
+    graph_2.addVertex('C')
+    graph_2.addVertex('D')
+    graph_2.addVertex('E')
+    graph_2.addVertex('F')
+    graph_2.addVertex('G')
+    graph_2.addVertex('H')
+    graph_2.addVertex('I')
+    //
+    graph_2.addEdge('G', 'H')
+    graph_2.addEdge('A', 'H')
+    graph_2.addEdge('A', 'B')
+    graph_2.addEdge('B', 'C')
+    graph_2.addEdge('C', 'F')
+    graph_2.addEdge('D', 'C')
+    graph_2.addEdge('D', 'E')
+    graph_2.addEdge('E', 'F')
+
+    const result_2_1 = graph_2.traverseInTopologicallySortedOrder()
+    expect(result_2_1).toEqual(['I', 'G', 'D', 'E', 'A', 'B', 'C', 'F', 'H'])
+  })
 })
