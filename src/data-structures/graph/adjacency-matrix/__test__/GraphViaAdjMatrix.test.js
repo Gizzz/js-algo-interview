@@ -119,4 +119,58 @@ describe('GraphViaAdjList', () => {
       charToNum.v,
     ])
   })
+
+  it('traverseInDfsOrder', () => {
+    const graph_1 = new GraphViaAdjMatrix()
+    const result_1_1 = graph_1.traverseInDfsOrder()
+    expect(result_1_1).toEqual([])
+
+    const charToNum = {
+      a: 0,
+      b: 1,
+      c: 2,
+      d: 3,
+      e: 4,
+      f: 5,
+    }
+
+    graph_1.addVertex(charToNum.a)
+    const result_1_2 = graph_1.traverseInDfsOrder()
+    expect(result_1_2).toEqual([charToNum.a])
+
+    graph_1.addVertex(charToNum.b)
+    graph_1.addVertex(charToNum.c)
+    graph_1.addVertex(charToNum.d)
+    const result_1_3 = graph_1.traverseInDfsOrder()
+    expect(result_1_3).toEqual([charToNum.a, charToNum.b, charToNum.c, charToNum.d])
+
+    graph_1.addEdge(charToNum.a, charToNum.b)
+    graph_1.addEdge(charToNum.b, charToNum.d)
+    graph_1.addEdge(charToNum.a, charToNum.c)
+    const result_1_4 = graph_1.traverseInDfsOrder()
+    expect(result_1_4).toEqual([charToNum.a, charToNum.b, charToNum.d, charToNum.c])
+
+    // picture of this graph is in '../../images/dfs.png'
+    const graph_2 = new GraphViaAdjMatrix()
+    for (let i = 0; i < 6; i++) {
+      graph_2.addVertex()
+    }
+    graph_2.addEdge(charToNum.a, charToNum.b)
+    graph_2.addEdge(charToNum.a, charToNum.d)
+    graph_2.addEdge(charToNum.b, charToNum.e)
+    graph_2.addEdge(charToNum.c, charToNum.f)
+    graph_2.addEdge(charToNum.c, charToNum.e)
+    graph_2.addEdge(charToNum.d, charToNum.b)
+    graph_2.addEdge(charToNum.e, charToNum.d)
+    graph_2.addEdge(charToNum.f, charToNum.f)
+
+    const result_2_1 = graph_2.traverseInDfsOrder()
+    expect(result_2_1).toEqual([charToNum.a,
+      charToNum.b,
+      charToNum.e,
+      charToNum.d,
+      charToNum.c,
+      charToNum.f,
+    ])
+  })
 })
