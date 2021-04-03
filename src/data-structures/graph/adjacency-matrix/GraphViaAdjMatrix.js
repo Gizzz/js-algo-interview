@@ -76,6 +76,44 @@ export default class GraphViaAdjMatrix {
     return result
   }
 
+  traverseInDfsOrder() {
+    const visited = new Map()
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      if (!visited.has(vertex)) {
+        this._dfsVisit(vertex, visited)
+      }
+    })
+
+    const result = []
+    // eslint-disable-next-line no-restricted-syntax
+    for (const vtx of visited.keys()) {
+      result.push(vtx)
+    }
+    return result
+  }
+
+  _dfsVisit(vertex, visited) {
+    visited.set(vertex, true)
+    const neighbors = this._getNeighbors(vertex)
+    neighbors.forEach(neighbor => {
+      if (!visited.has(neighbor)) {
+        this._dfsVisit(neighbor, visited)
+      }
+    })
+  }
+
+  /**
+   * @returns all vertices in graph
+   */
+  _getVertices() {
+    const result = []
+    for (let i = 0; i < this._adjMatrix.length; i++) {
+      result.push(i)
+    }
+    return result
+  }
+
   _getNeighbors(vertex) {
     const vertexRow = this._adjMatrix[vertex]
     const result = []
