@@ -319,10 +319,11 @@ export default class GraphViaAdjList {
     const dist = {}
     dist[sourceVtx] = 0
 
-    const vertexToId = {} // del
+    // TODO: create cached version of PQ and remove this mapping
+    const vertexToId = {}
     const minPq = new MinPriorityQueue()
     const srcInsertionResult = minPq.insertWithPriority(sourceVtx, 0)
-    vertexToId[sourceVtx] = srcInsertionResult.id // del
+    vertexToId[sourceVtx] = srcInsertionResult.id
     while (!minPq.isEmpty()) {
       const currVtx = minPq.extractHighestPriorityItem()
       const neighbors = this._adjList[currVtx]
@@ -334,11 +335,11 @@ export default class GraphViaAdjList {
           prev[neighbor] = currVtx
           dist[neighbor] = newDistance
           const insertionResult = minPq.insertWithPriority(neighbor, newDistance)
-          vertexToId[neighbor] = insertionResult.id // del
+          vertexToId[neighbor] = insertionResult.id
         } else if (newDistance < oldDistance) {
           prev[neighbor] = currVtx
           dist[neighbor] = newDistance
-          const neighborId = vertexToId[neighbor] // del
+          const neighborId = vertexToId[neighbor]
           minPq.changePriority(neighborId, newDistance)
         }
       })
