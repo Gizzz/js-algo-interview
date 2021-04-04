@@ -252,14 +252,14 @@ export default class GraphViaAdjList {
 
     this._reverseEdges()
     const components = []
-    const reverseVisited = new Map()
+    visited.clear()
     while (!finishTimesStack.isEmpty()) {
       const vertex = finishTimesStack.pop()
-      if (reverseVisited.has(vertex)) {
+      if (visited.has(vertex)) {
         continue
       }
       const component = []
-      this._dfsVisit_populateComponent(vertex, reverseVisited, component)
+      this._dfsVisit_populateComponent(vertex, visited, component)
       components.push(component)
     }
     // reverse back to original edges
@@ -278,13 +278,13 @@ export default class GraphViaAdjList {
     finishTimesStack.push(vertex)
   }
 
-  _dfsVisit_populateComponent(vertex, reverseVisited, component) {
-    reverseVisited.set(vertex, true)
+  _dfsVisit_populateComponent(vertex, visited, component) {
+    visited.set(vertex, true)
     component.push(vertex)
     const neighbors = this._adjList[vertex]
     neighbors.forEach(neighbor => {
-      if (!reverseVisited.has(neighbor)) {
-        this._dfsVisit_populateComponent(neighbor, reverseVisited, component)
+      if (!visited.has(neighbor)) {
+        this._dfsVisit_populateComponent(neighbor, visited, component)
       }
     })
   }
