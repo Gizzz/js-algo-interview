@@ -1,9 +1,12 @@
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../../stack/Stack'
+import MinPriorityQueue from '../../priority-queue/MinPriorityQueue'
 
 export default class GraphViaAdjList {
   constructor() {
     this._adjList = {}
+    // maps edge to its weight
+    this._weights = {}
   }
 
   addVertex(vertexKey) {
@@ -13,7 +16,7 @@ export default class GraphViaAdjList {
     this._adjList[vertexKey] = []
   }
 
-  addEdge(startVtx, endVtx) {
+  addEdge(startVtx, endVtx, weight = 1) {
     if (this._adjList[startVtx] === undefined) {
       throw new Error('Start vertex is not in graph.')
     }
@@ -24,6 +27,7 @@ export default class GraphViaAdjList {
       throw new Error('Edge is already added.')
     }
     this._adjList[startVtx].push(endVtx)
+    this._weights[`${startVtx}->${endVtx}`] = weight
   }
 
   traverseInBfsOrder(sourceVtx) {
@@ -54,9 +58,6 @@ export default class GraphViaAdjList {
   }
 
   calcShortestPathsViaBfs(sourceVtx) {
-    if (sourceVtx === undefined) {
-      throw new Error('`sourceVtx` param is not provided.')
-    }
     if (this._adjList[sourceVtx] === undefined) {
       throw new Error('Source vertex is not in graph.')
     }
@@ -66,7 +67,7 @@ export default class GraphViaAdjList {
     // if NULL - vertex has no previous vertex (case for source vertex)
     const prev = {}
     prev[sourceVtx] = null
-    // distance to vertex; if UNDEFINED - distance is infinity (vertex not reachable)
+    // distance to vertex; if UNDEFINED - distance is infinity (vertex is not reachable)
     const dist = {}
     dist[sourceVtx] = 0
 
@@ -302,6 +303,47 @@ export default class GraphViaAdjList {
       })
     })
     this._adjList = newAdjList
+  }
+
+  calcShortestPathsViaDijkstra(sourceVtx) {
+    if (this._adjList[sourceVtx] === undefined) {
+      throw new Error('Source vertex is not in graph.')
+    }
+
+    // previos vertex in path to vertex;
+    // if UNDEFINED - vertex not visited,
+    // if NULL - vertex has no previous vertex (case for source vertex)
+    const prev = {}
+    prev[sourceVtx] = null
+    // distance to vertex; if UNDEFINED - distance is infinity (vertex is not reachable)
+    const dist = {}
+    dist[sourceVtx] = 0
+
+    const vertexToId = {} // del
+    const minPq = new MinPriorityQueue()
+    const srcInsertionResult = minPq.insertWithPriority(sourceVtx, 0)
+    vertexToId[sourceVtx] = srcInsertionResult.id // del
+    while (!minPq.isEmpty()) {
+      const currVtx = minPq.extractHighestPriorityItem()
+      const neighbors = this._adjList[currVtx]
+      neighbors.forEach(neighbor => {
+        const isNeighborVisited = prev[neighbor] !== undefined
+        const oldDistance = dist[neighbor] === undefined ? Infinity : dist[neighbor]
+        const newDistance = dist[currVtx] + this._weights[`${currVtx}->${neighbor}`]
+        if (!isNeighborVisited) {
+          prev[neighbor] = currVtx
+          dist[neighbor] = newDistance
+          const insertionResult = minPq.insertWithPriority(neighbor, newDistance)
+          vertexToId[neighbor] = insertionResult.id // del
+        } else if (newDistance < oldDistance) {
+          prev[neighbor] = currVtx
+          dist[neighbor] = newDistance
+          const neighborId = vertexToId[neighbor] // del
+          minPq.changePriority(neighborId, newDistance)
+        }
+      })
+    }
+    return [prev, dist]
   }
 
   /**

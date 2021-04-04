@@ -97,7 +97,6 @@ describe('GraphViaAdjList', () => {
   it('calcShortestPathsViaBfs', () => {
     /* eslint-disable dot-notation */
     const graph_1 = new GraphViaAdjList()
-    expect(() => graph_1.calcShortestPathsViaBfs()).toThrow('`sourceVtx` param is not provided.')
     expect(() => graph_1.calcShortestPathsViaBfs('A')).toThrow('Source vertex is not in graph.')
 
     graph_1.addVertex('A')
@@ -429,5 +428,78 @@ describe('GraphViaAdjList', () => {
 
     const result_2_1 = graph_2.findStronglyConnectedComponents()
     expect(result_2_1).toEqual([['G', 'J', 'I', 'H'], ['K'], ['A', 'C', 'B'], ['D', 'F', 'E']])
+  })
+
+  it('calcShortestPathsViaDijkstra', () => {
+    /* eslint-disable dot-notation */
+    const graph_1 = new GraphViaAdjList()
+    expect(() => graph_1.calcShortestPathsViaDijkstra('A')).toThrow('Source vertex is not in graph.')
+
+    graph_1.addVertex('S')
+    graph_1.addVertex('T')
+    const [prev_1_1, dist_1_1] = graph_1.calcShortestPathsViaDijkstra('S')
+    expect(prev_1_1['S']).toBe(null)
+    expect(dist_1_1['S']).toBe(0)
+    expect(prev_1_1['T']).toBe(undefined)
+    expect(dist_1_1['T']).toBe(undefined)
+
+    graph_1.addVertex('A')
+    graph_1.addEdge('S', 'A', 4)
+    const [prev_1_2, dist_1_2] = graph_1.calcShortestPathsViaDijkstra('S')
+    expect(prev_1_2['S']).toBe(null)
+    expect(dist_1_2['S']).toBe(0)
+    expect(prev_1_2['A']).toBe('S')
+    expect(dist_1_2['A']).toBe(4)
+    expect(prev_1_2['T']).toBe(undefined)
+    expect(dist_1_2['T']).toBe(undefined)
+
+    graph_1.addEdge('A', 'T', 4)
+    const [prev_1_3, dist_1_3] = graph_1.calcShortestPathsViaDijkstra('S')
+    expect(prev_1_3['T']).toBe('A')
+    expect(dist_1_3['T']).toBe(8)
+    expect(prev_1_3['A']).toBe('S')
+    expect(dist_1_3['A']).toBe(4)
+
+    graph_1.addVertex('B')
+    graph_1.addVertex('C')
+    graph_1.addEdge('S', 'B', 2)
+    graph_1.addEdge('B', 'C', 2)
+    graph_1.addEdge('C', 'T', 2)
+    const [prev_1_4, dist_1_4] = graph_1.calcShortestPathsViaDijkstra('S')
+    expect(prev_1_4['T']).toBe('C')
+    expect(dist_1_4['T']).toBe(6)
+    expect(prev_1_4['C']).toBe('B')
+    expect(dist_1_4['C']).toBe(4)
+    expect(prev_1_4['B']).toBe('S')
+    expect(dist_1_4['B']).toBe(2)
+
+    // picture of this graph is in '../../images/strongly-connected-components.png'
+    const graph_2 = new GraphViaAdjList()
+    graph_2.addVertex('A') // src
+    graph_2.addVertex('B')
+    graph_2.addVertex('C')
+    graph_2.addVertex('D') // target
+    graph_2.addVertex('E')
+    //
+    graph_2.addEdge('A', 'B', 10)
+    graph_2.addEdge('A', 'C', 3)
+    graph_2.addEdge('B', 'C', 1)
+    graph_2.addEdge('C', 'B', 4)
+    graph_2.addEdge('B', 'D', 2)
+    graph_2.addEdge('C', 'E', 2)
+    graph_2.addEdge('C', 'D', 8)
+    graph_2.addEdge('D', 'E', 7)
+    graph_2.addEdge('E', 'D', 9)
+
+    const [prev_2, dist_2] = graph_2.calcShortestPathsViaDijkstra('A')
+    expect(prev_2['D']).toBe('B')
+    expect(dist_2['D']).toBe(9)
+    expect(prev_2['B']).toBe('C')
+    expect(dist_2['B']).toBe(7)
+    expect(prev_2['C']).toBe('A')
+    expect(dist_2['C']).toBe(3)
+    expect(prev_2['A']).toBe(null)
+    expect(dist_2['A']).toBe(0)
+    /* eslint-enable dot-notation */
   })
 })
