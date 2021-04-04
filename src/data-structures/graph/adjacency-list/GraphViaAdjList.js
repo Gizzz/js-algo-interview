@@ -238,6 +238,73 @@ export default class GraphViaAdjList {
   }
 
   /**
+   * Implements Kosaraju's algorithm
+   */
+  findStronglyConnectedComponents() {
+    const finishTimesStack = new Stack()
+    const visited = new Map()
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      if (!visited.has(vertex)) {
+        this._dfsVisit_populateStack(vertex, visited, finishTimesStack)
+      }
+    })
+
+    this._reverseEdges()
+    const components = []
+    const reverseVisited = new Map()
+    while (!finishTimesStack.isEmpty()) {
+      const vertex = finishTimesStack.pop()
+      if (reverseVisited.has(vertex)) {
+        continue
+      }
+      const component = []
+      this._dfsVisit_populateComponent(vertex, reverseVisited, component)
+      components.push(component)
+    }
+    // reverse back to original edges
+    this._reverseEdges()
+    return components
+  }
+
+  _dfsVisit_populateStack(vertex, visited, finishTimesStack) {
+    visited.set(vertex, true)
+    const neighbors = this._adjList[vertex]
+    neighbors.forEach(neighbor => {
+      if (!visited.has(neighbor)) {
+        this._dfsVisit_populateStack(neighbor, visited, finishTimesStack)
+      }
+    })
+    finishTimesStack.push(vertex)
+  }
+
+  _dfsVisit_populateComponent(vertex, reverseVisited, component) {
+    reverseVisited.set(vertex, true)
+    component.push(vertex)
+    const neighbors = this._adjList[vertex]
+    neighbors.forEach(neighbor => {
+      if (!reverseVisited.has(neighbor)) {
+        this._dfsVisit_populateComponent(neighbor, reverseVisited, component)
+      }
+    })
+  }
+
+  _reverseEdges() {
+    const newAdjList = {}
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      newAdjList[vertex] = []
+    })
+    vertices.forEach(vertex => {
+      const neighbors = this._adjList[vertex]
+      neighbors.forEach(neighbor => {
+        newAdjList[neighbor].push(vertex)
+      })
+    })
+    this._adjList = newAdjList
+  }
+
+  /**
    * @returns all vertices in graph
    */
   _getVertices() {
