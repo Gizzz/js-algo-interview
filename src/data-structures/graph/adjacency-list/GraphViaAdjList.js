@@ -315,15 +315,15 @@ export default class GraphViaAdjList {
     // if NULL - vertex has no previous vertex (case for source vertex)
     const prev = {}
     prev[sourceVtx] = null
-    // distance to vertex; if UNDEFINED - distance is infinity (vertex is not reachable)
+    // distance to vertex;
+    // if UNDEFINED - distance is infinity (vertex is unreachable or not yet discovered)
     const dist = {}
     dist[sourceVtx] = 0
 
     // TODO: create cached version of PQ and remove this mapping
     const vertexToId = {}
     const minPq = new MinPriorityQueue()
-    const srcInsertionResult = minPq.insertWithPriority(sourceVtx, 0)
-    vertexToId[sourceVtx] = srcInsertionResult.id
+    minPq.insertWithPriority(sourceVtx, 0)
     while (!minPq.isEmpty()) {
       const currVtx = minPq.extractHighestPriorityItem()
       const neighbors = this._adjList[currVtx]
@@ -345,6 +345,57 @@ export default class GraphViaAdjList {
       })
     }
     return [prev, dist]
+  }
+
+  /**
+   * Implements Prim's algorithm.
+   * Input graph should be undirected and connected.
+   */
+  calcMinimumSpanningTree() {
+    if (Object.keys(this._adjList).length === 0) {
+      return {}
+    }
+
+    const sourceVtx = Object.keys(this._adjList)[0]
+    // vertex and previos vertex form an edge of resulting minimum spanning tree
+    const prev = {}
+    // minimum edge distance to vertex; if UNDEFINED - distance
+    // is infinity (vertex is not yet discovered)
+    const minEdgeDist = {}
+    minEdgeDist[sourceVtx] = 0
+
+    // TODO: create cached version of PQ and remove this mapping
+    const vertexToId = {}
+    const extracted = {}
+    const minPq = new MinPriorityQueue()
+    const vertices = this._getVertices()
+    vertices.forEach(vertex => {
+      const insertionResult = minPq.insertWithPriority(vertex, Infinity)
+      vertexToId[vertex] = insertionResult.id
+    })
+    const sourceVtxId = vertexToId[sourceVtx]
+    minPq.changePriority(sourceVtxId, 0)
+    while (!minPq.isEmpty()) {
+      const currVtx = minPq.extractHighestPriorityItem()
+      extracted[currVtx] = true
+      const neighbors = this._adjList[currVtx]
+      neighbors.forEach(neighbor => {
+        const isNeighborExtracted = extracted[neighbor] !== undefined
+        const oldMinEdge = minEdgeDist[neighbor] === undefined ? Infinity : minEdgeDist[neighbor]
+        const newMinEdge = this._weights[`${currVtx}->${neighbor}`]
+        if (!isNeighborExtracted && newMinEdge < oldMinEdge) {
+          prev[neighbor] = currVtx
+          minEdgeDist[neighbor] = newMinEdge
+          const neighborId = vertexToId[neighbor]
+          minPq.changePriority(neighborId, newMinEdge)
+        }
+      })
+    }
+    const edges = {}
+    Object.keys(prev).forEach(vertex => {
+      edges[`${prev[vertex]}-${vertex}`] = true
+    })
+    return edges
   }
 
   /**
