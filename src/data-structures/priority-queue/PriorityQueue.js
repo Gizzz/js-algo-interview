@@ -80,7 +80,7 @@ export default class PriorityQueue {
       return false
     })
     if (item === undefined) {
-      return
+      throw new Error('Item not found.')
     }
 
     const newItem = {
