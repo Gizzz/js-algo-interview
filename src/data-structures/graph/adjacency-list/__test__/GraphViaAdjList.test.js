@@ -574,26 +574,26 @@ describe('GraphViaAdjList', () => {
     expect(edges_2['S-G']).toBe(true)
   })
 
-  it('isBipartite', () => {
+  it('isBipartite_BFS', () => {
     const graph_1 = new GraphViaAdjList()
     graph_1.addVertex('A')
-    expect(graph_1.isBipartite()).toBe(true)
+    expect(graph_1.isBipartite_BFS()).toBe(true)
 
     graph_1.addVertex('B')
-    expect(graph_1.isBipartite()).toBe(true)
+    expect(graph_1.isBipartite_BFS()).toBe(true)
 
     graph_1.addEdge('A', 'B')
     graph_1.addEdge('B', 'A')
-    expect(graph_1.isBipartite()).toBe(true)
+    expect(graph_1.isBipartite_BFS()).toBe(true)
 
     graph_1.addVertex('C')
     graph_1.addEdge('A', 'C')
     graph_1.addEdge('C', 'A')
-    expect(graph_1.isBipartite()).toBe(true)
+    expect(graph_1.isBipartite_BFS()).toBe(true)
 
     graph_1.addEdge('B', 'C')
     graph_1.addEdge('C', 'B')
-    expect(graph_1.isBipartite()).toBe(false)
+    expect(graph_1.isBipartite_BFS()).toBe(false)
 
     // cycle graph with 5 vertices
     const graph_2 = new GraphViaAdjList()
@@ -612,7 +612,7 @@ describe('GraphViaAdjList', () => {
     graph_2.addEdge('E', 'D')
     graph_2.addEdge('E', 'A')
     graph_2.addEdge('A', 'E')
-    expect(graph_2.isBipartite()).toBe(false)
+    expect(graph_2.isBipartite_BFS()).toBe(false)
 
     // cycle graph with 6 vertices
     const graph_3 = new GraphViaAdjList()
@@ -634,25 +634,25 @@ describe('GraphViaAdjList', () => {
     graph_3.addEdge('F', 'E')
     graph_3.addEdge('F', 'A')
     graph_3.addEdge('A', 'F')
-    expect(graph_3.isBipartite()).toBe(true)
+    expect(graph_3.isBipartite_BFS()).toBe(true)
 
-    // // disconnected graph
-    // const graph_4 = new GraphViaAdjList()
-    // // bipartite connected component
-    // graph_4.addVertex('A')
-    // graph_4.addVertex('B')
-    // graph_4.addEdge('A', 'B')
-    // graph_4.addEdge('B', 'A')
-    // // non-bipartite connected component
-    // graph_4.addVertex('X')
-    // graph_4.addVertex('Y')
-    // graph_4.addVertex('Z')
-    // graph_4.addEdge('X', 'Y')
-    // graph_4.addEdge('Y', 'X')
-    // graph_4.addEdge('Y', 'Z')
-    // graph_4.addEdge('Z', 'Y')
-    // graph_4.addEdge('Z', 'X')
-    // graph_4.addEdge('X', 'Z')
-    // expect(graph_4.isBipartite()).toBe(false)
+    // disconnected graph
+    const graph_4 = new GraphViaAdjList()
+    // bipartite connected component
+    graph_4.addVertex('A')
+    graph_4.addVertex('B')
+    graph_4.addEdge('A', 'B')
+    graph_4.addEdge('B', 'A')
+    // non-bipartite connected component
+    graph_4.addVertex('X')
+    graph_4.addVertex('Y')
+    graph_4.addVertex('Z')
+    graph_4.addEdge('X', 'Y')
+    graph_4.addEdge('Y', 'X')
+    graph_4.addEdge('Y', 'Z')
+    graph_4.addEdge('Z', 'Y')
+    graph_4.addEdge('Z', 'X')
+    graph_4.addEdge('X', 'Z')
+    expect(graph_4.isBipartite_BFS()).toBe(false)
   })
 })
