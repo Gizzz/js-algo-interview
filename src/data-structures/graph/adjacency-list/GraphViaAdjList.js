@@ -2,6 +2,14 @@ import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../../stack/Stack'
 import MinPriorityQueue from '../../priority-queue/MinPriorityQueue'
 
+/**
+ * Implementation of graph via adjecency list (which is a hash-table for search convinience).
+ *
+ * By default every graph is directed and weighted.
+ * Undirected graph can be emulated by adding edges in both directions.
+ * Unweighted graph can be emulated by omitting `weight` param
+ * when adding an edge, so it defaults to `1`.
+ */
 export default class GraphViaAdjList {
   constructor() {
     this._adjList = {}
