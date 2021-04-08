@@ -398,29 +398,38 @@ export default class GraphViaAdjList {
     return edges
   }
 
-  isBipartite() {
-    const sourceVtx = Object.keys(this._adjList)[0]
+  isBipartite_BFS() {
+    // to enable for-of loop:
+    /* eslint-disable no-restricted-syntax */
     const vertexToColor = {}
-    vertexToColor[sourceVtx] = 'red'
-    const q = new Queue()
-    q.enqueue(sourceVtx)
-    while (!q.isEmpty()) {
-      const currVtx = q.dequeue()
-      const currColor = vertexToColor[currVtx]
-      const oppositeColor = currColor === 'red' ? 'blue' : 'red'
-      const neighbors = this._adjList[currVtx]
-      // eslint-disable-next-line no-restricted-syntax
-      for (const neighbor of neighbors) {
-        const isNeighborVisited = vertexToColor[neighbor] !== undefined
-        if (!isNeighborVisited) {
-          vertexToColor[neighbor] = oppositeColor
-          q.enqueue(neighbor)
-        } else if (vertexToColor[neighbor] !== oppositeColor) {
-          return false
+    const vertices = this._getVertices()
+    for (const vertex of vertices) {
+      const isVertexVisited = vertexToColor[vertex] !== undefined
+      if (isVertexVisited) {
+        continue
+      }
+
+      vertexToColor[vertex] = 'red'
+      const q = new Queue()
+      q.enqueue(vertex)
+      while (!q.isEmpty()) {
+        const currVtx = q.dequeue()
+        const currColor = vertexToColor[currVtx]
+        const oppositeColor = currColor === 'red' ? 'blue' : 'red'
+        const neighbors = this._adjList[currVtx]
+        for (const neighbor of neighbors) {
+          const isNeighborVisited = vertexToColor[neighbor] !== undefined
+          if (!isNeighborVisited) {
+            vertexToColor[neighbor] = oppositeColor
+            q.enqueue(neighbor)
+          } else if (vertexToColor[neighbor] !== oppositeColor) {
+            return false
+          }
         }
       }
     }
     return true
+    /* eslint-enable no-restricted-syntax */
   }
 
   /**
