@@ -432,6 +432,43 @@ export default class GraphViaAdjList {
     /* eslint-enable no-restricted-syntax */
   }
 
+  isBipartite_DFS() {
+    const vertexToColor = {}
+    const vertices = this._getVertices()
+    // eslint-disable-next-line no-restricted-syntax
+    for (const vertex of vertices) {
+      const isVertexVisited = vertexToColor[vertex] !== undefined
+      if (isVertexVisited) {
+        continue
+      }
+
+      vertexToColor[vertex] = 'red'
+      const traversalResult = this._dfsVisitForBipartitenessCheck(vertex, vertexToColor)
+      if (!traversalResult) {
+        return false
+      }
+    }
+    return true
+  }
+
+  _dfsVisitForBipartitenessCheck(vertex, vertexToColor) {
+    const currColor = vertexToColor[vertex]
+    const oppositeColor = currColor === 'red' ? 'blue' : 'red'
+    const neighbors = this._adjList[vertex]
+    // eslint-disable-next-line no-restricted-syntax
+    for (const neighbor of neighbors) {
+      const isNeighborVisited = vertexToColor[neighbor] !== undefined
+      if (!isNeighborVisited) {
+        // eslint-disable-next-line no-param-reassign
+        vertexToColor[neighbor] = oppositeColor
+        this._dfsVisitForBipartitenessCheck(neighbor, vertexToColor)
+      } else if (vertexToColor[neighbor] !== oppositeColor) {
+        return false
+      }
+    }
+    return true
+  }
+
   /**
    * @returns all vertices in graph
    */
