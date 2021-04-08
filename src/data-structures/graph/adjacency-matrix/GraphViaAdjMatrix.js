@@ -1,5 +1,10 @@
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 
+/**
+ * Implementation of graph via adjecency matrix.
+ * Weights are not supported. Support can be easily added though,
+ * check adjacency-list implementation for reference.
+ */
 export default class GraphViaAdjMatrix {
   constructor() {
     // `_adjMatrix` edge adressing:
