@@ -126,6 +126,7 @@ export default class Heap {
   }
 
   // changeValueByIdx(nodeIdx, newValue) - changes value of node by index
+  // returns index of node after change
   changeValueByIdx(nodeIdx, newValue) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
@@ -136,11 +137,13 @@ export default class Heap {
 
     const oldValue = this._array[nodeIdx]
     this._array[nodeIdx] = newValue
+    let newNodeIdx = nodeIdx
     if (this._comparator.gt(newValue, oldValue)) {
-      this._bubbleUp(nodeIdx)
+      newNodeIdx = this._bubbleUp(nodeIdx)
     } else if (this._comparator.lt(newValue, oldValue)) {
-      this._bubbleDown(nodeIdx)
+      newNodeIdx = this._bubbleDown(nodeIdx)
     }
+    return newNodeIdx
   }
 
   // _bubble_up(node_idx) - if node violates heap property -- swaps it with parent,
