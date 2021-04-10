@@ -183,64 +183,72 @@ describe('MaxHeap', () => {
   })
 
   it('changeValueByIdx', () => {
-    const maxHeap = new MaxHeap()
-    expect(() => maxHeap.changeValueByIdx(0)).toThrow('heap is empty')
+    const maxHeap1 = new MaxHeap()
+    expect(() => maxHeap1.changeValueByIdx(0)).toThrow('heap is empty')
 
-    maxHeap.insert(10)
-    expect(() => maxHeap.changeValueByIdx(-1)).toThrow('nodeIdx is out of bounds')
-    expect(() => maxHeap.changeValueByIdx(1)).toThrow('nodeIdx is out of bounds')
+    maxHeap1.insert(10)
+    expect(() => maxHeap1.changeValueByIdx(-1)).toThrow('nodeIdx is out of bounds')
+    expect(() => maxHeap1.changeValueByIdx(1)).toThrow('nodeIdx is out of bounds')
 
-    expect(maxHeap.peekTop()).toBe(10)
-    maxHeap.changeValueByIdx(0, 10)
-    expect(maxHeap.peekTop()).toBe(10)
-    maxHeap.changeValueByIdx(0, 15)
-    expect(maxHeap.peekTop()).toBe(15)
+    expect(maxHeap1.peekTop()).toBe(10)
+    const nodeIdx_1_1 = maxHeap1.changeValueByIdx(0, 10)
+    expect(maxHeap1.peekTop()).toBe(10)
+    expect(nodeIdx_1_1).toBe(0)
+    const nodeIdx_1_2 = maxHeap1.changeValueByIdx(0, 15)
+    expect(maxHeap1.peekTop()).toBe(15)
+    expect(nodeIdx_1_2).toBe(0)
 
     const maxHeap2 = new MaxHeap()
     maxHeap2.insert(15)
     maxHeap2.insert(10)
     maxHeap2.insert(5)
     //
-    maxHeap2.changeValueByIdx(0, 20)
+    const nodeIdx_2_1 = maxHeap2.changeValueByIdx(0, 20)
     let str1 = ''
     str1 += '20\n'
     str1 += '10 5\n'
     expect(maxHeap2.toString()).toBe(str1)
+    expect(nodeIdx_2_1).toBe(0)
     //
-    maxHeap2.changeValueByIdx(1, 25)
+    const nodeIdx_2_2 = maxHeap2.changeValueByIdx(1, 25)
     let str2 = ''
     str2 += '25\n'
     str2 += '20 5\n'
     expect(maxHeap2.toString()).toBe(str2)
+    expect(nodeIdx_2_2).toBe(0)
     //
-    maxHeap2.changeValueByIdx(2, 30)
+    const nodeIdx_2_3 = maxHeap2.changeValueByIdx(2, 30)
     let str3 = ''
     str3 += '30\n'
     str3 += '20 25\n'
     expect(maxHeap2.toString()).toBe(str3)
+    expect(nodeIdx_2_3).toBe(0)
 
     const maxHeap3 = new MaxHeap()
     maxHeap3.insert(15)
     maxHeap3.insert(10)
     maxHeap3.insert(5)
     //
-    maxHeap3.changeValueByIdx(0, 3)
+    const nodeIdx_3_1 = maxHeap3.changeValueByIdx(0, 3)
     let str4 = ''
     str4 += '10\n'
     str4 += '3 5\n'
     expect(maxHeap3.toString()).toBe(str4)
+    expect(nodeIdx_3_1).toBe(1)
     //
-    maxHeap3.changeValueByIdx(1, 2)
+    const nodeIdx_3_2 = maxHeap3.changeValueByIdx(1, 2)
     let str5 = ''
     str5 += '10\n'
     str5 += '2 5\n'
     expect(maxHeap3.toString()).toBe(str5)
+    expect(nodeIdx_3_2).toBe(1)
     //
-    maxHeap3.changeValueByIdx(2, 1)
+    const nodeIdx_3_3 = maxHeap3.changeValueByIdx(2, 1)
     let str6 = ''
     str6 += '10\n'
     str6 += '2 1\n'
     expect(maxHeap3.toString()).toBe(str6)
+    expect(nodeIdx_3_3).toBe(2)
   })
 
   it('buildHeap', () => {
