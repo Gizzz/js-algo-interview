@@ -1,6 +1,6 @@
 import Queue from '../../queue/link-list-based/QueueViaLinkedList'
 import Stack from '../../stack/Stack'
-import MinPriorityQueue from '../../priority-queue/MinPriorityQueue'
+import MinPriorityQueueCached from './MinPriorityQueueCached'
 
 /**
  * Implementation of graph via adjecency list (which is a hash-table for search convinience).
@@ -328,9 +328,8 @@ export default class GraphViaAdjList {
     const dist = {}
     dist[sourceVtx] = 0
 
-    // TODO: create cached version of PQ and remove this mapping
-    const vertexToId = {}
-    const minPq = new MinPriorityQueue()
+    const vertexToPqItem = {}
+    const minPq = new MinPriorityQueueCached()
     minPq.insertWithPriority(sourceVtx, 0)
     while (!minPq.isEmpty()) {
       const currVtx = minPq.extractHighestPriorityItem()
@@ -342,13 +341,13 @@ export default class GraphViaAdjList {
         if (!isNeighborVisited) {
           prev[neighbor] = currVtx
           dist[neighbor] = newDistance
-          const insertionResult = minPq.insertWithPriority(neighbor, newDistance)
-          vertexToId[neighbor] = insertionResult.id
+          const insertedItem = minPq.insertWithPriority(neighbor, newDistance)
+          vertexToPqItem[neighbor] = insertedItem
         } else if (newDistance < oldDistance) {
           prev[neighbor] = currVtx
           dist[neighbor] = newDistance
-          const neighborId = vertexToId[neighbor]
-          minPq.changePriority(neighborId, newDistance)
+          const neighborItem = vertexToPqItem[neighbor]
+          minPq.changePriority(neighborItem, newDistance)
         }
       })
     }
@@ -372,17 +371,16 @@ export default class GraphViaAdjList {
     const minEdgeDist = {}
     minEdgeDist[sourceVtx] = 0
 
-    // TODO: create cached version of PQ and remove this mapping
-    const vertexToId = {}
+    const vertexToPqItem = {}
     const extracted = {}
-    const minPq = new MinPriorityQueue()
+    const minPq = new MinPriorityQueueCached()
     const vertices = this._getVertices()
     vertices.forEach(vertex => {
-      const insertionResult = minPq.insertWithPriority(vertex, Infinity)
-      vertexToId[vertex] = insertionResult.id
+      const insertedItem = minPq.insertWithPriority(vertex, Infinity)
+      vertexToPqItem[vertex] = insertedItem
     })
-    const sourceVtxId = vertexToId[sourceVtx]
-    minPq.changePriority(sourceVtxId, 0)
+    const sourceItem = vertexToPqItem[sourceVtx]
+    minPq.changePriority(sourceItem, 0)
     while (!minPq.isEmpty()) {
       const currVtx = minPq.extractHighestPriorityItem()
       extracted[currVtx] = true
@@ -394,8 +392,8 @@ export default class GraphViaAdjList {
         if (!isNeighborExtracted && newMinEdge < oldMinEdge) {
           prev[neighbor] = currVtx
           minEdgeDist[neighbor] = newMinEdge
-          const neighborId = vertexToId[neighbor]
-          minPq.changePriority(neighborId, newMinEdge)
+          const neighborItem = vertexToPqItem[neighbor]
+          minPq.changePriority(neighborItem, newMinEdge)
         }
       })
     }
@@ -406,6 +404,11 @@ export default class GraphViaAdjList {
     return edges
   }
 
+  /**
+   * Checks graph for bipartiteness in BFS order.
+   * Input graph is undirected and possibly disconnected
+   * (in this case each component is checked individually).
+   */
   isBipartite_BFS() {
     // to enable for-of loop:
     /* eslint-disable no-restricted-syntax */
@@ -440,6 +443,11 @@ export default class GraphViaAdjList {
     /* eslint-enable no-restricted-syntax */
   }
 
+  /**
+   * Checks graph for bipartiteness in DFS order.
+   * Input graph is undirected and possibly disconnected
+   * (in this case each component is checked individually).
+   */
   isBipartite_DFS() {
     const vertexToColor = {}
     const vertices = this._getVertices()
