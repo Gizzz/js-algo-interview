@@ -24,7 +24,9 @@ export default class Heap {
     this._comparator = new Comparator(compareFn)
   }
 
-  // build_heap(array) - produces a heap from an unsorted array
+  /**
+   * Produces a heap from an unsorted array in-place.
+   */
   static buildHeap(srcArray, compareFn) {
     if (this === Heap) {
       throw new Error('static methods of `Heap` class should not be used directly, use subclass')
@@ -44,7 +46,9 @@ export default class Heap {
     return heap
   }
 
-  // heap_sort(array) - sorts array in-place (ASC order for max heap, DESC for min heap)
+  /**
+   * Sorts array in-place (ASC order for max heap, DESC for min heap).
+   */
   static heapSort(srcArray, compareFn) {
     if (this === Heap) {
       throw new Error('static methods of `Heap` class should not be used directly, use subclass')
@@ -60,18 +64,24 @@ export default class Heap {
     }
   }
 
-  // get_size() - returns number of nodes stored in heap
+  /**
+   * Returns number of nodes stored in heap.
+   */
   getSize() {
     return this._array.length
   }
 
-  // is_empty() - returns true if heap contains no nodes
+  /**
+   * Returns true if heap contains no nodes.
+   */
   isEmpty() {
     return this._array.length === 0
   }
 
-  // insert - puts node to heap,
-  // returns index of inserted node
+  /**
+   * Puts node to heap.
+   * Returns index of inserted node.
+   */
   insert(value) {
     this._array.push(value)
     if (this.getSize() === 1) {
@@ -82,12 +92,16 @@ export default class Heap {
     return this._bubbleUp(insertedNodeIdx)
   }
 
-  // peek_top - return top node(root) or NULL if heap is empty
+  /**
+   * Returns top node(root) or NULL if heap is empty.
+   */
   peekTop() {
     return this.isEmpty() ? null : this._array[0]
   }
 
-  // extract_top - pops top node(root) from the heap, returns NULL if heap is empty
+  /**
+   * Pops top node(root) from the heap, returns NULL if heap is empty.
+   */
   extractTop() {
     if (this.isEmpty()) {
       return null
@@ -102,7 +116,10 @@ export default class Heap {
     return rootNodeValue
   }
 
-  // removeByIdx(node_idx) - removes node by index, returns removed value
+  /**
+   * Removes node by index.
+   * Returns removed value.
+   */
   removeByIdx(nodeIdx) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
@@ -125,8 +142,10 @@ export default class Heap {
     return oldValue
   }
 
-  // changeValueByIdx(nodeIdx, newValue) - changes value of node by index
-  // returns index of node after change
+  /**
+   * Changes value of node by index.
+   * Returns index of node after change.
+   */
   changeValueByIdx(nodeIdx, newValue) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
@@ -146,8 +165,11 @@ export default class Heap {
     return newNodeIdx
   }
 
-  // _bubble_up(node_idx) - if node violates heap property -- swaps it with parent,
-  // returns index of node after bubbling
+  /**
+   * Restores heap property upwards.
+   * If node violates heap property -- swaps it with parent.
+   * Returns index of node after bubbling.
+   */
   _bubbleUp(nodeIdx) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
@@ -169,9 +191,12 @@ export default class Heap {
     return currNodeIdx
   }
 
-  // _bubble_down(node_idx, lastNodeIdx) - if node violates heap property -- swaps it with child;
-  // optional `heapSize` param is needed for heapsort;
-  // returns index of node after bubbling
+  /**
+   * Restores heap property downwards.
+   * If node violates heap property -- swaps it with child.
+   * Optional `heapSize` param is needed for heapsort
+   * Returns index of node after bubbling.
+   */
   _bubbleDown(nodeIdx, heapSize = null) {
     if (this.isEmpty()) {
       throw new Error('heap is empty')
