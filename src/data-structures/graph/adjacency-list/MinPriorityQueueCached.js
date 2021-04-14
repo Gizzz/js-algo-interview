@@ -9,7 +9,7 @@ const minPriorityQueue_compareFn = (a, b) => {
 
 export default class MinPriorityQueueCached {
   constructor() {
-    this._array = []
+    this._heapArray = []
     this._itemToIdx = new Map()
     this._comparator = new Comparator(minPriorityQueue_compareFn)
   }
@@ -18,24 +18,23 @@ export default class MinPriorityQueueCached {
    * Returns number of items soted in PQ.
    */
   getSize() {
-    return this._array.length
+    return this._heapArray.length
   }
 
   /**
    * Returns TRUE if PQ contains no items.
    */
   isEmpty() {
-    return this._array.length === 0
+    return this._heapArray.length === 0
   }
 
   // TODO: rename `data` to `value`
   /**
-   * Wraps data with priority info (PQ item) and inserts it into PQ. Returns inserted item.
+   * Wraps data with priority info (forms PQ item) and inserts it into PQ. Returns inserted item.
    */
   insertWithPriority(data, priority) {
     const item = { data, priority }
-    const insertedItemIdx = this._insert(item)
-    this._itemToIdx.set(item, insertedItemIdx)
+    this._insert(item)
     return item
   }
 
@@ -44,13 +43,16 @@ export default class MinPriorityQueueCached {
    * Returns index of inserted node.
    */
   _insert(value) {
-    this._array.push(value)
+    this._heapArray.push(value)
+    let insertedNodeIdx
     if (this.getSize() === 1) {
-      return 0
+      insertedNodeIdx = 0
+    } else {
+      const lastNodeIdx = this.getSize() - 1
+      insertedNodeIdx = this._bubbleUp(lastNodeIdx)
     }
 
-    const lastNodeIdx = this.getSize() - 1
-    const insertedNodeIdx = this._bubbleUp(lastNodeIdx)
+    this._itemToIdx.set(value, insertedNodeIdx)
     return insertedNodeIdx
   }
 
@@ -66,9 +68,9 @@ export default class MinPriorityQueueCached {
 
     let currNodeIdx = nodeIdx
     while (currNodeIdx > 0) {
-      const currNodeValue = this._array[currNodeIdx]
+      const currNodeValue = this._heapArray[currNodeIdx]
       const parentNodeIdx = Math.floor((currNodeIdx - 1) / 2)
-      const parentNodeValue = this._array[parentNodeIdx]
+      const parentNodeValue = this._heapArray[parentNodeIdx]
       if (this._comparator.gt(currNodeValue, parentNodeValue)) {
         this._swapNodes(currNodeIdx, parentNodeIdx)
         currNodeIdx = parentNodeIdx
@@ -81,20 +83,20 @@ export default class MinPriorityQueueCached {
   }
 
   _swapNodes(nodeIdxA, nodeIdxB) {
-    const nodeValA = this._array[nodeIdxA]
-    const nodeValB = this._array[nodeIdxB]
+    const nodeValA = this._heapArray[nodeIdxA]
+    const nodeValB = this._heapArray[nodeIdxB]
     // swap values in heap array
-    this._array[nodeIdxA] = nodeValB
-    this._array[nodeIdxB] = nodeValA
+    this._heapArray[nodeIdxA] = nodeValB
+    this._heapArray[nodeIdxB] = nodeValA
     // swap indexes in cache map
     this._itemToIdx.set(nodeValA, nodeIdxB)
     this._itemToIdx.set(nodeValB, nodeIdxA)
   }
 
   /**
-   * Returns highest priority item without removing it.
+   * Returns highest priority item data without removing item from queue.
    */
-  peekHighestPriorityItem() {
+  peekHighestPriority() {
     const item = this._peekTop()
     return item === null ? null : item.data
   }
@@ -103,13 +105,13 @@ export default class MinPriorityQueueCached {
    * Returns top node(root) or NULL if heap is empty.
    */
   _peekTop() {
-    return this.isEmpty() ? null : this._array[0]
+    return this.isEmpty() ? null : this._heapArray[0]
   }
 
   /**
-   * Removes the item from the queue that has the highest priority and returns it.
+   * Removes the item from the queue that has the highest priority and returns its data.
    */
-  extractHighestPriorityItem() {
+  extractHighestPriority() {
     const item = this._extractTop()
     return item === null ? null : item.data
   }
@@ -122,10 +124,10 @@ export default class MinPriorityQueueCached {
       return null
     }
 
-    const rootNodeValue = this._array[0]
-    const lastNodeValue = this._array.pop()
+    const rootNodeValue = this._heapArray[0]
+    const lastNodeValue = this._heapArray.pop()
     if (!this.isEmpty()) {
-      this._array[0] = lastNodeValue
+      this._heapArray[0] = lastNodeValue
       this._itemToIdx.set(lastNodeValue, 0)
       this._bubbleDown(0)
     }
@@ -145,15 +147,15 @@ export default class MinPriorityQueueCached {
     }
 
     let currNodeIdx = nodeIdx
-    const lastNodeIdx = heapSize !== null ? heapSize - 1 : this._array.length - 1
+    const lastNodeIdx = heapSize !== null ? heapSize - 1 : this._heapArray.length - 1
     while (currNodeIdx < lastNodeIdx) {
-      const currNodeValue = this._array[currNodeIdx]
+      const currNodeValue = this._heapArray[currNodeIdx]
       let leftChildIdx = currNodeIdx * 2 + 1
       let rightChildIdx = currNodeIdx * 2 + 2
       leftChildIdx = leftChildIdx <= lastNodeIdx ? leftChildIdx : -1
       rightChildIdx = rightChildIdx <= lastNodeIdx ? rightChildIdx : -1
-      const leftChildValue = leftChildIdx === -1 ? null : this._array[leftChildIdx]
-      const rightChildValue = rightChildIdx === -1 ? null : this._array[rightChildIdx]
+      const leftChildValue = leftChildIdx === -1 ? null : this._heapArray[leftChildIdx]
+      const rightChildValue = rightChildIdx === -1 ? null : this._heapArray[rightChildIdx]
 
       const shouldSwapWithLeftChild = leftChildValue !== null &&
         this._comparator.lt(currNodeValue, leftChildValue) &&
@@ -176,19 +178,27 @@ export default class MinPriorityQueueCached {
   }
 
   /**
-   * Changes priority of specified item. Returns changed item.
+   * Changes priority of specified PQ item. Returns changed item.
    */
   changePriority(item, newPriority) {
     const oldItemState = { ...item }
-    const newItemState = { ...item, priority: newPriority }
     // eslint-disable-next-line no-param-reassign
     item.priority = newPriority
-    let newItemIdx = this._itemToIdx.get(item)
-    if (this._comparator.gt(newItemState, oldItemState)) {
-      newItemIdx = this._bubbleUp(newItemIdx)
-    } else if (this._comparator.lt(newItemState, oldItemState)) {
-      newItemIdx = this._bubbleDown(newItemIdx)
+    const newItemIdx = this._changeNodeValue(oldItemState, item)
+    return this._heapArray[newItemIdx]
+  }
+
+  _changeNodeValue(oldValue, newValue) {
+    if (this.isEmpty()) {
+      throw new Error('heap is empty')
     }
-    return this._array[newItemIdx]
+
+    let newNodeIdx = this._itemToIdx.get(newValue)
+    if (this._comparator.gt(newValue, oldValue)) {
+      newNodeIdx = this._bubbleUp(newNodeIdx)
+    } else if (this._comparator.lt(newValue, oldValue)) {
+      newNodeIdx = this._bubbleDown(newNodeIdx)
+    }
+    return newNodeIdx
   }
 }
