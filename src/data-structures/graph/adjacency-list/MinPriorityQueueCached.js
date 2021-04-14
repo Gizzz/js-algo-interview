@@ -1,3 +1,12 @@
+/**
+ * Implementation of cached version of MinPriorityQueue.
+ * It uses cache to lookup queue item index in O(1) time,
+ * which allows `changePriority` method to be performed in O(log(n)) time.
+ *
+ * NOTE: All underscore methods are heap-level methods.
+ * PQ provides high-level interface and uses heap under the hood.
+ */
+
 import Comparator from '../../../helpers/Comparator'
 
 const minPriorityQueue_compareFn = (a, b) => {
@@ -10,6 +19,7 @@ const minPriorityQueue_compareFn = (a, b) => {
 export default class MinPriorityQueueCached {
   constructor() {
     this._heapArray = []
+    // maps PQ item object to its index in heap array
     this._itemToIdx = new Map()
     this._comparator = new Comparator(minPriorityQueue_compareFn)
   }
