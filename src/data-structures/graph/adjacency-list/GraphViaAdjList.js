@@ -332,7 +332,7 @@ export default class GraphViaAdjList {
     const minPq = new MinPriorityQueueCached()
     minPq.insertWithPriority(sourceVtx, 0)
     while (!minPq.isEmpty()) {
-      const currVtx = minPq.extractHighestPriorityItem()
+      const currVtx = minPq.extractHighestPriority()
       const neighbors = this._adjList[currVtx]
       neighbors.forEach(neighbor => {
         const isNeighborVisited = prev[neighbor] !== undefined
@@ -382,7 +382,7 @@ export default class GraphViaAdjList {
     const sourceItem = vertexToPqItem[sourceVtx]
     minPq.changePriority(sourceItem, 0)
     while (!minPq.isEmpty()) {
-      const currVtx = minPq.extractHighestPriorityItem()
+      const currVtx = minPq.extractHighestPriority()
       extracted[currVtx] = true
       const neighbors = this._adjList[currVtx]
       neighbors.forEach(neighbor => {
