@@ -1,6 +1,7 @@
 /**
  * Implemntation of counting sort.
- * Can sort objects if `getKeyFn` arg is provided.
+ * Expects keys to be positive numbers.
+ * Can sort objects with numeric keys if `getKeyFn` arg is provided.
  */
 
 export default function countingSort(arr, getKeyFn) {
@@ -15,13 +16,15 @@ export default function countingSort(arr, getKeyFn) {
       aux[key].push(elem)
     }
   }
-  const sortedArr = []
+  // clear the input array
+  //
+  // eslint-disable-next-line no-param-reassign
+  arr.length = 0
   // eslint-disable-next-line no-restricted-syntax
   for (const subArr of aux) {
     if (subArr === undefined) {
       continue
     }
-    sortedArr.push(...subArr)
+    arr.push(...subArr)
   }
-  return sortedArr
 }

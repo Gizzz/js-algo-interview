@@ -3,8 +3,8 @@ import countingSort from '../countingSort'
 const createSortAdapter = (sortFn, getKeyFn) => {
   return {
     sort: (inputArr) => {
-      const outputArr = sortFn(inputArr, getKeyFn)
-      return outputArr
+      sortFn(inputArr, getKeyFn)
+      return inputArr
     },
   }
 }
