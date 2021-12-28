@@ -16,6 +16,7 @@
     "no-lonely-if": "off",
     "no-loop-func": "off",
     "no-plusplus": "off",
+    "no-restricted-syntax": "off",
     "no-underscore-dangle": "off",
     "operator-linebreak": "off",
     "prefer-destructuring": "off",

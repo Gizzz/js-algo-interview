@@ -7,7 +7,6 @@
 export default function countingSort(arr, getKeyFn) {
   // contains sub-arrays with elements of same key
   const aux = []
-  // eslint-disable-next-line no-restricted-syntax
   for (const elem of arr) {
     const key = getKeyFn === undefined ? elem : getKeyFn(elem)
     if (aux[key] === undefined) {
@@ -16,11 +15,9 @@ export default function countingSort(arr, getKeyFn) {
       aux[key].push(elem)
     }
   }
-  // clear the input array
-  //
+  // allow param reassign to clear the input array:
   // eslint-disable-next-line no-param-reassign
   arr.length = 0
-  // eslint-disable-next-line no-restricted-syntax
   for (const subArr of aux) {
     if (subArr === undefined) {
       continue

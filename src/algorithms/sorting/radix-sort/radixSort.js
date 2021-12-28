@@ -9,7 +9,6 @@ import countingSort from '../counting-sort/countingSort'
 export default function radixSort(arr, getKeyFn) {
   let maxKey = -Infinity
   const getElemKey = (elem) => (getKeyFn === undefined ? elem : getKeyFn(elem))
-  // eslint-disable-next-line no-restricted-syntax
   for (const elem of arr) {
     const elemKey = getElemKey(elem)
     if (elemKey > maxKey) {

@@ -74,7 +74,6 @@ export default class GraphViaAdjMatrix {
     }
 
     const result = []
-    // eslint-disable-next-line no-restricted-syntax
     for (const vtx of visited.keys()) {
       result.push(vtx)
     }
@@ -91,7 +90,6 @@ export default class GraphViaAdjMatrix {
     })
 
     const result = []
-    // eslint-disable-next-line no-restricted-syntax
     for (const vtx of visited.keys()) {
       result.push(vtx)
     }

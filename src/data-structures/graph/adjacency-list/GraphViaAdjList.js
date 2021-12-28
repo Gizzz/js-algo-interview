@@ -58,7 +58,6 @@ export default class GraphViaAdjList {
     }
 
     const result = []
-    // eslint-disable-next-line no-restricted-syntax
     for (const vtx of visited.keys()) {
       result.push(vtx)
     }
@@ -106,7 +105,6 @@ export default class GraphViaAdjList {
     })
 
     const result = []
-    // eslint-disable-next-line no-restricted-syntax
     for (const vtx of visited.keys()) {
       result.push(vtx)
     }
@@ -133,7 +131,6 @@ export default class GraphViaAdjList {
     })
 
     const result = []
-    // eslint-disable-next-line no-restricted-syntax
     for (const vtx of visited.keys()) {
       result.push(vtx)
     }
@@ -410,8 +407,6 @@ export default class GraphViaAdjList {
    * (in this case each component is checked individually).
    */
   isBipartite_BFS() {
-    // to enable for-of loop:
-    /* eslint-disable no-restricted-syntax */
     const vertexToColor = {}
     const vertices = this._getVertices()
     for (const vertex of vertices) {
@@ -440,7 +435,6 @@ export default class GraphViaAdjList {
       }
     }
     return true
-    /* eslint-enable no-restricted-syntax */
   }
 
   /**
@@ -451,7 +445,6 @@ export default class GraphViaAdjList {
   isBipartite_DFS() {
     const vertexToColor = {}
     const vertices = this._getVertices()
-    // eslint-disable-next-line no-restricted-syntax
     for (const vertex of vertices) {
       const isVertexVisited = vertexToColor[vertex] !== undefined
       if (isVertexVisited) {
@@ -471,7 +464,6 @@ export default class GraphViaAdjList {
     const currColor = vertexToColor[vertex]
     const oppositeColor = currColor === 'red' ? 'blue' : 'red'
     const neighbors = this._adjList[vertex]
-    // eslint-disable-next-line no-restricted-syntax
     for (const neighbor of neighbors) {
       const isNeighborVisited = vertexToColor[neighbor] !== undefined
       if (!isNeighborVisited) {
