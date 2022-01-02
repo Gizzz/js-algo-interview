@@ -1,18 +1,17 @@
 {
-  "name": "javascript-algorithms-and-data-structures",
-  "version": "0.0.4",
-  "description": "Algorithms and data-structures implemented on JavaScript",
+  "name": "js-algo-interview",
+  "version": "0.0.1",
+  "description": "JS implementation of common algorithms and data structures",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./",
     "lint-fix": "eslint ./ --fix",
     "test": "jest",
-    "test-w": "jest --watch",
-    "ci": "npm run lint && npm run test -- --coverage"
+    "test-watch": "jest --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trekhleb/javascript-algorithms.git"
+    "url": "git+https://github.com/gizzz/js-algo-interview.git"
   },
   "keywords": [
     "computer-science",
@@ -28,12 +27,7 @@
     "interview",
     "interview-preparation"
   ],
-  "author": "Oleksii Trekhleb (https://www.linkedin.com/in/trekhleb/)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/trekhleb/javascript-algorithms/issues"
-  },
-  "homepage": "https://github.com/trekhleb/javascript-algorithms#readme",
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
