@@ -1,5 +1,23 @@
 # JS Algorithms for the Interview
 
-This repository contains `JavaScript` implementations of algorithms and data structures from this study plan (core part, "Topics to study" section): [Coding Interview University](https://github.com/jwasham/coding-interview-university).
+This repository contains `JavaScript` implementations of algorithms and data structures listed in [Coding Interview University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section).
 
-Alternative implementations with focus on explanation: [JavaScript Algorithms and Data Structures](https://github.com/trekhleb/javascript-algorithms).
+Contents:
+- algorithms:
+  - binary search
+  - insertion sort
+  - heapsort
+  - quicksort
+  - mergesort
+  - counting sort
+  - radix sort (LSD version for numbers)
+- data-structures:
+  - binary search tree
+  - dynamic array (aka resizable array)
+  - graph (adjacency list, adjacency matrix)
+  - hashtable (open adressing)
+  - heap
+  - linked list
+  - priority queue
+  - queue
+  - stack
