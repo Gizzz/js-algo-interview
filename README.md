@@ -1,6 +1,6 @@
 # JS Algorithms for the Interview
 
-This repository contains `JavaScript` implementations of algorithms and data structures listed in [Coding Interview University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section).
+This repo contains `JavaScript` implementations of algorithms and data structures listed in [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section).
 
 Contents:
 - algorithms:
