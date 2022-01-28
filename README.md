@@ -7,17 +7,17 @@ Contents:
   - binary search
   - insertion sort
   - heapsort
-  - quicksort
+  - quicksort (3-way partitioning + randomized pivot selection)
   - mergesort
   - counting sort
-  - radix sort (LSD version for numbers)
+  - radix sort (LSD version to sort numbers)
 - data-structures:
-  - binary search tree
   - dynamic array (aka resizable array)
-  - graph (adjacency list, adjacency matrix)
-  - hashtable (open adressing)
-  - heap
-  - linked list
-  - priority queue
-  - queue
+  - linked list (singly-linked, no tail pointer)
   - stack
+  - queue
+  - heap
+  - priority queue
+  - binary search tree
+  - graph (adjacency list, adjacency matrix)
+  - hashtable (open adressing)  
