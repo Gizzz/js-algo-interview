@@ -1,7 +1,7 @@
 {
   "name": "js-algo-interview",
   "version": "0.0.1",
-  "description": "JS implementation of common algorithms and data structures",
+  "description": "JS implementations of common algorithms and data structures",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./",
@@ -11,7 +11,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gizzz/js-algo-interview.git"
+    "url": "https://github.com/gizzz/js-algo-interview.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@types/jest": "^26.0.7",
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.18.2",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0"
   },
   "keywords": [
     "computer-science",
@@ -26,22 +43,5 @@
     "tree",
     "interview",
     "interview-preparation"
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@types/jest": "^26.0.7",
-    "eslint": "^7.5.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.18.2",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.3",
-    "husky": "^4.2.5",
-    "jest": "^26.1.0"
-  },
-  "dependencies": {
-    "uuid": "^8.3.2"
-  }
+  ]
 }
