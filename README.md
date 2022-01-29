@@ -13,7 +13,7 @@ Contents:
   - radix sort (LSD version to sort numbers)
 - data-structures:
   - dynamic array (aka resizable array)
-  - linked list (singly-linked, no tail pointer)
+  - linked list (singly-linked, with and without tail pointer)
   - stack
   - queue
   - heap
