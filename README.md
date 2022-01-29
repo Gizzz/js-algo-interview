@@ -1,8 +1,12 @@
 # JS Algorithms for Coding Interview
 
-This repo contains `JavaScript` implementations of algorithms and data structures listed in [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section).
+This repo contains `JavaScript` implementations of algorithms and data structures listed in [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section). It also includes tests to have some faith than things work 🤞
 
-Contents:
+The study plan outlines the API and guides the implementation. Implementations themselves mostly based on theory from these courses:
+- [MIT 6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/)
+- Algorithms course by Robert Sedgewick and Kevin Wayne (Princeton University): [Part 1](https://www.coursera.org/learn/algorithms-part1), [Part 2](https://www.coursera.org/learn/algorithms-part2)
+
+## Contents:
 - algorithms:
   - [binary search](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/binary-search)
   - [insertion sort](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/insertion-sort)
