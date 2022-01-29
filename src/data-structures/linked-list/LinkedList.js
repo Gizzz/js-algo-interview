@@ -1,5 +1,5 @@
 /**
- * Singly-linked list with no tail
+ * Singly-linked list without tail pointer
  */
 
 class ListNode {

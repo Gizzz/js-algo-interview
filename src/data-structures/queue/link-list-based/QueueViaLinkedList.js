@@ -1,4 +1,4 @@
-import LinkedListWithTail from './LinkedListWithTail'
+import LinkedListWithTail from '../../linked-list/LinkedListWithTail'
 
 export default class QueueViaLinkedList {
   constructor() {
