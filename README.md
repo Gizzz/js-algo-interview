@@ -5,12 +5,12 @@ This repo contains `JavaScript` implementations of algorithms and data structure
 Contents:
 - algorithms:
   - [binary search](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/binary-search)
-  - insertion sort
-  - heapsort
-  - quicksort (3-way partitioning + randomized pivot selection)
-  - mergesort
-  - counting sort
-  - radix sort (LSD version to sort numbers)
+  - [insertion sort](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/insertion-sort)
+  - [heapsort](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/heap-sort)
+  - [quicksort (3-way partitioning + randomized pivot selection)](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/quick-sort)
+  - [mergesort](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/merge-sort)
+  - [counting sort](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/counting-sort)
+  - [radix sort (LSD version to sort numbers)](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/radix-sort)
 - data-structures:
   - dynamic array (aka resizable array)
   - linked list (singly-linked list, with and without tail pointer)
