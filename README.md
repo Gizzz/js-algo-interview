@@ -1,6 +1,6 @@
 # JS Algorithms for Coding Interview
 
-This repo contains `JavaScript` implementations of algorithms and data structures listed in [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section). It also includes tests to have some faith than things work 🤞
+This repo contains `JavaScript` implementations of algorithms and data structures listed in [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan (core part, [Topics of Study](https://github.com/jwasham/coding-interview-university#topics-of-study) section). It also includes tests to have some faith that things work 🤞
 
 The study plan outlines the API and guides the implementation. Implementations themselves mostly based on theory from these courses:
 - [MIT 6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/)
@@ -16,12 +16,12 @@ The study plan outlines the API and guides the implementation. Implementations t
   - [counting sort](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/counting-sort)
   - [radix sort (LSD version to sort numbers)](https://github.com/Gizzz/js-algo-interview/tree/master/src/algorithms/sorting/radix-sort)
 - data-structures:
-  - dynamic array (aka resizable array)
-  - linked list (singly-linked list, with and without tail pointer)
-  - stack
-  - queue
-  - heap
-  - priority queue
-  - binary search tree
-  - graph (adjacency list, adjacency matrix)
-  - hashtable (open adressing)  
+  - [dynamic array (aka resizable array)](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/dynamic-array)
+  - [linked list (singly-linked list, with and without tail pointer)](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/linked-list)
+  - [stack](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/stack)
+  - [queue](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/queue)
+  - [heap](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/heap)
+  - [priority queue](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/priority-queue)
+  - [binary search tree](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/binary-search-tree)
+  - [graph (adjacency list, adjacency matrix)](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/graph)
+  - [hashtable (open adressing)](https://github.com/Gizzz/js-algo-interview/tree/master/src/data-structures/hash-table)
