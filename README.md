@@ -1,7 +1,6 @@
 # JS Algorithms for Coding Interview
 
-This repo contains `JavaScript` implementations of algorithms and data structures from [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan. <br>
-It also includes tests to have some faith that things work 🤞
+This repo contains `JavaScript` implementations of algorithms and data structures from [Coding&nbsp;Interview&nbsp;University](https://github.com/jwasham/coding-interview-university) study plan. It also includes tests to have some faith that things work 🤞
 
 The study plan outlines the API and guides the implementation. Implementations themselves mostly based on theory from these courses:
 - [MIT 6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/)
